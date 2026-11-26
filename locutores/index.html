@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Locutores · TripMind Radio</title>
+<meta name="description" content="Matt y Roxie, las voces de TripMind Radio. Quiénes son y a qué hora los escuchas.">
+<link rel="canonical" href="https://tripmindradio.com/locutores/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TripMind Radio">
+<meta property="og:locale" content="es_CO">
+<meta property="og:url" content="https://tripmindradio.com/locutores/">
+<meta property="og:title" content="Las voces de TripMind Radio">
+<meta property="og:description" content="Matt y Roxie. Qui&#233;nes son y a qu&#233; hora los escuchas.">
+<meta property="og:image" content="https://tripmindradio.com/assets/img/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="TripMind Radio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Las voces de TripMind Radio">
+<meta name="twitter:description" content="Matt y Roxie. Qui&#233;nes son y a qu&#233; hora los escuchas.">
+<meta name="twitter:image" content="https://tripmindradio.com/assets/img/og.jpg">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="icon" href="../assets/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--negro:#0d0d0d;--tinta:#fff;--tinta-suave:#a6a6a6;--al-aire:#ff4d3d;--ease:cubic-bezier(.22,1,.36,1);
+  --gl:max(18px,env(safe-area-inset-left,0px));--gr:max(18px,env(safe-area-inset-right,0px))}
+html{-webkit-text-size-adjust:100%}
+body{font-family:Montserrat,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--negro);color:var(--tinta);
+  -webkit-font-smoothing:antialiased;min-height:100svh;overflow-x:hidden}
+.mono{font-variant-numeric:tabular-nums}
+.rejilla{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(circle at 50% 30%,#000 0%,rgba(0,0,0,.5) 45%,transparent 78%);
+  mask-image:radial-gradient(circle at 50% 30%,#000 0%,rgba(0,0,0,.5) 45%,transparent 78%)}
+.envoltura{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:env(safe-area-inset-top, 0px) var(--gr) calc(90px + env(safe-area-inset-bottom, 0px)) var(--gl)}
+/* Franja solida detras de la barra de estado, para que el contenido no se mezcle con la hora al desplazar. */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);background:var(--negro);z-index:9}
+.barra{display:flex;align-items:center;gap:12px;height:64px}
+.volver{display:inline-flex;align-items:center;gap:8px;color:var(--tinta-suave);text-decoration:none;font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;transition:color .35s var(--ease)}
+.volver:hover{color:var(--tinta)}
+.volver span{font-size:14px;transition:transform .35s var(--ease)}
+.volver:hover span{transform:translateX(-3px)}
+.cabecera{padding:28px 0 30px;text-align:center}
+.cabecera h1{font-size:clamp(25px,7vw,36px);font-weight:600;letter-spacing:-.025em;line-height:1.08}
+.cabecera p{margin-top:11px;font-size:13px;line-height:1.65;color:var(--tinta-suave)}
+.fichas{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:680px){.fichas{grid-template-columns:1fr 1fr;gap:20px}}
+.ficha{border:1px solid rgba(255,255,255,.08);border-radius:22px;overflow:hidden;background:rgba(255,255,255,.015);
+  transition:border-color .5s var(--ease),background .5s var(--ease)}
+.ficha.al-aire{border-color:rgba(255,77,61,.42);background:rgba(255,77,61,.045)}
+.marco{position:relative;aspect-ratio:4/5;overflow:hidden;background:#161616}
+.marco img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:opacity .7s var(--ease)}
+.marco img.fuego{opacity:0}
+.ficha.al-aire .marco img.calma{opacity:0}
+.ficha.al-aire .marco img.fuego{opacity:1}
+.marco::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(13,13,13,.86) 100%)}
+.chip{position:absolute;z-index:2;top:13px;left:13px;display:none;align-items:center;gap:6px;padding:5px 11px;border-radius:99px;
+  background:rgba(13,13,13,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  font-size:9px;letter-spacing:.18em;font-weight:600;color:var(--al-aire)}
+.ficha.al-aire .chip{display:inline-flex}
+.chip i{width:5px;height:5px;border-radius:50%;background:var(--al-aire);animation:lat 2s ease-in-out infinite}
+@keyframes lat{0%,100%{opacity:1}50%{opacity:.25}}
+.rotulo{position:absolute;z-index:2;left:18px;right:18px;bottom:15px}
+.rotulo b{display:block;font-size:22px;font-weight:600;letter-spacing:-.015em;line-height:1.1}
+.rotulo span{display:block;margin-top:4px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#9a9a9a}
+.texto{padding:16px 18px 18px}
+.texto p{font-size:13px;line-height:1.7;color:var(--tinta-suave)}
+.turno{margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:baseline;gap:8px;font-size:10px;letter-spacing:.06em;color:#6f6f6f}
+.turno b{color:var(--tinta);font-weight:600;font-size:11px;letter-spacing:.04em}
+.parrilla{margin-top:34px;border:1px solid rgba(255,255,255,.07);border-radius:18px;overflow:hidden}
+.parrilla h2{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#6f6f6f;font-weight:600;
+  padding:14px 17px;border-bottom:1px solid rgba(255,255,255,.07)}
+.franja{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 17px;
+  border-bottom:1px solid rgba(255,255,255,.055);transition:background .4s var(--ease)}
+.franja:last-child{border-bottom:0}
+.franja.ahora{background:rgba(255,77,61,.07)}
+.franja .h{font-size:12px;font-weight:600;letter-spacing:.03em;flex:none}
+.franja .q{font-size:12px;color:var(--tinta-suave);text-align:right}
+.franja.ahora .q{color:var(--al-aire)}
+.nota{margin:30px auto 0;max-width:440px;text-align:center;font-size:10.5px;line-height:1.75;color:#5a5a5a}
+</style>
+</head>
+<body>
+<div class="rejilla" aria-hidden="true"></div>
+<div class="envoltura">
+
+  <nav class="barra"><a class="volver" href="../"><span>&larr;</span> Volver a la radio</a></nav>
+
+  <header class="cabecera">
+    <h1>Las voces de TripMind</h1>
+    <p>Dos locutores, una cabina que no se apaga.</p>
+  </header>
+
+  <div class="fichas">
+
+    <article class="ficha" id="fRoxie">
+      <div class="marco">
+        <img class="calma" src="../assets/img/roxie-duo.jpg" alt="Roxie, locutora de TripMind Radio" width="640" height="800">
+        <img class="fuego" src="../assets/img/roxie-duo-aire.jpg" alt="" aria-hidden="true" width="640" height="800">
+        <div class="chip mono"><i></i>AL AIRE</div>
+        <div class="rotulo"><b>Roxie</b><span>Ma&ntilde;anas</span></div>
+      </div>
+      <div class="texto">
+        <p>Abre el d&iacute;a. Es la que lee los saludos que ustedes mandan y la que le pone nombre a la gente que escucha. Si suena cercana es porque le interesa qui&eacute;n est&aacute; del otro lado.</p>
+        <div class="turno mono"><b>5:00 &ndash; 12:00</b> sola &middot; 12:00 &ndash; 19:00 con Matt</div>
+      </div>
+    </article>
+
+    <article class="ficha" id="fMatt">
+      <div class="marco">
+        <img class="calma" src="../assets/img/matt-duo.jpg" alt="Matt, locutor de TripMind Radio" width="640" height="800">
+        <img class="fuego" src="../assets/img/matt-duo-aire.jpg" alt="" aria-hidden="true" width="640" height="800">
+        <div class="chip mono"><i></i>AL AIRE</div>
+        <div class="rotulo"><b>Matt</b><span>Noches</span></div>
+      </div>
+      <div class="texto">
+        <p>Sostiene la hora. Presenta, enlaza y cierra. Es el que te pide el saludo y el que te acompa&ntilde;a cuando la noche se pone larga y el set se pone bueno.</p>
+        <div class="turno mono"><b>19:00 &ndash; 00:00</b> solo &middot; 12:00 &ndash; 19:00 con Roxie</div>
+      </div>
+    </article>
+
+  </div>
+
+  <section class="parrilla" aria-label="Parrilla">
+    <h2>La hora, de principio a fin</h2>
+    <div class="franja mono" data-h0="5"  data-h1="12"><span class="h">5:00 &ndash; 12:00</span><span class="q">Roxie</span></div>
+    <div class="franja mono" data-h0="12" data-h1="19"><span class="h">12:00 &ndash; 19:00</span><span class="q">Roxie y Matt</span></div>
+    <div class="franja mono" data-h0="19" data-h1="24"><span class="h">19:00 &ndash; 00:00</span><span class="q">Matt</span></div>
+    <div class="franja mono" data-h0="0"  data-h1="5"><span class="h">00:00 &ndash; 5:00</span><span class="q">Solo m&uacute;sica</span></div>
+  </section>
+
+  <p class="nota">Matt y Roxie son locutores de inteligencia artificial.<br>Las voces, la m&uacute;sica y la cabina s&iacute; son de verdad.</p>
+
+</div>
+
+<script>
+(function(){
+  var horaEmisora = function(){
+    try{
+      var t = new Intl.DateTimeFormat("en-GB",{timeZone:"America/Bogota",hour:"2-digit",hour12:false}).format(new Date());
+      var h = parseInt(t,10);
+      if(isNaN(h)) return new Date().getHours();
+      return h >= 24 ? 0 : h;
+    }catch(e){ return new Date().getHours(); }
+  };
+  var pinta = function(){
+    var h = horaEmisora();
+    var r = document.getElementById("fRoxie"), m = document.getElementById("fMatt");
+    if(r) r.classList.toggle("al-aire", h >= 5 && h < 19);
+    if(m) m.classList.toggle("al-aire", h >= 12);
+    var fs = document.querySelectorAll(".franja");
+    for(var i=0;i<fs.length;i++){
+      var a = +fs[i].getAttribute("data-h0"), b = +fs[i].getAttribute("data-h1");
+      fs[i].classList.toggle("ahora", h >= a && h < b);
+    }
+  };
+  pinta();
+  setInterval(pinta, 60000);
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden) pinta(); });
+})();
+</script>
+</body>
+</html>

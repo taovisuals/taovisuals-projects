@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0d0d0d">
+<title>Panel · TripMind Radio</title>
+<link rel="icon" href="../assets/icons/favicon-32.png" sizes="32x32">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --negro:#0d0d0d; --superficie:#161616; --tinta:#fff; --tinta-suave:#a6a6a6;
+  --al-aire:#ff4d3d; --ease:cubic-bezier(.22,1,.36,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--negro);color:var(--tinta);font-family:"Montserrat",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.mono{font-weight:500;letter-spacing:.42em;text-transform:uppercase;font-size:11px}
+.envoltura{max-width:1080px;margin:0 auto;padding:calc(22px + env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-left,0px)) calc(60px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-right,0px))}
+
+.cabeza{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:26px}
+.cabeza h1{margin:0;font-size:19px;font-weight:700;letter-spacing:-.01em}
+.cabeza .mono{color:var(--tinta-suave)}
+.cabeza .der{margin-left:auto;display:flex;align-items:center;gap:10px}
+.vive{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:rgba(255,77,61,.11);color:var(--al-aire);font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.vive i{width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulso 1.8s ease-out infinite}
+@keyframes pulso{0%{box-shadow:0 0 0 0 rgba(255,77,61,.6)}70%{box-shadow:0 0 0 9px rgba(255,77,61,0)}100%{box-shadow:0 0 0 0 rgba(255,77,61,0)}}
+
+.bt{border:1px solid rgba(255,255,255,.14);background:transparent;color:var(--tinta);font:inherit;font-size:13px;font-weight:600;padding:9px 15px;border-radius:999px;cursor:pointer;transition:background .25s,border-color .25s}
+.bt:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.28)}
+.bt.lleno{background:#fff;color:#0d0d0d;border-color:#fff}
+.bt.lleno:hover{box-shadow:0 10px 26px -10px rgba(255,255,255,.4)}
+.bt.chico{font-size:11.5px;padding:6px 11px}
+.bt:disabled{opacity:.45;cursor:default}
+
+.tarjetas{display:grid;grid-template-columns:repeat(auto-fit,minmax(142px,1fr));gap:10px;margin-bottom:28px}
+.tarjeta{padding:16px;border:1px solid rgba(255,255,255,.07);border-radius:16px;background:var(--superficie)}
+.tarjeta b{display:block;font-size:29px;font-weight:700;line-height:1.05;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.tarjeta span{display:block;margin-top:5px;font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--tinta-suave)}
+.tarjeta.viva b{color:var(--al-aire)}
+
+.aire-ahora{display:flex;align-items:center;gap:13px;flex-wrap:wrap;padding:14px 16px;margin:0 0 28px;border:1px solid rgba(255,77,61,.2);border-radius:16px;background:rgba(255,77,61,.055)}
+.aire-ahora .izq{flex:1;min-width:0}
+.aire-ahora .et{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--al-aire);margin-bottom:3px}
+.aire-ahora .tit{font-size:15px;font-weight:600;overflow-wrap:anywhere}
+.aire-ahora .art{font-size:12.5px;color:var(--tinta-suave);margin-top:1px}
+.aire-ahora .cont{flex:none;text-align:right}
+.aire-ahora .cont b{display:block;font-size:26px;font-weight:700;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.aire-ahora .cont span{display:block;margin-top:4px;font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta-suave)}
+.aire-ahora.caido{border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.03)}
+.aire-ahora.caido .et{color:var(--tinta-suave)}
+h2.sec{margin:0 0 13px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta-suave);display:flex;align-items:center;gap:9px}
+h2.sec em{font-style:normal;padding:2px 8px;border-radius:999px;background:var(--al-aire);color:#fff;font-size:10px;letter-spacing:.06em}
+section{margin-bottom:34px}
+
+.fichas{display:grid;gap:9px}
+.ficha{display:flex;gap:13px;align-items:flex-start;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:var(--superficie)}
+.ficha.hecha{opacity:.5}
+.ficha .cuerpo{flex:1;min-width:0}
+.ficha .qui{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-suave);margin-bottom:4px}
+.ficha .qui u{text-decoration:none;color:var(--tinta)}
+.ficha p{margin:0;font-size:14.5px;line-height:1.5;overflow-wrap:anywhere}
+.ficha .nota{margin-top:5px;font-size:12.5px;color:var(--tinta-suave)}
+.ficha .mandos{display:flex;flex-direction:column;gap:6px;flex:none}
+.etiq{display:inline-block;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;background:rgba(255,255,255,.07);color:var(--tinta-suave)}
+.etiq.aire{background:rgba(255,77,61,.14);color:var(--al-aire)}
+
+.tabla{width:100%;border-collapse:collapse;font-size:13.5px}
+.tabla th{text-align:left;padding:0 10px 9px;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta-suave);white-space:nowrap}
+.tabla td{padding:11px 10px;border-top:1px solid rgba(255,255,255,.06);vertical-align:middle}
+.tabla tr.vivo td{background:rgba(255,77,61,.05)}
+.tabla .num{text-align:right;font-variant-numeric:tabular-nums}
+.tabla .nom{font-weight:600}
+.tabla .pt{color:var(--tinta-suave);font-size:12px}
+.envuelve{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+.punto-vivo{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--al-aire);margin-right:7px;vertical-align:1px}
+
+.barras{display:flex;align-items:flex-end;gap:6px;height:92px;padding:0 2px}
+.barras div{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;gap:5px;text-align:center}
+.barras i{display:block;background:rgba(255,255,255,.17);border-radius:4px 4px 0 0;min-height:2px;transition:height .6s var(--ease)}
+.barras u{display:block;text-decoration:none;font-size:9px;letter-spacing:.06em;color:#6a6a6a;white-space:nowrap}
+
+.puerta{max-width:390px;margin:8vh auto 0;text-align:left}
+.puerta h1{margin:0 0 7px;font-size:22px;font-weight:700}
+.puerta p{margin:0 0 20px;font-size:14px;line-height:1.55;color:var(--tinta-suave)}
+.campo{display:block;margin-bottom:11px}
+.campo span{display:block;margin-bottom:6px;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--tinta-suave)}
+.campo input{width:100%;background:var(--superficie);border:1px solid rgba(255,255,255,.13);border-radius:13px;padding:13px 14px;color:var(--tinta);font:inherit;font-size:16px}
+.campo input:focus{outline:0;border-color:rgba(255,255,255,.4)}
+.ancho{width:100%;padding:14px;font-size:15px;margin-top:6px}
+.error{margin:0 0 14px;padding:11px 13px;border:1px solid rgba(255,77,61,.22);border-radius:12px;background:rgba(255,77,61,.11);color:#ff9d93;font-size:13.5px;line-height:1.5}
+.nada{font-size:13.5px;color:#6a6a6a;padding:4px 0}
+.pie{margin-top:40px;padding-top:18px;border-top:1px solid rgba(255,255,255,.06);font-size:11.5px;color:#5e5e5e}
+@media (max-width:560px){
+  .ficha{flex-direction:column}
+  .ficha .mandos{flex-direction:row;flex-wrap:wrap;width:100%}
+  .tarjeta b{font-size:25px}
+}
+</style>
+</head>
+<body>
+<div class="envoltura" id="raiz"><p class="nada">Cargando…</p></div>
+
+<script>
+(function(){
+  var SB_URL = "https://mbtroxbeyjqqqxqfdade.supabase.co";
+  var SB_KEY = "sb_publishable_e4i4OidvddMs1-eQ9GzvEA_nNFVTuQp";
+  var raiz = document.getElementById("raiz");
+  var AZURA = "https://panel.tripmindradio.com/api/nowplaying/tripmind_radio";
+  var sb = null, datos = null, aire = null, dias = 7, refresco = null;
+
+  // AzuraCast cuenta desde el servidor, asi que este numero es el real:
+  // no depende de que nadie se registre ni se puede inflar desde el navegador.
+  var traeAire = function(){
+    return fetch(AZURA, { cache: "no-store" })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(j){ aire = j; })
+      .catch(function(){ aire = null; });
+  };
+
+  var esc = function(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[c];
+    });
+  };
+  var num = function(n){ return (n == null ? 0 : n).toLocaleString("es-CO"); };
+  var hace = function(iso){
+    if(!iso) return "—";
+    var s = (Date.now() - new Date(iso).getTime()) / 1000;
+    if(s < 90) return "ahora";
+    if(s < 5400) return Math.round(s / 60) + " min";
+    if(s < 172800) return Math.round(s / 3600) + " h";
+    return Math.round(s / 86400) + " d";
+  };
+  var enEspanol = function(e){
+    var m = String((e && e.message) || e || "").toLowerCase();
+    if(m.indexOf("invalid login") >= 0)      return "Correo o contraseña incorrectos.";
+    if(m.indexOf("administradores") >= 0)    return "Esta cuenta no es administradora.";
+    if(m.indexOf("email not confirmed") >= 0)return "Confirma tu correo primero.";
+    if(m.indexOf("failed to fetch") >= 0)    return "Sin conexión.";
+    return (e && e.message) || "Algo no salió.";
+  };
+
+  var cliente = function(){
+    if(sb) return Promise.resolve(sb);
+    return import("https://esm.sh/@supabase/supabase-js@2").then(function(m){
+      sb = m.createClient(SB_URL, SB_KEY, {
+        auth: { persistSession:true, autoRefreshToken:true, detectSessionInUrl:true, storageKey:"tmr-sesion", flowType:"pkce" }
+      });
+      return sb;
+    });
+  };
+
+  /* ---------- Puerta ---------- */
+  function puerta(msg){
+    if(refresco){ clearInterval(refresco); refresco = null; }
+    raiz.innerHTML =
+      '<div class="puerta">' +
+        '<h1>Panel de TripMind Radio</h1>' +
+        '<p>Entra con tu cuenta de administrador.</p>' +
+        (msg ? '<p class="error">' + esc(msg) + '</p>' : '') +
+        '<form id="f">' +
+          '<label class="campo"><span>Correo</span><input name="email" type="email" inputmode="email" autocomplete="email" required></label>' +
+          '<label class="campo"><span>Contraseña</span><input name="clave" type="password" autocomplete="current-password" required></label>' +
+          '<button class="bt lleno ancho" type="submit">Entrar</button>' +
+        '</form>' +
+        '<p style="margin-top:22px"><a href="../" style="font-size:13px;color:#a6a6a6">&larr; Volver a la emisora</a></p>' +
+      '</div>';
+    document.getElementById("f").addEventListener("submit", function(ev){
+      ev.preventDefault();
+      var f = this, b = f.querySelector("button");
+      b.disabled = true; b.textContent = "Un momento…";
+      cliente()
+        .then(function(c){ return c.auth.signInWithPassword({ email:f.email.value.trim(), password:f.clave.value }); })
+        .then(function(r){ if(r.error) throw r.error; return trae(); })
+        .catch(function(e){ puerta(enEspanol(e)); });
+    });
+  }
+
+  function noEsTuyo(){
+    if(refresco){ clearInterval(refresco); refresco = null; }
+    raiz.innerHTML =
+      '<div class="puerta">' +
+        '<h1>Esta página no es para ti</h1>' +
+        '<p>Tu cuenta no tiene permisos de administración. Si crees que es un error, revisa con qué correo entraste.</p>' +
+        '<button class="bt" type="button" id="s">Cerrar sesión</button>' +
+        '<p style="margin-top:22px"><a href="../" style="font-size:13px;color:#a6a6a6">&larr; Volver a la emisora</a></p>' +
+      '</div>';
+    document.getElementById("s").addEventListener("click", function(){
+      sb.auth.signOut().then(function(){ puerta(); });
+    });
+  }
+
+  /* ---------- Traer ---------- */
+  function trae(silencio){
+    return cliente()
+      .then(function(c){
+        return Promise.all([ c.rpc("tmr_panel", { p_dias: dias }), traeAire() ]);
+      })
+      .then(function(par){
+        var r = par[0];
+        if(r.error) throw r.error;
+        datos = r.data; pinta();
+        if(!refresco) refresco = setInterval(function(){ trae(true); }, 30000);
+      })
+      .catch(function(e){
+        var m = String((e && e.message) || "").toLowerCase();
+        if(m.indexOf("administradores") >= 0) return noEsTuyo();
+        if(silencio) return;
+        if(m.indexOf("jwt") >= 0 || m.indexOf("sesion") >= 0 || m.indexOf("session") >= 0) return puerta();
+        puerta(enEspanol(e));
+      });
+  }
+
+  /* ---------- Pintar ---------- */
+  function pinta(){
+    var r = datos.resumen || {};
+    var html =
+      '<div class="cabeza">' +
+        '<div><h1>Panel</h1><div class="mono">TripMind Radio</div></div>' +
+        '<div class="der">' +
+          (r.al_aire_ahora ? '<span class="vive"><i></i>' + num(r.al_aire_ahora) + ' oyendo</span>' : '') +
+          '<button class="bt chico" type="button" id="bDias">' + datos.dias + ' días</button>' +
+          '<button class="bt chico" type="button" id="bRef">Actualizar</button>' +
+          '<button class="bt chico" type="button" id="bSal">Salir</button>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="tarjetas">' +
+        tarjeta(r.oyentes, "Registrados") +
+        tarjeta(r.activos_hoy, "Activos 24 h", !!r.activos_hoy) +
+        tarjeta(num(r.minutos), "Minutos oídos") +
+        tarjeta(r.nuevos, "Nuevos (" + datos.dias + " d)") +
+        tarjeta(r.saludos_cola, "Saludos en cola") +
+        tarjeta(r.pedidos_cola, "Pedidos en cola") +
+      '</div>' + franjaAire();
+
+    // Escucha por día
+    var pd = datos.por_dia || [];
+    if(pd.length){
+      var tope = Math.max.apply(null, pd.map(function(d){ return +d.minutos || 0; })) || 1;
+      html += '<section><h2 class="sec">Minutos por día</h2><div class="barras">' +
+        pd.map(function(d){
+          var alt = Math.max(2, Math.round(((+d.minutos || 0) / tope) * 78));
+          return '<div title="' + esc(d.dia) + ': ' + num(d.minutos) + ' min, ' + num(d.oyentes) + ' oyentes">' +
+                 '<i style="height:' + alt + 'px"></i><u>' + esc(String(d.dia).slice(5)) + '</u></div>';
+        }).join("") + '</div></section>';
+    }
+
+    html += cola("Pedidos de canciones", datos.pedidos || [], "pedido");
+    html += cola("Saludos", datos.saludos || [], "saludo");
+    html += oyentes(datos.oyentes || []);
+    html += '<p class="pie">Se actualiza solo cada 30 segundos. Los datos salen de tu propio Supabase.</p>';
+
+    raiz.innerHTML = html;
+
+    document.getElementById("bRef").addEventListener("click", function(){ this.textContent = "…"; trae(); });
+    document.getElementById("bSal").addEventListener("click", function(){
+      sb.auth.signOut().then(function(){ puerta(); });
+    });
+    document.getElementById("bDias").addEventListener("click", function(){
+      dias = dias === 7 ? 30 : (dias === 30 ? 90 : 7);
+      trae();
+    });
+    Array.prototype.forEach.call(raiz.querySelectorAll("[data-marcar]"), function(b){
+      b.addEventListener("click", function(){
+        var p = b.getAttribute("data-marcar").split("|");
+        b.disabled = true; b.textContent = "…";
+        sb.rpc("tmr_panel_marcar", { p_tipo:p[0], p_id:+p[1], p_estado:p[2] })
+          .then(function(x){ if(x.error) throw x.error; return trae(); })
+          .catch(function(e){ b.disabled = false; alert(enEspanol(e)); });
+      });
+    });
+  }
+
+  function franjaAire(){
+    if(!aire) return '<div class="aire-ahora caido"><div class="izq"><div class="et">Señal</div>' +
+                     '<div class="tit">No pude leer el estado de la emisora</div></div></div>';
+    var n = aire.now_playing || {}, s = n.song || {};
+    var l = aire.listeners || {};
+    var cuantos = (l.current != null ? l.current : (l.unique != null ? l.unique : l.total)) || 0;
+    var caido = aire.is_online === false;
+    return '<div class="aire-ahora' + (caido ? " caido" : "") + '">' +
+      '<div class="izq">' +
+        '<div class="et">' + (caido ? "Fuera del aire" : "Sonando ahora") + '</div>' +
+        '<div class="tit">' + esc(s.title || s.text || "—") + '</div>' +
+        (s.artist ? '<div class="art">' + esc(s.artist) + '</div>' : '') +
+      '</div>' +
+      '<div class="cont"><b>' + num(cuantos) + '</b><span>Conectados</span></div>' +
+    '</div>';
+  }
+
+  function tarjeta(v, et, viva){
+    return '<div class="tarjeta' + (viva ? " viva" : "") + '"><b>' + esc(String(v == null ? 0 : v)) + '</b><span>' + esc(et) + '</span></div>';
+  }
+
+  var NOMBRE_ESTADO = { pendiente:"En cola", aprobado:"Aprobado", programada:"Programada", al_aire:"Al aire", rechazado:"Descartado", rechazada:"Descartado" };
+
+  function cola(titulo, arr, tipo){
+    var pend = arr.filter(function(o){ return o.estado === "pendiente"; }).length;
+    var h = '<section><h2 class="sec">' + esc(titulo) + (pend ? '<em>' + pend + '</em>' : '') + '</h2>';
+    if(!arr.length) return h + '<p class="nada">Todavía no hay nada por aquí.</p></section>';
+    h += '<div class="fichas">' + arr.map(function(o){
+      var hecho = o.estado !== "pendiente";
+      var texto = tipo === "pedido"
+        ? esc(o.cancion) + (o.artista ? ' <span style="color:#a6a6a6">· ' + esc(o.artista) + '</span>' : '')
+        : esc(o.texto);
+      return '<div class="ficha' + (hecho ? " hecha" : "") + '">' +
+        '<div class="cuerpo">' +
+          '<div class="qui"><u>' + esc(o.nombre) + '</u>' + (o.ciudad ? " · " + esc(o.ciudad) : "") + ' · ' + esc(hace(o.creado_at)) + '</div>' +
+          '<p>' + texto + '</p>' +
+          (tipo === "saludo" && o.para ? '<div class="nota">Para: ' + esc(o.para) + '</div>' : '') +
+          (tipo === "pedido" && o.nota ? '<div class="nota">' + esc(o.nota) + '</div>' : '') +
+          '<div style="margin-top:8px"><span class="etiq' + (o.estado === "al_aire" ? " aire" : "") + '">' + esc(NOMBRE_ESTADO[o.estado] || o.estado) + '</span></div>' +
+        '</div>' +
+        '<div class="mandos">' +
+          (o.estado !== "al_aire"
+            ? '<button class="bt chico lleno" type="button" data-marcar="' + tipo + '|' + o.id + '|al_aire">Al aire</button>' : '') +
+          (o.estado === "pendiente"
+            ? '<button class="bt chico" type="button" data-marcar="' + tipo + '|' + o.id + '|' + (tipo === "saludo" ? "rechazado" : "rechazada") + '">Descartar</button>' : '') +
+          (o.estado !== "pendiente"
+            ? '<button class="bt chico" type="button" data-marcar="' + tipo + '|' + o.id + '|pendiente">Devolver</button>' : '') +
+        '</div>' +
+      '</div>';
+    }).join("") + '</div></section>';
+    return h;
+  }
+
+  function oyentes(arr){
+    var h = '<section><h2 class="sec">Oyentes registrados</h2>';
+    if(!arr.length) return h + '<p class="nada">Nadie se ha registrado todavía.</p></section>';
+    h += '<div class="envuelve"><table class="tabla"><thead><tr>' +
+         '<th>Oyente</th><th class="num">Min</th>' +
+         '<th class="num">Pedidos</th><th class="num">Saludos</th><th class="num">Se oyó</th>' +
+         '</tr></thead><tbody>' +
+      arr.map(function(o){
+        return '<tr' + (o.sonando ? ' class="vivo"' : '') + '>' +
+          '<td><div class="nom">' + (o.sonando ? '<span class="punto-vivo"></span>' : '') + esc(o.nombre) + '</div>' +
+            '<div class="pt">' + esc(o.ciudad || "—") + (o.telefono ? " · " + esc(o.telefono) : "") + '</div></td>' +
+          '<td class="num">' + num(o.minutos) + '</td>' +
+
+          '<td class="num">' + num(o.pedidos) + '</td>' +
+          '<td class="num">' + num(o.saludos) + '</td>' +
+          '<td class="num pt">' + esc(hace(o.ultima)) + '</td>' +
+        '</tr>';
+      }).join("") + '</tbody></table></div></section>';
+    return h;
+  }
+
+  /* ---------- Arranque ---------- */
+  cliente().then(function(c){
+    return c.auth.getSession().then(function(r){
+      if(r.data && r.data.session) return trae();
+      puerta();
+    });
+  }).catch(function(){
+    raiz.innerHTML = '<div class="puerta"><h1>Sin conexión</h1><p>No pude cargar el panel. Revisa tu conexión.</p></div>';
+  });
+})();
+</script>
+</body>
+</html>

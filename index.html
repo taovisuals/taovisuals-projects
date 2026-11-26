@@ -1,0 +1,1649 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TripMind Radio</title>
+<meta name="description" content="TripMind Radio · Música y DJs que hablan. To us for us.">
+<link rel="canonical" href="https://tripmindradio.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TripMind Radio">
+<meta property="og:locale" content="es_CO">
+<meta property="og:url" content="https://tripmindradio.com/">
+<meta property="og:title" content="TripMind Radio">
+<meta property="og:description" content="Música y DJs que hablan. Al aire 24/7.">
+<meta property="og:image" content="https://tripmindradio.com/assets/img/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="TripMind Radio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TripMind Radio">
+<meta name="twitter:description" content="Música y DJs que hablan. Al aire 24/7.">
+<meta name="twitter:image" content="https://tripmindradio.com/assets/img/og.jpg">
+<meta name="theme-color" content="#0d0d0d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TripMind">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
+<script>
+(function(){
+  try{
+    var sa = matchMedia("(display-mode: standalone)").matches
+          || matchMedia("(display-mode: window-controls-overlay)").matches
+          || navigator.standalone === true
+          || /[?&]src=app/.test(location.search);
+    if(sa) document.documentElement.classList.add("app");
+    if("documentPictureInPicture" in window) document.documentElement.classList.add("puede-widget");
+  }catch(e){}
+})();
+</script>
+<style>
+:root{
+  --negro:#0d0d0d; --superficie:#161616; --superficie-2:#1f1f1f; --tinta:#ffffff; --tinta-suave:#a6a6a6; --linea:#3a3a3a; --al-aire:#ff4d3d;
+  --ease:cubic-bezier(.22,1,.36,1); --ease-io:cubic-bezier(.65,0,.35,1);
+  --gut-l:max(16px, env(safe-area-inset-left, 0px)); --gut-r:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--negro);color:var(--tinta);font-family:"Montserrat",Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.cargando{overflow:hidden}
+button{font-family:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+::selection{background:#fff;color:#000}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(24px, env(safe-area-inset-left, 0px));padding-right:max(24px, env(safe-area-inset-right, 0px))}
+@media (max-width:640px){ .wrap{padding-left:var(--gut-l);padding-right:var(--gut-r)} }
+.logo-svg{display:block;width:100%;height:100%;overflow:visible}
+.mono{font-weight:500;letter-spacing:.42em;text-transform:uppercase;font-size:11px}
+
+/* ===== Pantalla de carga ===== */
+#loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--negro);transition:opacity .9s var(--ease) .15s}
+#loader.fuera{opacity:0;pointer-events:none;visibility:hidden}
+.ld-centro{display:flex;flex-direction:column;align-items:center;gap:34px}
+.ld-logo{width:min(64vmin,340px);aspect-ratio:1;position:relative}
+.ld-logo.salida{opacity:0;transform:scale(.97);transition:opacity .7s var(--ease),transform .9s var(--ease)}
+.ld-logo .anillo{fill:none;stroke:#fff;stroke-dasharray:1;stroke-dashoffset:1;animation:dibujar 1.6s var(--ease-io) forwards}
+.ld-logo .anillo:nth-child(1){animation-delay:.25s}
+.ld-logo .anillo:nth-child(2){animation-delay:.42s}
+.ld-logo .anillo:nth-child(3){animation-delay:.59s}
+.ld-logo .anillo:nth-child(4){animation-delay:.76s}
+@keyframes dibujar{to{stroke-dashoffset:0}}
+.ld-logo .letras{opacity:0;transform-origin:1500px 650px;transform:scale(.92);filter:blur(14px);animation:letrasIn 1.3s var(--ease) .9s forwards}
+@keyframes letrasIn{to{opacity:1;transform:none;filter:blur(0)}}
+.ld-logo .palabra{opacity:0;transform-origin:1500px 1515px;transform:scaleX(1.25);animation:palabraIn 1.1s var(--ease) 1.35s forwards}
+@keyframes palabraIn{to{opacity:1;transform:none}}
+.ld-pulso{position:absolute;inset:6%;border-radius:50%;border:1px solid rgba(255,255,255,.35);opacity:0;animation:pulso 2.4s var(--ease) 1.6s infinite}
+.ld-pulso.b{animation-delay:2.4s}
+@keyframes pulso{0%{opacity:.5;transform:scale(.55)}100%{opacity:0;transform:scale(1.35)}}
+.ld-dial{display:flex;flex-direction:column;align-items:center;gap:12px;opacity:0;animation:aparece .8s var(--ease) .5s forwards}
+.ld-frec{font-weight:800;font-size:15px;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:var(--tinta)}
+.ld-frec small{font-weight:500;color:var(--tinta-suave);letter-spacing:.32em;font-size:10px;margin-left:8px}
+.ld-barra{width:180px;height:2px;background:#262626;border-radius:2px;overflow:hidden}
+.ld-barra i{display:block;height:100%;width:0;background:#fff;transition:width .35s var(--ease)}
+.ld-estado{color:var(--tinta-suave)}
+.ld-hint{color:var(--tinta-suave);opacity:0;transition:opacity .6s var(--ease);margin-top:-4px}
+.ld-hint.on{opacity:1}
+@keyframes aparece{to{opacity:1}}
+.ld-onda{position:fixed;left:50%;top:50%;width:20vmin;height:20vmin;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(255,255,255,.55);opacity:0;pointer-events:none;z-index:101}
+.ld-onda.va{animation:onda 1.4s var(--ease) forwards}
+@keyframes onda{0%{opacity:.7;width:20vmin;height:20vmin}100%{opacity:0;width:240vmax;height:240vmax}}
+#viajero{position:fixed;z-index:102;pointer-events:none;will-change:transform}
+
+/* ===== Página ===== */
+.entra{opacity:0;transform:translateY(26px);filter:blur(6px);transition:opacity 1s var(--ease),transform 1.1s var(--ease),filter 1s var(--ease)}
+.listo .entra{opacity:1;transform:none;filter:none}
+.entra-op{opacity:0;transition:opacity 1.2s var(--ease) .1s}
+.listo .entra-op{opacity:1}
+header.top{position:sticky;top:env(safe-area-inset-top, 0px);z-index:30;backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);background:rgba(13,13,13,.72);border-bottom:1px solid transparent;transition:border-color .4s,background .4s}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);background:var(--negro);z-index:31}
+header.top.scroll{border-bottom-color:#1d1d1d}
+.top .wrap{display:flex;align-items:center;gap:28px;height:72px}
+.marca{display:flex;align-items:center;gap:12px;flex:none}
+.marca .mini{width:40px;height:40px}
+.marca b{font-weight:800;font-size:15px;letter-spacing:-.01em}
+.nav{display:flex;gap:4px;margin-left:12px}
+.nav a{font-size:14px;font-weight:500;color:var(--tinta-suave);padding:9px 14px;border-radius:999px;transition:color .3s,background .3s}
+.nav a:hover,.nav a.on{color:#fff;background:#1a1a1a}
+.top .der{margin-left:auto;display:flex;align-items:center;gap:12px}
+.pill-aire{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.28em;color:var(--al-aire);padding:8px 12px 8px 10px;border-radius:999px;background:rgba(255,77,61,.1)}
+.punto{width:7px;height:7px;border-radius:50%;background:var(--al-aire);box-shadow:0 0 0 0 rgba(255,77,61,.6);animation:latido 1.8s ease-out infinite}
+@keyframes latido{0%{box-shadow:0 0 0 0 rgba(255,77,61,.55)}70%{box-shadow:0 0 0 9px rgba(255,77,61,0)}100%{box-shadow:0 0 0 0 rgba(255,77,61,0)}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;cursor:pointer;border-radius:999px;font-weight:700;font-size:14px;padding:12px 20px;transition:transform .5s var(--ease),background .3s,color .3s,box-shadow .5s var(--ease)}
+.btn:active{transform:scale(.96)}
+.btn-blanco{background:#fff;color:#0d0d0d}
+.btn-blanco:hover{box-shadow:0 10px 30px -8px rgba(255,255,255,.35);transform:translateY(-1px)}
+.btn-gris{background:#1a1a1a;color:#fff}
+.btn-gris:hover{background:#242424}
+@media (max-width:860px){ .nav{display:none} .top .btn-instalar{display:none} }
+
+.hero{padding:56px 0 40px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:64px;align-items:center}
+@media (max-width:900px){ .hero .wrap{grid-template-columns:1fr;gap:36px} .hero{padding-top:24px} }
+.caratula{position:relative;aspect-ratio:1;border-radius:28px;background:radial-gradient(120% 90% at 50% 0%,#1d1d1d 0%,#111 55%,#0a0a0a 100%);overflow:hidden;box-shadow:0 40px 100px -30px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,.05);max-width:560px;width:100%;justify-self:center}
+.caratula canvas{position:absolute;inset:0;width:100%;height:100%}
+.caratula .logo-hero{position:absolute;left:50%;top:50%;width:72%;aspect-ratio:1;transform:translate(-50%,-50%);transition:transform 1.2s var(--ease)}
+.sonando .caratula .logo-hero{transform:translate(-50%,-50%) scale(1.025)}
+.caratula .esquina{position:absolute;left:22px;bottom:20px;right:22px;display:flex;justify-content:space-between;align-items:center;color:var(--tinta-suave)}
+.info{display:flex;flex-direction:column;gap:22px;min-width:0}
+.info h1{margin:0;font-weight:800;font-size:clamp(44px,7vw,92px);line-height:.98;letter-spacing:-.035em;text-wrap:balance}
+.info h1 span{display:block;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.85)}
+.lema{font-size:17px;line-height:1.6;color:var(--tinta-suave);max-width:440px;margin:0}
+.acciones{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:6px}
+.play-xl{position:relative;width:84px;height:84px;border-radius:50%;border:0;background:#fff;color:#0d0d0d;cursor:pointer;display:grid;place-items:center;transition:transform .6s var(--ease),box-shadow .6s var(--ease)}
+.play-xl:hover{transform:scale(1.06);box-shadow:0 0 0 10px rgba(255,255,255,.06)}
+.play-xl:active{transform:scale(.95)}
+.play-xl::before,.play-xl::after{content:"";position:absolute;inset:-1px;border-radius:50%;border:1px solid rgba(255,255,255,.5);opacity:0}
+.sonando .play-xl::before{animation:pulso 2.2s var(--ease) infinite}
+.sonando .play-xl::after{animation:pulso 2.2s var(--ease) 1.1s infinite}
+.ico{width:28px;height:28px;display:grid;place-items:center}
+.ico svg{grid-area:1/1;transition:opacity .45s var(--ease),transform .55s var(--ease)}
+.ico .i-pausa{opacity:0;transform:scale(.4) rotate(-90deg)}
+.sonando .ico .i-play{opacity:0;transform:scale(.4) rotate(90deg)}
+.sonando .ico .i-pausa{opacity:1;transform:none}
+.ahora{display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:18px;background:var(--superficie);border:1px solid #1f1f1f;max-width:460px}
+.ahora .t{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.ahora .t b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ahora .t span{font-size:13px;color:var(--tinta-suave)}
+.eq{display:flex;align-items:flex-end;gap:3px;height:22px;flex:none}
+.eq i{width:3px;height:30%;background:#fff;border-radius:2px;transition:height .3s}
+.sonando .eq i{animation:eq 1s var(--ease-io) infinite alternate}
+.eq i:nth-child(2){animation-delay:-.3s!important}.eq i:nth-child(3){animation-delay:-.6s!important}.eq i:nth-child(4){animation-delay:-.15s!important}.eq i:nth-child(5){animation-delay:-.45s!important}
+@keyframes eq{0%{height:18%}50%{height:100%}100%{height:42%}}
+
+.cinta{border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a;overflow:hidden;padding:18px 0;margin:40px 0 0}
+.cinta .pista{display:flex;width:max-content;animation:cinta 38s linear infinite}
+.cinta span{font-weight:500;letter-spacing:.62em;font-size:13px;color:#6f6f6f;padding-right:.62em;white-space:nowrap}
+.cinta span b{color:#fff;font-weight:500}
+.cinta em{font-style:normal;color:var(--al-aire)}
+@keyframes cinta{to{transform:translateX(-50%)}}
+
+section.bloque{padding:96px 0 24px}
+.cab{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:34px;flex-wrap:wrap}
+.cab h2{margin:8px 0 0;font-weight:800;font-size:clamp(30px,4vw,44px);letter-spacing:-.025em}
+.cab .mono{color:var(--tinta-suave)}
+.cab p{margin:0;color:var(--tinta-suave);font-size:15px;max-width:360px;line-height:1.6}
+.secciones{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+@media (max-width:900px){ .secciones{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.sec{position:relative;display:flex;flex-direction:column;gap:14px;cursor:pointer;background:none;border:0;padding:0;text-align:left}
+.sec .arte{position:relative;aspect-ratio:1;border-radius:22px;background:var(--superficie);overflow:hidden;transition:transform .8s var(--ease),box-shadow .8s var(--ease)}
+.sec:hover .arte{transform:translateY(-6px);box-shadow:0 30px 60px -28px rgba(0,0,0,.95)}
+.sec .arte svg{position:absolute;inset:0;width:100%;height:100%}
+.sec .arte .giro{transform-origin:50% 50%;transition:transform 1.6s var(--ease)}
+.sec:hover .arte .giro{transform:rotate(90deg) scale(1.06)}
+.sec .num{position:absolute;left:18px;top:16px;font-weight:800;font-size:13px;color:#fff}
+.sec .play-s{position:absolute;right:16px;bottom:16px;width:46px;height:46px;border-radius:50%;background:#fff;color:#0d0d0d;display:grid;place-items:center;opacity:0;transform:translateY(10px) scale(.85);transition:opacity .5s var(--ease),transform .6s var(--ease)}
+.sec:hover .play-s,.sec:focus-visible .play-s{opacity:1;transform:none}
+.sec b{font-size:17px;font-weight:700}
+.sec span.n{font-size:13px;color:var(--tinta-suave);margin-top:-8px}
+
+.dias{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:18px;scrollbar-width:none}
+.dias::-webkit-scrollbar{display:none}
+.dias button{flex:none;border:1px solid #232323;background:transparent;color:var(--tinta-suave);font-size:13px;font-weight:600;padding:10px 18px;border-radius:999px;cursor:pointer;transition:all .4s var(--ease)}
+.dias button.on{background:#fff;color:#0d0d0d;border-color:#fff}
+.parrilla{display:flex;flex-direction:column}
+.franja{display:grid;grid-template-columns:150px minmax(0,1fr) auto;align-items:center;gap:24px;padding:22px 4px;border-top:1px solid #1c1c1c;transition:background .4s,padding .5s var(--ease)}
+.franja:last-child{border-bottom:1px solid #1c1c1c}
+.franja:hover{background:#121212;padding-left:14px}
+.franja .h{font-weight:700;font-variant-numeric:tabular-nums;color:var(--tinta-suave);font-size:15px}
+.franja b{font-size:18px;font-weight:700;display:block}
+.franja small{display:block;color:var(--tinta-suave);font-size:13px;margin-top:4px}
+.franja.vivo .h{color:#fff}
+.franja .estado{font-size:11px;font-weight:600;letter-spacing:.24em;color:#5a5a5a}
+.franja.vivo .estado{color:var(--al-aire);display:inline-flex;align-items:center;gap:8px}
+@media (max-width:640px){ .franja{grid-template-columns:1fr auto;gap:6px 16px} .franja .h{grid-column:1/-1} }
+.parrilla.cambia .franja{animation:franjaIn .7s var(--ease) both}
+.parrilla.cambia .franja:nth-child(2){animation-delay:.05s}.parrilla.cambia .franja:nth-child(3){animation-delay:.1s}.parrilla.cambia .franja:nth-child(4){animation-delay:.15s}.parrilla.cambia .franja:nth-child(5){animation-delay:.2s}
+@keyframes franjaIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.instalar{margin:110px 0 0;position:relative;overflow:hidden;border-radius:32px;background:var(--superficie);padding:72px 56px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:center}
+.instalar svg.fondo{position:absolute;right:-180px;top:50%;width:720px;height:720px;transform:translateY(-50%);opacity:.9;pointer-events:none}
+.instalar h2{margin:10px 0 12px;font-weight:800;font-size:clamp(28px,4vw,46px);letter-spacing:-.03em;line-height:1.05;position:relative}
+.instalar p{margin:0;color:var(--tinta-suave);max-width:420px;line-height:1.6;position:relative}
+.instalar .btn{position:relative;padding:16px 26px;font-size:15px}
+@media (max-width:760px){ .instalar{grid-template-columns:1fr;padding:44px 26px} .instalar svg.fondo{right:-300px;opacity:.5} }
+
+footer.pie{padding:80px 0 150px;color:var(--tinta-suave);font-size:13px}
+footer.pie .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+footer.pie .marca .mini{width:34px;height:34px}
+
+/* Reproductor fijo */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:0 var(--gut-r) calc(14px + env(safe-area-inset-bottom, 0px)) var(--gut-l);pointer-events:none;transform:translateY(130%);transition:transform 1s var(--ease)}
+.listo .dock{transform:none}
+.dock-in{pointer-events:auto;max-width:920px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:18px;padding:12px 14px;border-radius:22px;background:rgba(24,24,24,.78);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.06);box-shadow:0 30px 60px -20px rgba(0,0,0,.8)}
+.dock .yo{display:flex;align-items:center;gap:12px;min-width:0}
+.dock .yo .mini{width:48px;height:48px;border-radius:12px;background:#0d0d0d;padding:5px;flex:none}
+.dock .yo div{min-width:0;display:flex;flex-direction:column;gap:2px}
+.dock .yo b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock .yo span{font-size:12px;color:var(--tinta-suave)}
+.play-m{width:48px;height:48px;border-radius:50%;border:0;background:#fff;color:#0d0d0d;display:grid;place-items:center;cursor:pointer;transition:transform .5s var(--ease)}
+.play-m:hover{transform:scale(1.07)}.play-m .ico{width:20px;height:20px}
+.dock .vol{display:flex;align-items:center;justify-content:flex-end;gap:12px;color:var(--tinta-suave)}
+.vol input{-webkit-appearance:none;appearance:none;width:110px;height:4px;border-radius:4px;background:linear-gradient(#fff,#fff) 0/var(--v,70%) 100% no-repeat,#3a3a3a;outline:none}
+.vol input::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#fff;border:0;transition:transform .3s}
+.vol input::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#fff;border:0}
+.vol input:hover::-webkit-slider-thumb{transform:scale(1.2)}
+@media (max-width:640px){ .dock-in{grid-template-columns:minmax(0,1fr) auto} .dock .vol{display:none} }
+
+.toast{position:fixed;left:50%;bottom:calc(110px + env(safe-area-inset-bottom, 0px));z-index:60;transform:translate(-50%,20px);opacity:0;background:#fff;color:#0d0d0d;font-weight:600;font-size:14px;padding:12px 18px;border-radius:999px;transition:opacity .5s var(--ease),transform .6s var(--ease);pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+.revela{opacity:0;transform:translateY(40px);transition:opacity 1.1s var(--ease),transform 1.2s var(--ease)}
+.revela.si{opacity:1;transform:none}
+
+/* ===== Animaciones de reposo ===== */
+/* Rejilla: deriva lentisima, un paso de cuadricula cada 40s */
+@keyframes deriva{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-64px,-64px,0)}}
+.rejilla{animation:deriva 40s linear infinite;will-change:transform}
+
+/* La caratula respira solo cuando suena */
+@keyframes respira-caratula{0%,100%{transform:scale(1)}50%{transform:scale(1.018)}}
+.sonando .caratula{animation:respira-caratula 8s var(--ease-io) infinite;will-change:transform}
+
+/* Destello que cruza la tarjeta cada tanto */
+.ahora{position:relative;overflow:hidden}
+.ahora::after{content:"";position:absolute;top:0;left:-55%;width:38%;height:100%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.05),transparent);
+  transform:skewX(-14deg);animation:barrido 11s ease-in-out infinite}
+@keyframes barrido{0%,74%{left:-55%}100%{left:125%}}
+
+/* Cambio de pista: el texto se va y vuelve en vez de saltar */
+.ahora [data-titulo],.ahora [data-artista]{transition:opacity .3s var(--ease),transform .42s var(--ease)}
+.ahora .t.mudando [data-titulo],.ahora .t.mudando [data-artista]{opacity:0;transform:translateY(5px)}
+
+/* Telemetria: realce breve cuando un numero cambia */
+@keyframes realce{0%{color:var(--al-aire);transform:translateY(-2px)}100%{transform:none}}
+.telemetria b.cambio{animation:realce 1s var(--ease)}
+
+/* Las dos caritas del banner flotan desfasadas */
+@keyframes flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5px)}}
+.bl-fotos img:first-child{animation:flota 6s ease-in-out infinite}
+.bl-fotos img+img{animation:flota 6s ease-in-out infinite 3s}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.2s!important}
+  .cinta .pista{animation:none}
+}
+
+/* ===== Escena: el reproductor como única pieza ===== */
+.escena{position:relative;min-height:calc(100svh - 72px);display:grid;place-items:center;padding:18px var(--gut-r) 142px var(--gut-l);overflow:hidden}
+.pila{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:24px;width:100%;max-width:460px}
+.centro{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;text-align:center}
+.vo{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.escena .caratula{max-width:min(300px,36svh)}
+.escena .ahora{max-width:100%;width:100%;text-align:left}
+.escena .acciones{justify-content:center;margin-top:2px}
+
+/* halo: luz detrás, respira y se enciende al sonar */
+.halo{position:absolute;left:50%;top:38%;width:min(150vw,1100px);aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(255,255,255,.075) 0%,rgba(255,255,255,.028) 32%,transparent 66%);
+  opacity:.55;transition:opacity 1.6s var(--ease);animation:respira 11s ease-in-out infinite}
+.sonando .halo{opacity:1;background:radial-gradient(circle,rgba(255,77,61,.1) 0%,rgba(255,255,255,.05) 34%,transparent 68%)}
+@keyframes respira{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.07)}}
+
+/* rejilla fina, desvanecida en los bordes */
+.rejilla{position:absolute;inset:0;pointer-events:none;z-index:1;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
+  background-size:62px 62px;
+  -webkit-mask-image:radial-gradient(circle at 50% 42%,#000 0%,rgba(0,0,0,.55) 42%,transparent 76%);
+  mask-image:radial-gradient(circle at 50% 42%,#000 0%,rgba(0,0,0,.55) 42%,transparent 76%)}
+
+/* telemetría: lectura de instrumento */
+.telemetria{display:flex;align-items:stretch;gap:0;margin-top:6px;border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.015)}
+.telemetria span{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:11px 14px;border-left:1px solid rgba(255,255,255,.07)}
+.telemetria span:first-child{border-left:0}
+.telemetria i{font-style:normal;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#6f6f6f}
+.telemetria b{font-size:12px;font-weight:600;color:var(--tinta);letter-spacing:.04em}
+.telemetria b.vivo{color:var(--al-aire)}
+
+/* ---------- Banner de locutores ---------- */
+.banner-loc{position:relative;z-index:2;display:flex;align-items:center;gap:13px;width:calc(100% - 32px);max-width:392px;margin:0 auto;padding:11px 14px 11px 11px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.02);text-decoration:none;color:inherit;transition:border-color .4s var(--ease),background .4s var(--ease),transform .4s var(--ease)}
+.banner-loc:hover{border-color:rgba(255,255,255,.17);background:rgba(255,255,255,.04)}
+.banner-loc:active{transform:scale(.99)}
+.bl-fotos{flex:none;display:flex;align-items:center}
+.bl-fotos img{width:34px;height:34px;border-radius:50%;object-fit:cover;object-position:50% 18%;border:1.5px solid var(--negro);display:block}
+.bl-fotos img+img{margin-left:-11px}
+.bl-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.bl-txt b{font-size:12.5px;font-weight:600;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bl-txt i{font-style:normal;font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:#6f6f6f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bl-txt em{font-style:normal;color:var(--al-aire);font-weight:600}
+.bl-ir{flex:none;font-size:14px;color:#6f6f6f;transition:transform .4s var(--ease),color .4s var(--ease)}
+.banner-loc:hover .bl-ir{transform:translateX(3px);color:var(--tinta)}
+.en-widget .banner-loc{display:none}
+.banner-patro{position:relative;z-index:2;display:flex;align-items:center;gap:12px;width:calc(100% - 32px);max-width:392px;margin:0 auto 10px;padding:7px 12px;border:1px solid rgba(255,255,255,.065);border-radius:14px;background:rgba(255,255,255,.015)}
+.banner-patro[hidden]{display:none}
+.bp-rotulo{flex:none;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:#5c5c5c;white-space:nowrap}
+.bp-marcas{flex:1;min-width:0;display:flex;align-items:center;gap:18px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.bp-marcas::-webkit-scrollbar{display:none}
+.bp-marca{flex:none;display:flex;align-items:center;height:24px;text-decoration:none;color:var(--tinta-suave);opacity:.6;filter:grayscale(1);transition:opacity .35s var(--ease),filter .35s var(--ease)}
+a.bp-marca:hover,a.bp-marca:focus-visible{opacity:1;filter:grayscale(0);color:var(--tinta)}
+.bp-marca img{height:100%;width:auto;max-width:104px;object-fit:contain;display:block}
+.bp-marca span{font-size:11.5px;font-weight:600;letter-spacing:-.005em;white-space:nowrap}
+.en-widget .banner-patro{display:none}
+.banner-plat{position:relative;z-index:2;display:flex;align-items:center;gap:12px;width:calc(100% - 32px);max-width:392px;margin:0 auto 10px;padding:7px 12px;border:1px solid rgba(255,255,255,.065);border-radius:14px;background:rgba(255,255,255,.015)}
+.banner-plat[hidden]{display:none}
+.bq-rotulo{flex:none;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:#5c5c5c;white-space:nowrap}
+.bq-sitios{flex:1;min-width:0;display:flex;align-items:center;gap:14px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.bq-sitios::-webkit-scrollbar{display:none}
+.bq-sitio{flex:none;font-size:11.5px;font-weight:500;letter-spacing:-.005em;white-space:nowrap;text-decoration:none;color:var(--tinta-suave);opacity:.72;transition:opacity .35s var(--ease),color .35s var(--ease)}
+a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
+.en-widget .banner-plat{display:none}
+.banner-parrilla{position:relative;z-index:2;display:flex;align-items:center;gap:12px;width:calc(100% - 32px);max-width:392px;margin:0 auto 10px;padding:7px 12px;border:1px solid rgba(255,255,255,.065);border-radius:14px;background:rgba(255,255,255,.015)}
+.bp2-rotulo{flex:none;display:flex;align-items:center;gap:6px;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:#5c5c5c;white-space:nowrap}
+.bp2-punto{width:5px;height:5px;border-radius:50%;background:var(--al-aire);flex:none;animation:bp2late 2.4s ease-in-out infinite}
+@keyframes bp2late{0%,100%{opacity:1}50%{opacity:.25}}
+.bp2-pistas{flex:1;min-width:0;display:flex;align-items:center;gap:7px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.bp2-pistas::-webkit-scrollbar{display:none}
+.bp2-prog{flex:none;display:flex;flex-direction:column;gap:1px;padding:3px 9px;border-radius:9px;white-space:nowrap;border:1px solid transparent;transition:color .4s var(--ease),border-color .4s var(--ease),background .4s var(--ease)}
+.bp2-prog b{font-size:11px;font-weight:500;letter-spacing:-.005em;color:#6f6f6f;transition:color .4s var(--ease)}
+.bp2-prog i{font-style:normal;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#4a4a4a;transition:color .4s var(--ease)}
+.bp2-prog.vivo{border-color:rgba(255,77,61,.34);background:rgba(255,77,61,.07)}
+.bp2-prog.vivo b{color:var(--tinta)}
+.bp2-prog.vivo i{color:var(--al-aire)}
+.en-widget .banner-parrilla{display:none}
+
+.pie-min{position:relative;z-index:2;text-align:center;padding:0 var(--gut-r) 150px var(--gut-l);color:#5a5a5a;font-size:10px;letter-spacing:.22em}
+
+@media (max-width:640px){
+  .escena{padding-bottom:138px}
+  .escena .caratula{max-width:min(260px,32svh)}
+  .pila{gap:22px}
+}
+
+/* ===== Modo app (instalada en PC / celular) ===== */
+.app .top{position:sticky;top:0;z-index:32;padding-top:env(safe-area-inset-top, 0px);background:rgba(13,13,13,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.app [data-instalar]{display:none}
+.app .pie-min{display:none}
+.app .escena{padding-top:18px}
+.app .escena .caratula{max-width:270px}
+/* App instalada en movil: el escenario YA es el reproductor.
+   El dock repite lo mismo y en iOS su volumen no hace nada, asi que estorba. */
+@media (max-width:720px){
+  .app .dock{display:none}
+  .app .escena{min-height:calc(100svh - 72px - 92px - env(safe-area-inset-top, 0px));padding-bottom:12px}
+  .app .banner-loc{margin-bottom:calc(16px + env(safe-area-inset-bottom, 0px))}
+}
+/* En escritorio instalado el dock si sirve: ahi solo despejamos el banner. */
+@media (min-width:721px){
+  .app .banner-loc{margin-bottom:calc(150px + env(safe-area-inset-bottom, 0px))}
+}
+
+/* ===== Con el widget abierto: la app se aparta ===== */
+.en-widget .pila,.en-widget .pie-min,.en-widget .dock{display:none}
+.en-widget .escena{min-height:calc(100svh - 72px);padding-bottom:40px}
+.reposo{display:none;position:relative;z-index:2;flex-direction:column;align-items:center;gap:20px;text-align:center}
+.en-widget .reposo{display:flex}
+.reposo .logo-svg{width:62px;height:62px;opacity:.5}
+.reposo p{margin:0;font-size:15px;color:var(--tinta-suave);max-width:340px}
+.reposo p b{color:#fff;font-weight:600}
+.reposo .tecla{display:inline-flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.16em;color:#6f6f6f}
+.reposo .tecla kbd{font-family:var(--mono,ui-monospace,monospace);font-size:10px;padding:3px 7px;border-radius:6px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:#cfcfcf}
+
+/* botón de widget */
+.btn-wid{display:none;align-items:center;gap:8px;height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:transparent;color:var(--tinta);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .25s var(--ease),border-color .25s var(--ease)}
+.btn-wid:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.26)}
+.btn-wid svg{flex:none}
+.btn-cmp{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:transparent;color:var(--tinta);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .25s var(--ease),border-color .25s var(--ease),transform .3s var(--ease)}
+.btn-cmp:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.26)}
+.btn-cmp:active{transform:scale(.96)}
+.btn-cmp svg{flex:none}
+.pie-nav{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:11px}
+.pie-nav a{font-size:12.5px;color:#6a6a6a;transition:color .25s var(--ease)}
+.pie-nav a:hover{color:var(--tinta)}
+.ir-sono{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--tinta-suave);transition:color .3s var(--ease)}
+.ir-sono em{font-style:normal;letter-spacing:0;opacity:0;transform:translateX(-3px);transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.ir-sono:hover{color:var(--tinta)}
+.ir-sono:hover em{opacity:1;transform:none}
+.en-widget .ir-sono{pointer-events:none}
+.en-widget .pie-nav{display:none}
+.en-widget .btn-cmp{display:none}
+.puede-widget .btn-wid{display:inline-flex}
+.en-widget .btn-wid{background:rgba(255,77,61,.16);border-color:rgba(255,77,61,.5);color:#ff8a7d}
+/* ===== Cuenta de oyente ===== */
+.btn-cuenta{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;min-width:38px;padding:0 15px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:transparent;color:var(--tinta);font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .25s var(--ease),border-color .25s var(--ease)}
+.btn-cuenta:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.26)}
+.btn-cuenta:active{transform:scale(.96)}
+.btn-cuenta .ini{display:none;width:24px;height:24px;border-radius:50%;background:var(--al-aire);color:#fff;font-size:11px;font-weight:700;letter-spacing:0;align-items:center;justify-content:center}
+.btn-cuenta.dentro{padding:0 7px}
+.btn-cuenta.dentro .ini{display:inline-flex}
+.btn-cuenta.dentro .et{display:none}
+.en-widget .btn-cuenta{display:none}
+@media (max-width:420px){ .btn-cuenta{padding:0 12px;font-size:12.5px} }
+
+.hoja{position:fixed;inset:0;z-index:80;visibility:hidden}
+.hoja.on{visibility:visible}
+.hoja-velo{position:absolute;inset:0;background:rgba(0,0,0,.66);opacity:0;transition:opacity .4s var(--ease)}
+.hoja.vista .hoja-velo{opacity:1}
+.hoja-caja{position:absolute;left:50%;bottom:0;width:min(452px,100%);max-height:94svh;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translate(-50%,101%);background:var(--superficie);border:1px solid rgba(255,255,255,.09);border-bottom:0;border-radius:24px 24px 0 0;padding:22px 20px calc(26px + env(safe-area-inset-bottom, 0px));transition:transform .55s var(--ease)}
+.hoja.vista .hoja-caja{transform:translate(-50%,0)}
+@media (min-width:600px){
+  .hoja-caja{top:50%;bottom:auto;max-height:88svh;border-bottom:1px solid rgba(255,255,255,.09);border-radius:22px;padding-bottom:26px;opacity:0;transform:translate(-50%,-46%) scale(.98);transition:transform .5s var(--ease),opacity .35s var(--ease)}
+  .hoja.vista .hoja-caja{opacity:1;transform:translate(-50%,-50%) scale(1)}
+}
+.hoja-asa{width:38px;height:4px;border-radius:999px;background:rgba(255,255,255,.18);margin:0 auto 18px}
+@media (min-width:600px){ .hoja-asa{display:none} }
+.hoja-x{position:absolute;top:14px;right:14px;z-index:2;width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:50%;background:rgba(255,255,255,.06);color:var(--tinta-suave);font-size:20px;line-height:1;cursor:pointer;transition:background .25s,color .25s}
+.hoja-x:hover{background:rgba(255,255,255,.12);color:var(--tinta)}
+.hoja h2{margin:0 0 7px;font-size:21px;font-weight:700;letter-spacing:-.015em}
+.hoja .sub{margin:0 0 20px;font-size:14px;line-height:1.55;color:var(--tinta-suave)}
+
+.campos{display:flex;flex-direction:column;gap:11px;margin-bottom:16px}
+.campo{display:block}
+.campo span{display:block;margin-bottom:6px;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--tinta-suave)}
+.campo input,.campo textarea{width:100%;background:var(--negro);border:1px solid rgba(255,255,255,.13);border-radius:13px;padding:13px 14px;color:var(--tinta);font:inherit;font-size:16px;transition:border-color .25s var(--ease)}
+.campo textarea{min-height:88px;resize:vertical;line-height:1.5}
+.campo input:focus,.campo textarea:focus{outline:0;border-color:rgba(255,255,255,.4)}
+.campo input::placeholder,.campo textarea::placeholder{color:#5e5e5e}
+.fila2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+@media (max-width:420px){ .fila2{grid-template-columns:1fr} }
+
+.acepto{display:flex;gap:10px;align-items:flex-start;margin-bottom:17px;font-size:12.5px;line-height:1.5;color:var(--tinta-suave)}
+.acepto input{flex:none;width:17px;height:17px;margin-top:1px;accent-color:#fff}
+.acepto a{color:var(--tinta);text-decoration:underline}
+.btn-ancho{width:100%;padding:14px 20px;font-size:15px}
+.btn[disabled],.btn:disabled{opacity:.5;cursor:default;transform:none}
+.cambiar{margin:15px 0 0;text-align:center;font-size:13.5px;color:var(--tinta-suave)}
+.cambiar button{border:0;background:0;padding:0;color:var(--tinta);font:inherit;font-size:13.5px;font-weight:600;text-decoration:underline;cursor:pointer}
+.aviso{margin:0 0 15px;padding:11px 13px;border:1px solid rgba(255,77,61,.22);border-radius:12px;background:rgba(255,77,61,.11);color:#ff9d93;font-size:13.5px;line-height:1.5}
+.aviso.bien{border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:var(--tinta-suave)}
+
+.marcador{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 18px}
+.marcador div{padding:15px 14px;border:1px solid rgba(255,255,255,.07);border-radius:15px;background:var(--negro)}
+.marcador b{display:block;font-size:27px;font-weight:700;line-height:1.1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.marcador span{display:block;margin-top:3px;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--tinta-suave)}
+.ventajas{display:grid;gap:9px;margin:0 0 14px}
+.ventaja{display:flex;align-items:center;gap:12px;width:100%;padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:15px;background:rgba(255,255,255,.02);color:inherit;font:inherit;text-align:left;cursor:pointer;transition:border-color .3s var(--ease),background .3s var(--ease),transform .3s var(--ease)}
+.ventaja:hover{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.05)}
+.ventaja:active{transform:scale(.99)}
+.ventaja .em{flex:none;width:36px;height:36px;display:grid;place-items:center;border-radius:11px;background:rgba(255,255,255,.06);color:var(--tinta)}
+.ventaja i{display:block;font-style:normal;font-size:14.5px;font-weight:600}
+.ventaja u{display:block;margin-top:1px;font-size:12.5px;color:var(--tinta-suave);text-decoration:none}
+.ventaja .ir{margin-left:auto;color:#6a6a6a}
+.salir{display:block;width:100%;margin-top:2px;padding:11px;border:0;background:0;color:var(--tinta-suave);font:inherit;font-size:13px;cursor:pointer;transition:color .25s}
+.salir:hover{color:var(--al-aire)}
+.listita{margin:0 0 16px;padding:0;list-style:none;display:grid;gap:7px}
+.listita li{display:flex;gap:10px;align-items:baseline;padding:10px 12px;border:1px solid rgba(255,255,255,.06);border-radius:11px;background:var(--negro);font-size:13px}
+.listita li b{flex:1;min-width:0;font-weight:600}
+.listita li em{flex:none;font-style:normal;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-suave)}
+.listita li.aire em{color:var(--al-aire)}
+.vacio{margin:0 0 16px;font-size:13px;color:#6a6a6a}
+.volver-cuenta{margin:0 0 14px;padding:0;border:0;background:0;color:var(--tinta-suave);font:inherit;font-size:13px;cursor:pointer}
+.volver-cuenta:hover{color:var(--tinta)}
+
+/* --- addon: morph --- */
+#loader .logo-svg,#viajero{display:block;width:100%;height:100%;overflow:visible}
+#loader .mono{font-family:"Montserrat",Arial,sans-serif;font-weight:500;letter-spacing:.42em;text-transform:uppercase;font-size:11px}
+</style>
+
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <path id="tm-letras" d="M14195 12901 c-3 -5 -36 -17 -75 -25 -682 -155 -1237 -770 -1550 -1716 -115 -348 -194 -755 -255 -1315 -169 -1565 -64 -4872 185 -5801 118 -440 351 -674 690 -691 324 -17 546 179 619 546 25 125 28 353 6 476 -85 486 -112 628 -151 800 -25 110 -61 270 -80 355 -91 403 -109 489 -143 680 -39 226 -62 417 -68 565 -8 203 -20 190 207 220 209 28 318 53 448 101 468 174 812 525 1129 1154 143 282 152 285 67 20 -221 -691 -346 -1399 -439 -2479 -90 -1049 -108 -1183 -211 -1520 -149 -488 -318 -770 -579 -964 -413 -307 -971 -306 -1357 2 -309 246 -463 638 -520 1321 -17 204 -15 876 6 2305 28 1885 29 1816 -38 1999 -85 235 -259 348 -461 301 -271 -63 -390 -333 -504 -1150 -53 -373 -71 -641 -78 -1131 -6 -469 -1 -589 72 -1459 31 -380 32 -495 0 -495 -16 0 -24 25 -100 295 -31 110 -70 247 -86 305 -145 513 -259 789 -592 1432 -68 131 -56 199 61 335 409 479 649 924 754 1400 33 147 33 444 0 557 -125 432 -469 594 -1007 474 -388 -86 -998 -366 -1325 -609 -266 -197 -449 -504 -510 -858 -19 -105 -20 -160 -20 -745 1 -347 5 -768 10 -936 6 -168 14 -503 20 -745 10 -496 23 -627 79 -847 87 -338 280 -518 544 -506 254 11 397 178 438 508 12 102 7 418 -11 570 -5 47 -20 182 -34 300 -28 247 -41 447 -32 484 22 89 151 -86 259 -354 30 -74 99 -241 152 -370 54 -129 207 -508 341 -842 249 -623 342 -826 481 -1057 570 -947 1314 -1507 2207 -1661 65 -12 127 -25 137 -30 23 -13 585 -13 608 0 10 5 72 19 137 30 1117 194 1766 937 2059 2356 90 436 131 816 155 1429 30 803 63 1205 100 1250 19 23 49 18 59 -8 5 -13 14 -95 21 -183 50 -710 79 -839 210 -958 172 -156 410 -109 555 109 87 132 106 202 235 885 90 479 89 475 129 475 20 0 27 -7 34 -35 11 -40 2 -418 -13 -555 -5 -49 -16 -171 -25 -270 -8 -99 -24 -281 -35 -405 -114 -1305 -117 -1351 -101 -1633 26 -434 90 -687 231 -905 307 -474 981 -543 1469 -148 314 253 557 797 645 1441 3 22 12 85 20 140 40 266 71 597 85 902 15 336 24 2404 11 2542 -39 414 -175 639 -418 690 -285 60 -500 -135 -577 -522 -49 -246 -53 -339 -70 -1612 -15 -1208 -18 -1276 -65 -1880 -27 -352 -58 -507 -130 -662 -34 -74 -58 -91 -92 -64 -23 19 -23 19 -26 353 -3 339 -3 331 53 1093 31 422 35 487 45 705 33 752 61 1673 63 2040 2 474 -4 524 -101 748 -221 513 -786 529 -1114 30 -45 -67 -240 -443 -390 -751 -49 -100 -62 -93 -109 58 -98 317 -238 473 -453 507 -263 41 -464 -111 -662 -502 -34 -68 -60 -108 -62 -98 -2 10 26 111 62 225 237 756 339 1355 339 1993 0 1120 -350 1774 -1051 1961 -42 11 -81 24 -86 30 -13 12 -423 12 -431 0z m-156 -1906 c381 -90 583 -620 482 -1265 -139 -890 -635 -1655 -1183 -1826 -46 -14 -62 -15 -83 -6 -52 24 -55 50 -55 444 0 1145 128 2026 349 2397 123 207 301 300 490 256z m-4205 -2421 c84 -84 -140 -451 -388 -636 -129 -96 -145 -82 -148 132 -3 266 103 431 322 501 72 23 193 25 214 3z M10235 11685 c-486 -88 -1170 -483 -2120 -1224 -110 -86 -1461 -1154 -1650 -1304 -471 -375 -1056 -753 -1540 -995 -664 -332 -1284 -507 -1918 -542 -180 -10 -222 -23 -275 -90 -51 -63 -47 -141 10 -197 75 -71 63 -68 443 -133 576 -98 737 -115 1125 -115 339 0 417 7 662 55 474 94 962 301 1552 657 209 127 335 193 366 193 30 0 35 -35 34 -235 0 -168 -7 -240 -54 -605 -144 -1115 36 -1845 499 -2021 282 -107 549 38 649 351 57 177 66 562 32 1325 -5 121 -17 389 -26 595 -56 1283 83 1609 852 1993 211 106 291 138 1064 434 691 264 1106 668 1170 1139 46 341 -166 649 -495 719 -85 18 -283 18 -380 0z M11562 10864 c-226 -60 -402 -274 -469 -568 -25 -110 -23 -348 5 -449 86 -314 338 -490 616 -432 313 65 505 387 493 825 -5 177 -17 234 -78 358 -106 218 -340 327 -567 266z m159 -374 c196 -55 172 -590 -32 -695 -15 -8 -47 -15 -71 -15 -180 0 -245 321 -117 577 56 112 132 157 220 133z M18730 10874 c-298 -55 -472 -366 -431 -769 38 -376 221 -634 491 -691 266 -56 515 106 608 396 38 120 40 396 4 530 -88 322 -299 526 -556 535 -50 2 -102 2 -116 -1z m141 -384 c142 -39 242 -341 183 -551 -26 -93 -91 -159 -158 -159 -152 0 -259 200 -243 454 12 195 93 290 218 256z M20210 9844 c-378 -69 -571 -353 -621 -914 -24 -279 -14 -1118 22 -1745 31 -528 20 -1391 -23 -1809 -53 -527 115 -843 440 -824 276 17 444 293 532 875 59 394 63 491 57 1480 -5 913 -5 913 19 932 49 39 91 0 177 -168 176 -340 285 -747 342 -1276 103 -953 121 -1066 206 -1294 115 -306 297 -475 573 -532 280 -58 589 15 937 221 221 131 190 104 1304 1129 468 431 576 524 767 659 598 425 1177 656 1793 717 485 47 462 42 528 115 34 38 37 47 37 99 0 56 -2 60 -49 109 -40 41 -56 51 -92 56 -24 3 -125 15 -224 26 -776 90 -1215 272 -1990 825 -93 66 -208 148 -255 180 -69 48 -502 392 -903 718 -705 572 -1513 558 -1700 -28 -25 -77 -47 -208 -56 -330 -9 -117 -4 -199 29 -530 52 -526 61 -621 75 -795 27 -337 32 -502 24 -845 -9 -421 -28 -600 -65 -612 -19 -6 -22 43 -13 181 47 732 -55 1337 -330 1969 -370 845 -919 1392 -1421 1412 -52 2 -106 2 -120 -1z m3015 -1380 c344 -194 618 -457 745 -718 169 -348 75 -640 -312 -962 -148 -123 -437 -304 -486 -304 -27 0 -27 2 -7 305 32 482 7 1019 -74 1583 -10 70 -16 133 -14 139 9 24 49 13 148 -43z"/>
+    <path id="tm-radio" d="M1072.125 1570.0V1465.0H1113.075Q1126.875 1465.0 1136.625 1469.35Q1146.375 1473.7 1151.625 1481.95Q1156.875 1490.2 1156.875 1501.6Q1156.875 1513.0 1151.625 1521.175Q1146.375 1529.35 1136.625 1533.6999999999998Q1126.875 1538.05 1113.075 1538.05H1080.375L1087.125 1531.15V1570.0ZM1142.325 1570.0 1115.625 1531.9H1131.675L1158.675 1570.0ZM1087.125 1532.65 1080.375 1525.3H1112.625Q1127.025 1525.3 1134.45 1519.0749999999998Q1141.875 1512.85 1141.875 1501.6Q1141.875 1490.35 1134.45 1484.1999999999998Q1127.025 1478.05 1112.625 1478.05H1080.375L1087.125 1470.55Z M1258.2749999999999 1570.0 1305.825 1465.0H1320.675L1368.375 1570.0H1352.625L1310.175 1473.4H1316.175L1273.725 1570.0ZM1278.5249999999999 1543.75 1282.575 1531.75H1341.675L1346.0249999999999 1543.75Z M1476.975 1570.0V1465.0H1521.225Q1538.0249999999999 1465.0 1550.85 1471.6Q1563.675 1478.2 1570.8 1490.0500000000002Q1577.925 1501.9 1577.925 1517.5Q1577.925 1533.1 1570.8 1544.9499999999998Q1563.675 1556.8 1550.85 1563.4Q1538.0249999999999 1570.0 1521.225 1570.0ZM1491.975 1556.95H1520.3249999999998Q1533.375 1556.95 1542.9 1552.0Q1552.425 1547.05 1557.675 1538.125Q1562.925 1529.2 1562.925 1517.5Q1562.925 1505.65 1557.675 1496.8000000000002Q1552.425 1487.95 1542.9 1483.0Q1533.375 1478.05 1520.3249999999998 1478.05H1491.975Z M1693.875 1570.0V1465.0H1708.875V1570.0Z M1880.775 1571.2Q1868.775 1571.2 1858.5 1567.15Q1848.225 1563.1 1840.725 1555.8249999999998Q1833.225 1548.55 1829.025 1538.8Q1824.825 1529.05 1824.825 1517.5Q1824.825 1505.95 1829.025 1496.2Q1833.225 1486.45 1840.725 1479.1750000000002Q1848.225 1471.9 1858.425 1467.85Q1868.625 1463.8 1880.775 1463.8Q1892.775 1463.8 1902.9 1467.775Q1913.025 1471.75 1920.6 1479.025Q1928.175 1486.3 1932.3 1496.05Q1936.425 1505.8 1936.425 1517.5Q1936.425 1529.2 1932.3 1538.95Q1928.175 1548.7 1920.6 1555.975Q1913.025 1563.25 1902.9 1567.225Q1892.775 1571.2 1880.775 1571.2ZM1880.775 1557.85Q1889.475 1557.85 1896.9 1554.85Q1904.325 1551.85 1909.8000000000002 1546.375Q1915.275 1540.9 1918.35 1533.5500000000002Q1921.425 1526.2 1921.425 1517.5Q1921.425 1508.8 1918.35 1501.4499999999998Q1915.275 1494.1 1909.8000000000002 1488.625Q1904.325 1483.15 1896.9 1480.15Q1889.475 1477.15 1880.775 1477.15Q1871.925 1477.15 1864.5 1480.15Q1857.075 1483.15 1851.525 1488.625Q1845.975 1494.1 1842.9 1501.4499999999998Q1839.825 1508.8 1839.825 1517.5Q1839.825 1526.2 1842.9 1533.5500000000002Q1845.975 1540.9 1851.525 1546.375Q1857.075 1551.85 1864.5 1554.85Q1871.925 1557.85 1880.775 1557.85Z"/>
+    <mask id="tm-mask" maskUnits="userSpaceOnUse" x="0" y="-700" width="3000" height="2900">
+      <rect x="0" y="-700" width="3000" height="2900" fill="#fff"/>
+      <g fill="#000" stroke="#000" stroke-width="1500" stroke-linejoin="round" transform="translate(0,1500) scale(0.1,-0.1)"><use href="#tm-letras"/></g>
+      <rect x="930" y="1395" width="1140" height="240" rx="40" fill="#000"/>
+    </mask>
+    <symbol id="tm-logo" viewBox="200 -550 2600 2600">
+      <g mask="url(#tm-mask)" fill="none" stroke="#fff">
+        <circle cx="1500" cy="750" r="720" stroke-width="18"/><circle cx="1500" cy="750" r="860" stroke-width="14"/><circle cx="1500" cy="750" r="1000" stroke-width="11"/><circle cx="1500" cy="750" r="1140" stroke-width="8"/>
+      </g>
+      <g fill="#fff"><g transform="translate(0,1500) scale(0.1,-0.1)"><use href="#tm-letras"/></g><use href="#tm-radio"/></g>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Pantalla de carga -->
+<div id="loader" role="status" aria-live="polite" aria-label="Cargando TripMind Radio">
+  <div class="ld-centro">
+    <div class="ld-logo" id="ldLogo">
+      <span class="ld-pulso"></span><span class="ld-pulso b"></span>
+      <svg class="logo-svg" viewBox="200 -550 2600 2600" aria-hidden="true">
+        <g mask="url(#tm-mask)">
+          <circle class="anillo" fill="none" stroke="#fff" pathLength="1" cx="1500" cy="750" r="720" stroke-width="18" transform="rotate(-90 1500 750)"/>
+          <circle class="anillo" fill="none" stroke="#fff" pathLength="1" cx="1500" cy="750" r="860" stroke-width="14" transform="rotate(-90 1500 750)"/>
+          <circle class="anillo" fill="none" stroke="#fff" pathLength="1" cx="1500" cy="750" r="1000" stroke-width="11" transform="rotate(-90 1500 750)"/>
+          <circle class="anillo" fill="none" stroke="#fff" pathLength="1" cx="1500" cy="750" r="1140" stroke-width="8" transform="rotate(-90 1500 750)"/>
+        </g>
+        <g class="letras" fill="#fff"><g transform="translate(0,1500) scale(0.1,-0.1)"><use href="#tm-letras"/></g></g>
+        <g class="palabra" fill="#fff"><use href="#tm-radio"/></g>
+      </svg>
+    </div>
+    <div class="ld-dial">
+      <div class="ld-frec" id="ldFrec">87.5<small>MHZ</small></div>
+      <div class="ld-barra"><i id="ldBarra"></i></div>
+      <div class="mono ld-estado" id="ldEstado">Sintonizando</div>
+    </div>
+  </div>
+</div>
+<span class="ld-onda" id="onda1"></span><span class="ld-onda" id="onda2"></span>
+
+<div id="app">
+  <header class="top entra" id="top">
+    <div class="wrap">
+      <a href="#inicio" class="marca" aria-label="TripMind Radio, inicio"><svg class="logo-svg mini" aria-hidden="true"><use href="#tm-logo"/></svg><b>TripMind Radio</b></a>
+      <div class="der">
+        <span class="pill-aire"><span class="punto"></span>AL AIRE</span>
+        <button class="btn btn-gris btn-instalar" type="button" data-instalar>Instalar app</button>
+        <button class="btn-cuenta" type="button" id="btnCuenta" aria-label="Entrar o registrarse"><span class="ini" aria-hidden="true"></span><span class="et">Entrar</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="escena">
+      <div class="halo" aria-hidden="true"></div>
+      <div class="rejilla" aria-hidden="true"></div>
+
+      <div class="reposo">
+        <svg class="logo-svg" aria-hidden="true"><use href="#tm-logo"/></svg>
+        <p>Sonando en el <b>widget flotante</b>. Esta ventana puedes minimizarla.</p>
+        <button class="btn btn-blanco" type="button" id="btnVolver">Volver a la app</button>
+        <span class="tecla">PULSA <kbd>ESC</kbd> PARA SALIR DEL WIDGET</span>
+      </div>
+
+      <div class="pila">
+        <div class="caratula entra-op" id="caratula">
+          <canvas id="viz" aria-hidden="true"></canvas>
+          <div class="logo-hero" id="heroLogo" data-tm-morph style="opacity:0"><svg class="logo-svg" role="img" aria-label="TripMind Radio"><use href="#tm-logo"/></svg></div>
+          <div class="esquina mono"><span>TripMind</span><span id="reloj">--:--</span></div>
+        </div>
+
+        <div class="centro">
+          <h1 class="vo">TripMind Radio</h1>
+
+          <div class="ahora entra" style="transition-delay:.26s">
+            <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="t"><a class="mono ir-sono" href="sono/">Sonando ahora<em aria-hidden="true">&rarr;</em></a><b data-titulo>Sintonizando…</b><span data-artista>TripMind Radio</span></div>
+          </div>
+
+          <div class="acciones entra" style="transition-delay:.34s">
+            <button class="play-xl" type="button" data-play aria-label="Reproducir la radio">
+              <span class="ico"><svg class="i-play" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg><svg class="i-pausa" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.2" fill="currentColor"/><rect x="13.5" y="5" width="4" height="14" rx="1.2" fill="currentColor"/></svg></span>
+            </button>
+            <button class="btn-wid" type="button" id="btnWidget" aria-label="Abrir el reproductor flotante">
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.8" y="4.5" width="18.4" height="15" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="12" y="11.4" width="8" height="6.6" rx="1.6" fill="currentColor"/></svg>
+              Widget
+            </button>
+            <button class="btn-cmp" type="button" id="btnCompartir" aria-label="Compartir lo que suena">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8 15.7 6.5M8.3 13.2l7.4 4.3"/></svg>
+              Compartir
+            </button>
+          </div>
+
+          <div class="telemetria mono entra" style="transition-delay:.42s" aria-label="Estado de la señal">
+            <span><i>Señal</i><b id="tSenal">···</b></span>
+            <span><i>Calidad</i><b id="tKbps">···</b></span>
+            <span><i>Oyentes</i><b id="tOyentes">···</b></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="banner-parrilla revela" id="bannerParrilla">
+    <span class="bp2-rotulo"><span class="bp2-punto" aria-hidden="true"></span>Al aire</span>
+    <div class="bp2-pistas" id="bp2Pistas"></div>
+  </div>
+
+  <div class="banner-patro revela" id="bannerPatro" hidden>
+    <span class="bp-rotulo">Patrocinan</span>
+    <div class="bp-marcas" id="bpMarcas"></div>
+  </div>
+
+  <div class="banner-plat revela" id="bannerPlat" hidden>
+    <span class="bq-rotulo">Esc&uacute;chanos en</span>
+    <div class="bq-sitios" id="bqSitios"></div>
+  </div>
+
+  <a class="banner-loc revela" id="bannerLoc" href="locutores/">
+    <span class="bl-fotos">
+      <img src="assets/img/roxie-mini.jpg" alt="" width="200" height="200" loading="lazy" decoding="async">
+      <img src="assets/img/matt-mini.jpg" alt="" width="200" height="200" loading="lazy" decoding="async">
+    </span>
+    <span class="bl-txt">
+      <b>Las voces de TripMind</b>
+      <i class="mono" id="blAhora">&middot;&middot;&middot;</i>
+    </span>
+    <span class="bl-ir" aria-hidden="true">&rarr;</span>
+  </a>
+
+
+  <footer class="pie-min">
+    <span class="mono">TripMind Radio · To us for us</span>
+    <nav class="pie-nav"><a href="sono/">Qué sonó</a><a href="locutores/">Locutores</a><a href="privacidad/">Privacidad</a></nav>
+  </footer>
+
+
+  <div class="dock" role="region" aria-label="Reproductor">
+    <div class="dock-in">
+      <div class="yo"><svg class="logo-svg mini" aria-hidden="true"><use href="#tm-logo"/></svg><div><b data-titulo>Sintonizando…</b><span data-artista>TripMind Radio</span></div></div>
+      <button class="play-m" type="button" data-play aria-label="Reproducir la radio"><span class="ico"><svg class="i-play" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg><svg class="i-pausa" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.2" fill="currentColor"/><rect x="13.5" y="5" width="4" height="14" rx="1.2" fill="currentColor"/></svg></span></button>
+      <label class="vol"><span class="mono" style="font-size:10px">Vol</span><input type="range" min="0" max="100" value="70" id="vol" aria-label="Volumen"></label>
+    </div>
+  </div>
+  <div class="hoja" id="hoja" aria-hidden="true">
+    <div class="hoja-velo" data-cerrar></div>
+    <div class="hoja-caja" role="dialog" aria-modal="true" aria-label="Tu cuenta de oyente">
+      <button class="hoja-x" type="button" data-cerrar aria-label="Cerrar">&times;</button>
+      <div class="hoja-asa" aria-hidden="true"></div>
+      <div id="hojaCuerpo"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <audio id="radio" preload="none"></audio>
+</div>
+
+<script>
+(function(){
+  // ===== Configuración =====
+  var PANEL = "https://panel.tripmindradio.com";  // panel de AzuraCast (subdominio)
+  var STATION_ID = 1;                              // id de la estación en AzuraCast
+  var LOOP_URL = "assets/audio/loop-carga.mp3";    // música suave de la pantalla de carga
+  var STREAM_URL = "";                             // se llena sola desde la API (station.listen_url)
+
+  var $ = function(s, r){ return (r || document).querySelector(s); }, $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.body.classList.add("cargando");
+
+  // ---------- Reloj de la portada (hora de Colombia) ----------
+  var bog = function(){ var d = new Date(Date.now() + (new Date().getTimezoneOffset() - 300) * 60000); return d; };
+  var reloj = function(){ var d = bog(), h = d.getHours(), m = ("0" + d.getMinutes()).slice(-2); $("#reloj").textContent = ((h % 12) || 12) + ":" + m + (h < 12 ? " a. m." : " p. m."); };
+  reloj(); setInterval(reloj, 20000);
+
+  // ---------- Reproductor ----------
+  var audio = $("#radio"), playing = false;
+  var ahora = { t: "Sintonizando…", a: "TripMind Radio" };
+  var pintarAhora = function(t, a){
+    $$("[data-titulo]").forEach(function(e){ e.textContent = t; });
+    $$("[data-artista]").forEach(function(e){ e.textContent = a; });
+  };
+  var setNow = function(t, a){
+    var cambio = (t !== ahora.t || a !== ahora.a);
+    ahora.t = t; ahora.a = a;
+    if(!cambio || reduce){
+      pintarAhora(t, a);
+      if(window.__tmWidgetSync) window.__tmWidgetSync();
+      return;
+    }
+    var cajas = $$(".ahora .t");
+    cajas.forEach(function(c){ c.classList.add("mudando"); });
+    setTimeout(function(){
+      pintarAhora(t, a);
+      cajas.forEach(function(c){ c.classList.remove("mudando"); });
+      if(window.__tmWidgetSync) window.__tmWidgetSync();
+    }, 320);
+  };
+  var toast = function(msg){ var t = $("#toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toast._t); toast._t = setTimeout(function(){ t.classList.remove("on"); }, 2600); };
+  var setPlaying = function(v){ playing = v; document.body.classList.toggle("sonando", v); $$("[data-play]").forEach(function(b){ b.setAttribute("aria-label", v ? "Pausar la radio" : "Reproducir la radio"); }); if(window.__tmWidgetSync) window.__tmWidgetSync(); };
+  var toggle = function(){
+    if(!playing){
+      loopFade(0, 900);
+      var go = function(){
+        audio.src = STREAM_URL; audio.volume = $("#vol").value / 100;
+        audio.play().then(function(){ setPlaying(true); }, function(){ toast("No se pudo conectar con la señal"); });
+      };
+      if(STREAM_URL) go();
+      else nowPlaying().then(function(){ if(STREAM_URL) go(); else { loop.play().catch(function(){}); loopFade(loopTarget, 900); toast("La señal todavía no está al aire"); } }, function(){ loop.play().catch(function(){}); loopFade(loopTarget, 900); toast("Sin conexión con la señal"); });
+    } else { audio.pause(); audio.removeAttribute("src"); audio.load(); setPlaying(false); }
+  };
+  $$("[data-play]").forEach(function(b){ b.addEventListener("click", toggle); });
+  var vol = $("#vol"); var setVol = function(){ vol.style.setProperty("--v", vol.value + "%"); audio.volume = vol.value / 100; }; vol.addEventListener("input", setVol); setVol();
+  $$("[data-instalar]").forEach(function(b){ b.addEventListener("click", function(){ if(window.__tmInstall){ window.__tmInstall.prompt(); } else toast(isIOS ? "En iPhone: Compartir → Agregar a inicio" : "Usa el menú del navegador → Instalar app"); }); });
+  window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); window.__tmInstall = e; });
+
+  // ---------- Compartir lo que suena ----------
+  // En el celular abre la hoja nativa (WhatsApp, historias, lo que tenga).
+  // En el escritorio copia el texto, y si no se puede, cae a WhatsApp web.
+  var textoCompartir = function(){
+    var t = (ahora.t || "").trim();
+    var a = ((ahora.a || "").split(" \u00b7 ")[0] || "").trim();
+    var generico = !t || t === "Sintoniz\u00e1ndo\u2026" || t === "Sintonizando\u2026" || t === "TripMind Radio";
+    if(generico) return "Estoy escuchando TripMind Radio";
+    var s = "Estoy escuchando " + t;
+    if(a && a !== "TripMind Radio") s += " \u2014 " + a;
+    return s + " en TripMind Radio";
+  };
+  var btnCmp = $("#btnCompartir");
+  if(btnCmp) btnCmp.addEventListener("click", function(){
+    var url = "https://tripmindradio.com/";
+    var texto = textoCompartir();
+    if(navigator.share){
+      navigator.share({ title: "TripMind Radio", text: texto, url: url }).catch(function(){});
+      return;
+    }
+    var todo = texto + "\n" + url;
+    var aWhatsapp = function(){ window.open("https://wa.me/?text=" + encodeURIComponent(todo), "_blank", "noopener"); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(todo).then(function(){ toast("Copiado, ya puedes pegarlo"); }, aWhatsapp);
+    } else aWhatsapp();
+  });
+
+  // ---------- Ahora suena (AzuraCast) ----------
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+  var ponValor = function(el, txt){
+    if(!el || el.textContent === txt) return;
+    el.textContent = txt;
+    if(reduce) return;
+    el.classList.remove("cambio");
+    void el.offsetWidth;          // reinicia la animacion
+    el.classList.add("cambio");
+  };
+  var telemetria = function(d){
+    var s = $("#tSenal"), k = $("#tKbps"), o = $("#tOyentes");
+    if(!s) return;
+    var vivo = !!d.is_online;
+    ponValor(s, vivo ? "Al aire" : "Fuera"); s.classList.toggle("vivo", vivo);
+    var m = (d.station && d.station.mounts && d.station.mounts[0]) || null;
+    ponValor(k, m && m.bitrate ? m.bitrate + " kbps" : "—");
+    var n = d.listeners && typeof d.listeners.current === "number" ? d.listeners.current : null;
+    ponValor(o, n === null ? "—" : String(n));
+  };
+  var nowPlaying = function(){
+    return fetch(PANEL + "/api/nowplaying/" + STATION_ID, { cache: "no-store" })
+      .then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function(d){
+        var np = d.now_playing || {}, song = np.song || {}, live = d.live && d.live.is_live;
+        if(d.station && d.station.listen_url) STREAM_URL = d.station.listen_url;
+        var titulo = live ? (d.live.streamer_name ? "En vivo con " + d.live.streamer_name : "En vivo") : (song.title || "TripMind Radio");
+        var artista = live ? "TripMind Radio" : [song.artist, np.playlist].filter(Boolean).join(" · ") || "TripMind Radio";
+        setNow(titulo, artista);
+        telemetria(d);
+        if("mediaSession" in navigator && window.MediaMetadata){
+          navigator.mediaSession.metadata = new MediaMetadata({ title: titulo, artist: artista, album: "TripMind Radio", artwork: [{ src: "assets/icons/icon-512.png", sizes: "512x512", type: "image/png" }] });
+        }
+      });
+  };
+  nowPlaying().catch(function(){});
+  setInterval(function(){ nowPlaying().catch(function(){}); }, 15000);
+  if("mediaSession" in navigator){
+    try { navigator.mediaSession.setActionHandler("play", toggle); navigator.mediaSession.setActionHandler("pause", toggle); } catch(e){}
+  }
+
+  // ---------- Música de la pantalla de carga (loop suave) ----------
+  var loop = new Audio(LOOP_URL); loop.loop = true; loop.preload = "auto"; loop.volume = 0;
+  var loopTarget = 0.32, loopOK = true, fadeT = null;
+  loop.addEventListener("error", function(){ loopOK = false; });
+  var loopFade = function(to, ms){
+    clearInterval(fadeT);
+    var from = loop.volume, steps = Math.max(1, Math.round(ms / 50)), i = 0;
+    fadeT = setInterval(function(){
+      i++; loop.volume = Math.min(1, Math.max(0, from + (to - from) * Math.min(1, i / steps)));
+      if(i >= steps){ clearInterval(fadeT); if(to === 0) loop.pause(); }
+    }, 50);
+  };
+  var gestos = ["pointerdown", "keydown", "touchstart"];
+  var primeLoop = function(){
+    loop.play().then(function(){
+      gestos.forEach(function(ev){ document.removeEventListener(ev, primeLoop); });
+      loopFade(loopTarget, 2200);
+    }, function(){ if(loopOK){ var hint = $("#ldHint"); if(hint) hint.classList.add("on"); } });
+  };
+  primeLoop();
+  gestos.forEach(function(ev){ document.addEventListener(ev, primeLoop, { passive: true }); });
+
+  // ---------- App instalable (PWA) ----------
+  var standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  if(standalone) $$("[data-instalar]").forEach(function(b){ b.style.display = "none"; });
+  window.addEventListener("appinstalled", function(){ window.__tmInstall = null; $$("[data-instalar]").forEach(function(b){ b.style.display = "none"; }); });
+  if("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  }
+
+  // ---------- Modo widget: reproductor flotante (Document Picture-in-Picture) ----------
+  var wBtn = $("#btnWidget"), wWin = null;
+  var ICONO = new URL("assets/icons/icon-192.png", location.href).href;
+  var CSS_W = ''
+    + '*{box-sizing:border-box;margin:0;padding:0}'
+    + 'body{font-family:Montserrat,system-ui,-apple-system,"Segoe UI",sans-serif;background:#0d0d0d;color:#fff;'
+    + 'height:100vh;display:flex;flex-direction:column;justify-content:center;gap:9px;padding:10px 13px;overflow:hidden;-webkit-user-select:none;user-select:none}'
+    + '.fila{display:flex;align-items:center;gap:10px;min-width:0}'
+    + '.tapa{width:40px;height:40px;border-radius:10px;flex:none;background:#161616;object-fit:contain;padding:3px}'
+    + '.txt{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}'
+    + '.txt b{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
+    + '.txt span{font-size:11px;color:#a6a6a6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
+    + '.aire{display:flex;align-items:center;gap:5px;font-size:9px;letter-spacing:.14em;color:#ff4d3d;font-weight:600}'
+    + '.aire i{width:5px;height:5px;border-radius:50%;background:#ff4d3d;animation:lat 2s ease-in-out infinite}'
+    + '@keyframes lat{0%,100%{opacity:1}50%{opacity:.25}}'
+    + '.pp{width:38px;height:38px;flex:none;border:0;border-radius:50%;background:#fff;color:#0d0d0d;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .18s ease}'
+    + '.pp:hover{transform:scale(1.07)}.pp:active{transform:scale(.95)}'
+    + '.vrow{display:flex;align-items:center;gap:9px;min-width:0}'
+    + '.vico{flex:none;color:#8f8f8f;display:flex;align-items:center}'
+    + '.vnum{flex:none;font-size:10px;color:#8f8f8f;font-variant-numeric:tabular-nums;min-width:24px;text-align:right}'
+    + 'input[type=range]{-webkit-appearance:none;appearance:none;flex:1;min-width:0;height:5px;border-radius:99px;cursor:pointer;'
+    + 'background:linear-gradient(#fff,#fff) 0/var(--v,70%) 100% no-repeat,#333}'
+    + 'input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.55)}'
+    + 'input[type=range]::-moz-range-thumb{width:13px;height:13px;border:0;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.55)}';
+  var SVG_PLAY = '<svg width="17" height="17" viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>';
+  var SVG_PAUSA = '<svg width="17" height="17" viewBox="0 0 24 24"><rect x="6.5" y="5" width="4" height="14" rx="1.2" fill="currentColor"/><rect x="13.5" y="5" width="4" height="14" rx="1.2" fill="currentColor"/></svg>';
+
+  var SVG_VOL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6.5 9H3v6h3.5L11 19V5z"/><path d="M15.5 8.8a4.5 4.5 0 0 1 0 6.4"/><path d="M18.4 6a8.5 8.5 0 0 1 0 12"/></svg>';
+
+  var cerrarWidget = function(){ wWin = null; window.__tmWidgetSync = null; document.documentElement.classList.remove("en-widget"); };
+
+  var abrirWidget = function(){
+    if(!("documentPictureInPicture" in window)){ toast("Tu navegador no tiene modo widget"); return; }
+    if(wWin && !wWin.closed){ try{ wWin.focus(); }catch(e){} return; }
+    window.documentPictureInPicture.requestWindow({ width: 340, height: 184 }).then(function(w){
+      wWin = w;
+      var d = w.document;
+      try{ d.title = "TripMind Radio"; }catch(e){}
+      var st = d.createElement("style"); st.textContent = CSS_W; d.head.appendChild(st);
+      var lk = d.createElement("link"); lk.rel = "stylesheet";
+      lk.href = "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap";
+      d.head.appendChild(lk);
+
+      var fila = d.createElement("div"); fila.className = "fila";
+      var img = d.createElement("img"); img.className = "tapa"; img.src = ICONO; img.alt = "";
+      var txt = d.createElement("div"); txt.className = "txt";
+      var aire = d.createElement("div"); aire.className = "aire"; aire.innerHTML = '<i></i>AL AIRE';
+      var tit = d.createElement("b"); var art = d.createElement("span");
+      txt.appendChild(aire); txt.appendChild(tit); txt.appendChild(art);
+      var pp = d.createElement("button"); pp.className = "pp"; pp.type = "button";
+      fila.appendChild(img); fila.appendChild(txt); fila.appendChild(pp);
+      var vrow = d.createElement("div"); vrow.className = "vrow";
+      var vico = d.createElement("div"); vico.className = "vico"; vico.innerHTML = SVG_VOL;
+      var sld = d.createElement("input"); sld.type = "range"; sld.min = 0; sld.max = 100; sld.value = vol.value;
+      sld.setAttribute("aria-label", "Volumen");
+      var vnum = d.createElement("div"); vnum.className = "vnum";
+      var pintaVol = function(){ sld.style.setProperty("--v", sld.value + "%"); vnum.textContent = sld.value + "%"; };
+      pintaVol();
+      vrow.appendChild(vico); vrow.appendChild(sld); vrow.appendChild(vnum);
+      d.body.appendChild(fila); d.body.appendChild(vrow);
+
+      window.__tmWidgetSync = function(){
+        try{
+          tit.textContent = ahora.t; art.textContent = ahora.a;
+          pp.innerHTML = playing ? SVG_PAUSA : SVG_PLAY;
+          pp.setAttribute("aria-label", playing ? "Pausar" : "Reproducir");
+          aire.style.display = playing ? "flex" : "none";
+        }catch(e){}
+      };
+      window.__tmWidgetSync();
+
+      pp.addEventListener("click", toggle);
+      sld.addEventListener("input", function(){ vol.value = sld.value; setVol(); pintaVol(); });
+      // ESC cierra el widget, tanto desde la ventana flotante como desde la app
+      var esc = function(ev){ if(ev.key === "Escape" || ev.keyCode === 27){ ev.preventDefault(); salirWidget(); } };
+      d.addEventListener("keydown", esc);
+      document.addEventListener("keydown", esc);
+      w.addEventListener("pagehide", function(){ document.removeEventListener("keydown", esc); cerrarWidget(); });
+      document.documentElement.classList.add("en-widget");
+      try{ w.focus(); }catch(e){}
+    }).catch(function(){ toast("No se pudo abrir el widget"); });
+  };
+  var salirWidget = function(){
+    if(wWin && !wWin.closed){ try{ wWin.close(); }catch(e){} }
+    cerrarWidget();
+    try{ window.focus(); }catch(e){}
+  };
+  if(wBtn) wBtn.addEventListener("click", function(){
+    if(document.documentElement.classList.contains("en-widget")) salirWidget(); else abrirWidget();
+  });
+  var bVolver = $("#btnVolver"); if(bVolver) bVolver.addEventListener("click", salirWidget);
+
+  // ---------- Locutores: quien esta al aire segun la hora de la emisora ----------
+  window.horaEmisora = function(){
+    try{
+      var txt = new Intl.DateTimeFormat("en-GB", { timeZone: "America/Bogota", hour: "2-digit", hour12: false }).format(new Date());
+      var h = parseInt(txt, 10);
+      if(isNaN(h)) return new Date().getHours();
+      return h >= 24 ? 0 : h;
+    }catch(e){ return new Date().getHours(); }
+  };
+  window.quienAlAire = function(h){
+    if(h >= 5  && h < 12) return ["Roxie"];
+    if(h >= 12 && h < 19) return ["Roxie", "Matt"];
+    if(h >= 19) return ["Matt"];
+    return [];
+  };
+  var pintaBanner = function(){
+    var el = document.getElementById("blAhora"); if(!el) return;
+    var q = window.quienAlAire(window.horaEmisora());
+    if(q.length === 0){ el.innerHTML = 'Solo m\u00fasica a esta hora'; return; }
+    var nombres = q.length === 2 ? "Roxie y Matt" : q[0];
+    el.innerHTML = '<em>' + nombres + '</em> al aire ahora';
+  };
+  pintaBanner();
+  setInterval(pintaBanner, 60000);
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden) pintaBanner(); });
+
+  // ---------- Visualizador de anillos ----------
+  var cv = $("#viz"), cx = cv.getContext("2d"), W = 0, H = 0, DPR = Math.min(2, window.devicePixelRatio || 1), t0 = performance.now(), nivel = 0;
+  var size = function(){ var r = cv.getBoundingClientRect(); W = r.width; H = r.height; cv.width = W * DPR; cv.height = H * DPR; cx.setTransform(DPR, 0, 0, DPR, 0, 0); };
+  var ultimoCuadro = 0;
+  var draw = function(now){
+    // En reposo basta con ~18 cuadros por segundo: se ve igual de vivo y gasta mucha menos bateria.
+    if(!playing && now - ultimoCuadro < 55){ requestAnimationFrame(draw); return; }
+    ultimoCuadro = now;
+    var t = (now - t0) / 1000; nivel += ((playing ? 1 : 0.18) - nivel) * 0.04;
+    cx.clearRect(0, 0, W, H);
+    var mx = W / 2, my = H / 2, base = Math.min(W, H) * 0.36;
+    for(var k = 0; k < 9; k++){
+      var ph = (t * 0.22 + k / 9) % 1, r = base * (0.95 + ph * 1.1);
+      var a = (1 - ph) * 0.16 * nivel;
+      cx.beginPath();
+      for(var j = 0; j <= 120; j++){
+        var ang = j / 120 * Math.PI * 2;
+        var wob = nivel * (Math.sin(ang * 6 + t * 2.1 + k) * 2.2 + Math.sin(ang * 11 - t * 3.3) * 1.3 + Math.sin(ang * 3 + t * 1.2 + k * .7) * 3) * (playing ? 1 : .35);
+        var x = mx + Math.cos(ang) * (r + wob), y = my + Math.sin(ang) * (r + wob);
+        if(j) cx.lineTo(x, y); else cx.moveTo(x, y);
+      }
+      cx.strokeStyle = "rgba(255,255,255," + a.toFixed(3) + ")"; cx.lineWidth = 1.2; cx.stroke();
+    }
+    var g = cx.createRadialGradient(mx, my, 0, mx, my, base * 1.3);
+    g.addColorStop(0, "rgba(255,255,255," + (0.05 + nivel * 0.05).toFixed(3) + ")"); g.addColorStop(1, "rgba(255,255,255,0)");
+    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+    if(!reduce) requestAnimationFrame(draw);
+  };
+  window.addEventListener("resize", size);
+
+  // ---------- Revelar al hacer scroll ----------
+  var io = "IntersectionObserver" in window ? new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("si"); io.unobserve(e.target); } }); }, { threshold: .15, rootMargin: "0px 0px -40px 0px" }) : null;
+  var top = $("#top"); window.addEventListener("scroll", function(){ top.classList.toggle("scroll", window.scrollY > 10); }, { passive: true });
+
+  // ---------- Arranque tras la pantalla de carga ----------
+  // La pantalla de carga y el morph viven en su propio script (addon).
+  // Aqui solo colgamos lo que tiene que arrancar cuando termina.
+  window.addEventListener("tm:listo", function(){
+    document.body.classList.remove("cargando");
+    size(); requestAnimationFrame(draw);
+    var dst = $("#heroLogo");
+    if(dst && dst.style.opacity !== "1"){ dst.style.transition = "opacity .6s var(--ease)"; dst.style.opacity = 1; }
+    $$(".revela").forEach(function(e){ if(io) io.observe(e); else e.classList.add("si"); });
+  });
+})();
+</script>
+
+<script>
+/* ===== Cuenta de oyente (Supabase) =====
+   El SDK se carga solo cuando alguien abre la hoja, para no pesarle
+   a quien entra nada mas a oir la radio. La clave publicable es publica
+   por diseno: todo lo que protege son las politicas RLS del lado del servidor. */
+(function(){
+  var SB_URL = "https://mbtroxbeyjqqqxqfdade.supabase.co";
+  var SB_KEY = "sb_publishable_e4i4OidvddMs1-eQ9GzvEA_nNFVTuQp";
+
+  var $ = function(s, r){ return (r || document).querySelector(s); };
+  var hoja = $("#hoja"), cuerpo = $("#hojaCuerpo"), boton = $("#btnCuenta");
+  if(!hoja || !cuerpo || !boton) return;
+
+  var avisa = function(m){
+    var t = $("#toast"); if(!t) return;
+    t.textContent = m; t.classList.add("on");
+    clearTimeout(avisa._t);
+    avisa._t = setTimeout(function(){ t.classList.remove("on"); }, 3200);
+  };
+  var esc = function(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[c];
+    });
+  };
+
+  /* ---------- SDK perezoso ---------- */
+  var sb = null, cargando = null;
+  var cliente = function(){
+    if(sb) return Promise.resolve(sb);
+    if(cargando) return cargando;
+    cargando = import("https://esm.sh/@supabase/supabase-js@2").then(function(m){
+      sb = m.createClient(SB_URL, SB_KEY, {
+        auth: { persistSession:true, autoRefreshToken:true, detectSessionInUrl:true, storageKey:"tmr-sesion", flowType:"pkce" }
+      });
+      sb.auth.onAuthStateChange(function(ev, ses){
+        token = ses ? ses.access_token : null;
+        pintaBoton(ses);
+        if(!ses) cierraEscucha();
+      });
+      return sb;
+    }, function(e){ cargando = null; throw e; });
+    return cargando;
+  };
+
+  /* ---------- Traduccion de los errores del SDK ---------- */
+  var enEspanol = function(e){
+    var m = String((e && (e.message || e.error_description)) || e || "").toLowerCase();
+    if(m.indexOf("invalid login") >= 0)            return "Ese correo o esa contrasena no coinciden.";
+    if(m.indexOf("already registered") >= 0)       return "Ese correo ya esta registrado. Entra con tu contrasena.";
+    if(m.indexOf("email not confirmed") >= 0)      return "Todavia no confirmas tu correo. Revisa tu bandeja.";
+    if(m.indexOf("password should be") >= 0)       return "La contrasena necesita al menos 6 caracteres.";
+    if(m.indexOf("rate limit") >= 0 ||
+       m.indexOf("too many") >= 0)                 return "Muchos intentos seguidos. Espera un momento.";
+    if(m.indexOf("tope de 3 pedidos") >= 0)        return "Ya pediste 3 canciones esta hora. Mas tarde puedes seguir.";
+    if(m.indexOf("tope de saludos") >= 0)          return "Ya mandaste 5 saludos esta hora. Mas tarde puedes seguir.";
+    if(m.indexOf("unable to validate email") >= 0 ||
+       m.indexOf("invalid email") >= 0)            return "Revisa el correo, parece mal escrito.";
+    if(m.indexOf("sdk") >= 0 ||
+       m.indexOf("failed to fetch") >= 0 ||
+       m.indexOf("networkerror") >= 0)             return "Sin conexion. Intenta de nuevo.";
+    return (e && e.message) ? e.message : "Algo no salio. Intenta de nuevo.";
+  };
+
+  /* ---------- Hoja ---------- */
+  var ultimoFoco = null;
+  var abre = function(){
+    ultimoFoco = document.activeElement;
+    hoja.classList.add("on");
+    hoja.setAttribute("aria-hidden", "false");
+    requestAnimationFrame(function(){ hoja.classList.add("vista"); });
+  };
+  var cierra = function(){
+    hoja.classList.remove("vista");
+    hoja.setAttribute("aria-hidden", "true");
+    setTimeout(function(){ hoja.classList.remove("on"); }, 520);
+    if(ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
+  };
+  hoja.addEventListener("click", function(e){ if(e.target.closest("[data-cerrar]")) cierra(); });
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape" && hoja.classList.contains("vista")) cierra(); });
+
+  var cargandoHoja = function(txt){
+    cuerpo.innerHTML = '<h2>' + esc(txt || "Un momento") + '</h2><p class="sub">Conectando…</p>';
+  };
+
+  /* ---------- Botón del encabezado ---------- */
+  var pintaBoton = function(ses){
+    var ini = $(".ini", boton);
+    if(ses && ses.user){
+      boton.classList.add("dentro");
+      boton.setAttribute("aria-label", "Mi cuenta");
+      var n = (perfilCache && perfilCache.nombre) || ses.user.email || "?";
+      ini.textContent = n.trim().charAt(0).toUpperCase();
+    } else {
+      boton.classList.remove("dentro");
+      boton.setAttribute("aria-label", "Entrar o registrarse");
+    }
+  };
+
+  /* ---------- Pantallas ---------- */
+  var perfilCache = null;
+
+  function pintaAuth(modo, msg, bien){
+    var crear = modo === "crear";
+    cuerpo.innerHTML =
+      '<h2>' + (crear ? "Crea tu cuenta" : "Entra a tu cuenta") + '</h2>' +
+      '<p class="sub">' + (crear
+        ? "Como oyente registrado pides canciones y mandas saludos para que Matt o Roxie los lean al aire."
+        : "Usa el correo con el que te registraste.") + '</p>' +
+      (msg ? '<p class="aviso' + (bien ? " bien" : "") + '">' + esc(msg) + '</p>' : '') +
+      '<form id="fAuth" novalidate><div class="campos">' +
+        (crear ? '<label class="campo"><span>Nombre</span><input name="nombre" type="text" autocomplete="name" placeholder="Como quieres que te saluden" required></label>' : '') +
+        (crear ? '<div class="fila2">' +
+            '<label class="campo"><span>Ciudad</span><input name="ciudad" type="text" autocomplete="address-level2" placeholder="Bogota"></label>' +
+            '<label class="campo"><span>WhatsApp</span><input name="telefono" type="tel" autocomplete="tel" placeholder="+57 300 000 0000"></label>' +
+          '</div>' : '') +
+        '<label class="campo"><span>Correo</span><input name="email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com" required></label>' +
+        '<label class="campo"><span>Contraseña</span><input name="clave" type="password" autocomplete="' + (crear ? "new-password" : "current-password") + '" placeholder="Mínimo 6 caracteres" required></label>' +
+      '</div>' +
+      (crear ? '<label class="acepto"><input type="checkbox" name="ok" required><span>Acepto el <a href="privacidad/" target="_blank" rel="noopener">tratamiento de mis datos</a> para pedir canciones, mandar saludos al aire y recibir avisos de la emisora.</span></label>' : '') +
+      '<button class="btn btn-blanco btn-ancho" type="submit">' + (crear ? "Crear mi cuenta" : "Entrar") + '</button>' +
+      '</form>' +
+      '<p class="cambiar">' + (crear
+        ? '¿Ya tienes cuenta? <button type="button" data-ir="entrar">Entra aquí</button>'
+        : '¿No tienes cuenta? <button type="button" data-ir="crear">Regístrate</button>') + '</p>';
+
+    $("[data-ir]", cuerpo).addEventListener("click", function(){ pintaAuth(this.getAttribute("data-ir")); });
+
+    $("#fAuth", cuerpo).addEventListener("submit", function(ev){
+      ev.preventDefault();
+      var f = this, b = $("button[type=submit]", f);
+      var d = {
+        nombre:   (f.nombre   ? f.nombre.value   : ""),
+        ciudad:   (f.ciudad   ? f.ciudad.value   : ""),
+        telefono: (f.telefono ? f.telefono.value : ""),
+        email:    f.email.value.trim(),
+        clave:    f.clave.value
+      };
+      if(crear && !d.nombre.trim())  return pintaAuth(modo, "Escribe tu nombre.");
+      if(crear && !f.ok.checked)     return pintaAuth(modo, "Necesito que aceptes el tratamiento de datos.");
+      if(!d.email || !d.clave)       return pintaAuth(modo, "Faltan el correo o la contraseña.");
+
+      b.disabled = true; b.textContent = "Un momento…";
+
+      cliente().then(function(c){
+        if(crear){
+          // Guardo los datos para completar el perfil cuando haya sesion,
+          // que puede ser ya mismo o despues de confirmar el correo.
+          try { localStorage.setItem("tmr-pendiente", JSON.stringify({ nombre:d.nombre, ciudad:d.ciudad, telefono:d.telefono })); } catch(e){}
+          return c.auth.signUp({
+            email: d.email,
+            password: d.clave,
+            options: { emailRedirectTo: location.origin + location.pathname }
+          }).then(function(r){
+            if(r.error) throw r.error;
+            if(r.data && r.data.session) return trasEntrar();
+            // Sin sesion: la confirmacion por correo esta activada.
+            pintaAuth("entrar", "Te mandamos un correo para confirmar la cuenta. Ábrelo y vuelve a entrar aquí.", true);
+          });
+        }
+        return c.auth.signInWithPassword({ email:d.email, password:d.clave }).then(function(r){
+          if(r.error) throw r.error;
+          return trasEntrar();
+        });
+      }).catch(function(e){
+        pintaAuth(modo, enEspanol(e));
+      });
+    });
+  }
+
+  /* ---------- Tras conseguir sesión ---------- */
+  function trasEntrar(){
+    cargandoHoja("Listo");
+    return cuenta().then(function(c){
+      if(c && c.perfil){ perfilCache = c.perfil; pintaBoton({ user:{} }); pintaCuenta(c); abreEscucha(); return; }
+      // Hay sesion pero no hay ficha: la creo con lo que quedo guardado.
+      var p = null;
+      try { p = JSON.parse(localStorage.getItem("tmr-pendiente") || "null"); } catch(e){}
+      if(p && p.nombre && p.nombre.trim()){
+        return sb.rpc("tmr_registrar_perfil", { p_nombre:p.nombre, p_ciudad:p.ciudad || null, p_telefono:p.telefono || null })
+          .then(function(r){
+            if(r.error) throw r.error;
+            try { localStorage.removeItem("tmr-pendiente"); } catch(e){}
+            return cuenta().then(function(c2){ perfilCache = c2.perfil; pintaBoton({ user:{} }); pintaCuenta(c2); abreEscucha(); });
+          });
+      }
+      pintaPerfil();
+    }).catch(function(e){ pintaAuth("entrar", enEspanol(e)); });
+  }
+
+  var cuenta = function(){
+    return cliente().then(function(c){
+      return c.rpc("tmr_mi_cuenta").then(function(r){
+        if(r.error) throw r.error;
+        return r.data || {};
+      });
+    });
+  };
+
+  /* ---------- Falta la ficha ---------- */
+  function pintaPerfil(msg){
+    cuerpo.innerHTML =
+      '<h2>Falta un dato</h2>' +
+      '<p class="sub">Solo tu nombre, para saber cómo saludarte al aire.</p>' +
+      (msg ? '<p class="aviso">' + esc(msg) + '</p>' : '') +
+      '<form id="fPerf"><div class="campos">' +
+        '<label class="campo"><span>Nombre</span><input name="nombre" type="text" autocomplete="name" required></label>' +
+        '<div class="fila2">' +
+          '<label class="campo"><span>Ciudad</span><input name="ciudad" type="text" placeholder="Bogota"></label>' +
+          '<label class="campo"><span>WhatsApp</span><input name="telefono" type="tel" placeholder="+57 300 000 0000"></label>' +
+        '</div>' +
+      '</div><button class="btn btn-blanco btn-ancho" type="submit">Guardar</button></form>';
+
+    $("#fPerf", cuerpo).addEventListener("submit", function(ev){
+      ev.preventDefault();
+      var f = this, b = $("button[type=submit]", f);
+      if(!f.nombre.value.trim()) return pintaPerfil("Escribe tu nombre.");
+      b.disabled = true; b.textContent = "Guardando…";
+      sb.rpc("tmr_registrar_perfil", { p_nombre:f.nombre.value, p_ciudad:f.ciudad.value || null, p_telefono:f.telefono.value || null })
+        .then(function(r){
+          if(r.error) throw r.error;
+          return cuenta().then(function(c){ perfilCache = c.perfil; pintaBoton({ user:{} }); pintaCuenta(c); abreEscucha(); });
+        })
+        .catch(function(e){ pintaPerfil(enEspanol(e)); });
+    });
+  }
+
+  /* ---------- Panel de la cuenta ---------- */
+  function pintaCuenta(c, msg){
+    var nom = (c.perfil && c.perfil.nombre) ? c.perfil.nombre.split(" ")[0] : "oyente";
+    var min = Math.floor((c.segundos || 0) / 60);
+    cuerpo.innerHTML =
+      '<h2>Hola, ' + esc(nom) + '</h2>' +
+      '<p class="sub">Estos son tus beneficios por estar registrado.</p>' +
+      (msg ? '<p class="aviso bien">' + esc(msg) + '</p>' : '') +
+      '<div class="marcador">' +
+        '<div><b>' + min + '</b><span>Minutos oídos</span></div>' +
+        '<div><b>' + ((c.pedidos||[]).length + (c.saludos||[]).length) + '</b><span>Al aire</span></div>' +
+      '</div>' +
+      '<div class="ventajas">' +
+        '<button class="ventaja" type="button" data-ir="pedido">' +
+          '<span class="em" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg></span>' +
+          '<span><i>Pedir una canción</i><u>La ponemos si encaja con la hora</u></span>' +
+          '<span class="ir" aria-hidden="true">&rarr;</span>' +
+        '</button>' +
+        '<button class="ventaja" type="button" data-ir="saludo">' +
+          '<span class="em" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-7 7v3.5L3.5 16h17L19 12.5V9a7 7 0 0 0-7-7z"/><path d="M9.5 19a2.6 2.6 0 0 0 5 0"/></svg></span>' +
+          '<span><i>Mandar un saludo al aire</i><u>Matt o Roxie lo leen en su turno</u></span>' +
+          '<span class="ir" aria-hidden="true">&rarr;</span>' +
+        '</button>' +
+        '<button class="ventaja" type="button" data-ir="datos">' +
+          '<span class="em" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/></svg></span>' +
+          '<span><i>Mis datos</i><u>' + (c.perfil && c.perfil.telefono ? "WhatsApp registrado" : "Falta tu WhatsApp por si te buscamos") + '</u></span>' +
+          '<span class="ir" aria-hidden="true">&rarr;</span>' +
+        '</button>' +
+      '</div>' +
+      pintaLista("Tus pedidos", c.pedidos, function(p){ return p.cancion + (p.artista ? " · " + p.artista : ""); }) +
+      pintaLista("Tus saludos", c.saludos, function(s){ return s.texto; }) +
+      '<button class="salir" type="button" id="bSalir">Cerrar sesión</button>';
+
+    Array.prototype.forEach.call(cuerpo.querySelectorAll("[data-ir]"), function(b){
+      b.addEventListener("click", function(){
+        var d = b.getAttribute("data-ir");
+        if(d === "pedido") pintaPedido();
+        else if(d === "datos") pintaDatos(c);
+        else pintaSaludo();
+      });
+    });
+    $("#bSalir", cuerpo).addEventListener("click", function(){
+      cliente().then(function(x){ return x.auth.signOut(); }).then(function(){
+        perfilCache = null; cierraEscucha(); pintaBoton(null); cierra(); avisa("Sesión cerrada");
+      });
+    });
+  }
+
+  var ESTADOS = { pendiente:"En cola", programada:"Programada", al_aire:"Al aire", rechazada:"No entró", aprobado:"Aprobado", emitido:"Al aire" };
+  function pintaLista(titulo, arr, txt){
+    if(!arr || !arr.length) return "";
+    return '<p class="sub" style="margin:4px 0 9px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase">' + esc(titulo) + '</p>' +
+      '<ul class="listita">' + arr.slice(0, 4).map(function(o){
+        var e = String(o.estado || "");
+        return '<li' + ((e === "al_aire" || e === "emitido") ? ' class="aire"' : '') + '>' +
+               '<b>' + esc(txt(o)) + '</b><em>' + esc(ESTADOS[e] || e) + '</em></li>';
+      }).join("") + '</ul>';
+  }
+
+  /* ---------- Pedir canción ---------- */
+  function pintaPedido(msg){
+    cuerpo.innerHTML =
+      '<button class="volver-cuenta" type="button" data-volver>&larr; Mi cuenta</button>' +
+      '<h2>Pedir una canción</h2>' +
+      '<p class="sub">Puedes pedir hasta 3 por hora. Si encaja con la franja, entra.</p>' +
+      (msg ? '<p class="aviso">' + esc(msg) + '</p>' : '') +
+      '<form id="fPed"><div class="campos">' +
+        '<label class="campo"><span>Canción</span><input name="cancion" type="text" placeholder="Nombre de la canción" required></label>' +
+        '<label class="campo"><span>Artista</span><input name="artista" type="text" placeholder="Opcional"></label>' +
+        '<label class="campo"><span>Nota</span><textarea name="nota" placeholder="Opcional: por qué la pides, para quién…" maxlength="240"></textarea></label>' +
+      '</div><button class="btn btn-blanco btn-ancho" type="submit">Enviar pedido</button></form>';
+    atras();
+    $("#fPed", cuerpo).addEventListener("submit", function(ev){
+      ev.preventDefault();
+      var f = this, b = $("button[type=submit]", f);
+      if(!f.cancion.value.trim()) return pintaPedido("Escribe el nombre de la canción.");
+      b.disabled = true; b.textContent = "Enviando…";
+      sb.auth.getUser().then(function(u){
+        return sb.from("tmr_pedidos").insert({
+          oyente_id: u.data.user.id,
+          cancion: f.cancion.value,
+          artista: f.artista.value || null,
+          nota: f.nota.value || null
+        });
+      }).then(function(r){
+        if(r.error) throw r.error;
+        return cuenta().then(function(c){ pintaCuenta(c, "Pedido enviado. Queda en cola."); });
+      }).catch(function(e){ pintaPedido(enEspanol(e)); });
+    });
+  }
+
+  /* ---------- Mandar saludo ---------- */
+  function pintaSaludo(msg){
+    cuerpo.innerHTML =
+      '<button class="volver-cuenta" type="button" data-volver>&larr; Mi cuenta</button>' +
+      '<h2>Mandar un saludo</h2>' +
+      '<p class="sub">Matt o Roxie lo leen en su turno. Hasta 5 por hora.</p>' +
+      (msg ? '<p class="aviso">' + esc(msg) + '</p>' : '') +
+      '<form id="fSal"><div class="campos">' +
+        '<label class="campo"><span>Para quién</span><input name="para" type="text" placeholder="Opcional: un nombre, un barrio, un parche"></label>' +
+        '<label class="campo"><span>Tu saludo</span><textarea name="texto" placeholder="Escríbelo como quieres que suene al aire" maxlength="240" required></textarea></label>' +
+      '</div><button class="btn btn-blanco btn-ancho" type="submit">Enviar saludo</button></form>';
+    atras();
+    $("#fSal", cuerpo).addEventListener("submit", function(ev){
+      ev.preventDefault();
+      var f = this, b = $("button[type=submit]", f);
+      if(!f.texto.value.trim()) return pintaSaludo("Escribe el saludo.");
+      b.disabled = true; b.textContent = "Enviando…";
+      sb.auth.getUser().then(function(u){
+        return sb.from("tmr_saludos").insert({
+          oyente_id: u.data.user.id,
+          texto: f.texto.value.trim().slice(0, 240),
+          para: f.para.value.trim() || null
+        });
+      }).then(function(r){
+        if(r.error) throw r.error;
+        return cuenta().then(function(c){ pintaCuenta(c, "Saludo enviado. Entra a la cola de locución."); });
+      }).catch(function(e){ pintaSaludo(enEspanol(e)); });
+    });
+  }
+
+  /* ---------- Mis datos ---------- */
+  function pintaDatos(c, msg){
+    var p = (c && c.perfil) || {};
+    cuerpo.innerHTML =
+      '<button class="volver-cuenta" type="button" data-volver>&larr; Mi cuenta</button>' +
+      '<h2>Mis datos</h2>' +
+      '<p class="sub">Con el WhatsApp te avisamos si ganas algo. Solo lo vemos nosotros.</p>' +
+      (msg ? '<p class="aviso">' + esc(msg) + '</p>' : '') +
+      '<form id="fDat"><div class="campos">' +
+        '<label class="campo"><span>Nombre</span><input name="nombre" type="text" value="' + esc(p.nombre || "") + '" required></label>' +
+        '<label class="campo"><span>Ciudad</span><input name="ciudad" type="text" value="' + esc(p.ciudad || "") + '" placeholder="Bogota"></label>' +
+        '<label class="campo"><span>WhatsApp</span><input name="telefono" type="tel" value="' + esc(p.telefono || "") + '" placeholder="+57 300 000 0000"></label>' +
+      '</div><button class="btn btn-blanco btn-ancho" type="submit">Guardar</button></form>';
+    atras();
+    $("#fDat", cuerpo).addEventListener("submit", function(ev){
+      ev.preventDefault();
+      var f = this, b = $("button[type=submit]", f);
+      var nom = f.nombre.value.trim();
+      if(nom.length < 2) return pintaDatos(c, "El nombre necesita al menos 2 letras.");
+      // El telefono va limpio: la tabla exige entre 7 y 20 caracteres, o nada.
+      var tel = f.telefono.value.replace(/[^0-9+]/g, "").slice(0, 20);
+      if(tel && tel.length < 7) return pintaDatos(c, "Ese numero esta incompleto.");
+      b.disabled = true; b.textContent = "Guardando\u2026";
+      sb.auth.getUser().then(function(u){
+        return sb.from("tmr_oyentes").update({
+          nombre: nom.slice(0, 80),
+          ciudad: f.ciudad.value.trim().slice(0, 80) || null,
+          telefono: tel || null
+        }).eq("id", u.data.user.id);
+      }).then(function(r){
+        if(r.error) throw r.error;
+        return cuenta().then(function(c2){
+          perfilCache = c2.perfil; pintaBoton({ user:{} });
+          pintaCuenta(c2, "Datos guardados.");
+        });
+      }).catch(function(e){ pintaDatos(c, enEspanol(e)); });
+    });
+  }
+
+  function atras(){
+    var b = $("[data-volver]", cuerpo);
+    if(b) b.addEventListener("click", function(){ cuenta().then(function(c){ pintaCuenta(c); }); });
+  }
+
+  /* ---------- Minutos oídos ---------- */
+  var escucha = null, latidoT = null, abriendo = false, token = null;
+  var abreEscucha = function(){
+    var audio = $("#radio");
+    if(!sb || escucha || abriendo || !audio || audio.paused) return;
+    abriendo = true;
+    sb.auth.getUser().then(function(u){
+      if(!u || !u.data || !u.data.user){ abriendo = false; return; }
+      var enApp = window.matchMedia && matchMedia("(display-mode: standalone)").matches;
+      return sb.from("tmr_escuchas")
+        .insert({ oyente_id: u.data.user.id, origen: enApp ? "app" : "web" })
+        .select("id").single()
+        .then(function(r){
+          abriendo = false;
+          if(r.error || !r.data) return;
+          // Si pauso mientras se abria, la cierro de una.
+          var audio2 = $("#radio");
+          if(audio2 && audio2.paused){ escucha = r.data.id; cierraEscucha(); return; }
+          escucha = r.data.id;
+          latidoT = setInterval(latido, 60000);
+        });
+    }).catch(function(){ abriendo = false; });
+  };
+  var latido = function(){ if(sb && escucha) sb.rpc("tmr_latido", { p_escucha: escucha }).then(function(){}, function(){}); };
+
+  // El latido normal se cancela si el navegador cambia de pagina, y ahi se
+  // pierde lo que la persona alcanzo a oir. Este va con keepalive, que el
+  // navegador si deja terminar aunque la pestana ya se este cerrando.
+  // (sendBeacon no sirve: no deja poner la cabecera de autorizacion.)
+  var latidoFinal = function(){
+    if(!escucha || !token) return;
+    try {
+      fetch(SB_URL + "/rest/v1/rpc/tmr_latido", {
+        method: "POST",
+        keepalive: true,
+        headers: {
+          "apikey": SB_KEY,
+          "Authorization": "Bearer " + token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ p_escucha: escucha })
+      }).catch(function(){});
+    } catch(e){}
+  };
+
+  var cierraEscucha = function(){
+    if(latidoT){ clearInterval(latidoT); latidoT = null; }
+    latidoFinal();
+    escucha = null;
+  };
+
+  var audio = $("#radio");
+  if(audio){
+    audio.addEventListener("play",  function(){ if(sb) abreEscucha(); });
+    audio.addEventListener("pause", cierraEscucha);
+    audio.addEventListener("ended", cierraEscucha);
+  }
+  window.addEventListener("pagehide", cierraEscucha);
+  // Oculta no es lo mismo que cerrada: en el celular la radio sigue sonando,
+  // asi que aseguramos lo acumulado pero dejamos la escucha abierta.
+  document.addEventListener("visibilitychange", function(){ if(document.hidden) latidoFinal(); });
+
+  /* ---------- Arranque ---------- */
+  boton.addEventListener("click", function(){
+    abre();
+    cargandoHoja("Un momento");
+    cliente().then(function(c){
+      return c.auth.getSession().then(function(r){
+        if(r.data && r.data.session) return trasEntrar();
+        pintaAuth("crear");
+      });
+    }).catch(function(e){
+      cuerpo.innerHTML = '<h2>Sin conexión</h2><p class="sub">No pude cargar el registro. Revisa tu conexión e inténtalo otra vez.</p>';
+    });
+  });
+
+  // Arranca solo en dos casos: ya hay sesion guardada, o venimos del enlace
+  // de confirmacion del correo (trae ?code= / #access_token y hay que canjearlo).
+  var vueltaDeCorreo = /[?&#](code|token_hash|access_token|error_code)=/.test(location.search + location.hash);
+  try {
+    if(localStorage.getItem("tmr-sesion") || vueltaDeCorreo){
+      cliente().then(function(c){
+        return c.auth.getSession().then(function(r){
+          if(r.data && r.data.session){
+            pintaBoton(r.data.session);
+            if(vueltaDeCorreo){
+              // Limpia el enlace para que no quede el codigo en la barra.
+              try { history.replaceState(null, "", location.pathname); } catch(e){}
+              abre(); cargandoHoja("Cuenta confirmada"); trasEntrar();
+            } else {
+              cuenta().then(function(c2){ perfilCache = c2.perfil; pintaBoton(r.data.session); abreEscucha(); }).catch(function(){});
+            }
+          } else if(vueltaDeCorreo){
+            try { history.replaceState(null, "", location.pathname); } catch(e){}
+            abre(); pintaAuth("entrar", "Confirmaste tu correo. Entra con tu contrase\u00f1a.", true);
+          }
+        });
+      }).catch(function(){});
+    }
+  } catch(e){}
+})();
+</script>
+
+<script>
+/* TripMind Radio · Pantalla de carga + morph (addon)
+   Al terminar, el logo de la carga "viaja" hasta el elemento destino.
+   Destino: el primer elemento con [data-tm-morph], o #heroLogo. Si no hay destino, solo se desvanece.
+   Para que el destino muestre el mismo logo vectorial usa:
+   <div data-tm-morph style="aspect-ratio:1"><svg class="logo-svg" role="img" aria-label="TripMind Radio"><use href="#tm-logo"/></svg></div>
+   Evento al terminar: window "tm:listo". */
+(function(){
+  var $ = function(s, r){ return (r || document).querySelector(s); }, $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(!$("#loader")) return;
+  // Solo una vez por sesión (quita estas 2 líneas si la quieres siempre)
+  try { if(sessionStorage.getItem("tmLoader")){ $("#loader").remove(); document.documentElement.classList.add("listo"); window.dispatchEvent(new Event("tm:listo")); return; } sessionStorage.setItem("tmLoader","1"); } catch(e){}
+  document.body.classList.add("cargando");
+  var frec = $("#ldFrec"), barra = $("#ldBarra"), estado = $("#ldEstado"), prog = 0, listoFonts = false, minimo = false;
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function(){ listoFonts = true; });
+  setTimeout(function(){ listoFonts = true; }, 3500);
+  setTimeout(function(){ minimo = true; }, reduce ? 300 : 2900);
+  var tick = setInterval(function(){
+    var meta = (listoFonts && minimo) ? 100 : Math.min(92, prog + 6);
+    prog += Math.max(0.6, (meta - prog) * 0.12); if(prog > 100) prog = 100;
+    barra.style.width = prog + "%";
+    frec.firstChild.nodeValue = (87.5 + prog / 100 * 20.5).toFixed(1);
+    if(prog > 60) estado.textContent = "Señal encontrada";
+    if(prog >= 99.5){ clearInterval(tick); frec.firstChild.nodeValue = "108.0"; estado.textContent = "Al aire"; setTimeout(morph, 380); }
+  }, 60);
+
+  function fin(){ window.dispatchEvent(new Event("tm:listo")); }
+  function morph(){
+    var src = $("#ldLogo svg"), dst = $("[data-tm-morph]") || $("#heroLogo");
+    ["#onda1", "#onda2"].forEach(function(s, i){ setTimeout(function(){ var o = $(s); if(o) o.classList.add("va"); }, i * 180); });
+    $("#loader").classList.add("fuera");
+    document.body.classList.remove("cargando");
+    window.scrollTo(0, 0);
+    if(!dst || !dst.getBoundingClientRect().width){
+      document.documentElement.classList.add("listo");
+      setTimeout(function(){ $("#loader").remove(); fin(); }, 1100); return;
+    }
+    var a = src.getBoundingClientRect();
+    var clone = src.cloneNode(true); clone.id = "viajero"; clone.setAttribute("class", "logo-svg");
+    clone.style.cssText = "position:fixed;z-index:102;pointer-events:none;left:" + a.left + "px;top:" + a.top + "px;width:" + a.width + "px;height:" + a.height + "px;transform-origin:0 0";
+    $$(".anillo, .letras, .palabra", clone).forEach(function(e){ e.style.animation = "none"; e.style.opacity = 1; e.style.strokeDashoffset = 0; e.style.filter = "none"; e.style.transform = "none"; });
+    document.body.appendChild(clone);
+    src.style.visibility = "hidden";
+    dst.style.opacity = 0;
+    requestAnimationFrame(function(){
+      document.documentElement.classList.add("listo");
+      var b = dst.getBoundingClientRect(), s = b.width / a.width, dx = b.left - a.left, dy = b.top - a.top;
+      var anim = clone.animate([
+        { transform: "translate(0,0) scale(1)", filter: "blur(0px)" },
+        { transform: "translate(" + (dx * .55) + "px," + (dy * .4) + "px) scale(" + (1 + (s - 1) * .5) + ")", filter: "blur(1.5px)", offset: .45 },
+        { transform: "translate(" + dx + "px," + dy + "px) scale(" + s + ")", filter: "blur(0px)" }
+      ], { duration: reduce ? 10 : 1500, easing: "cubic-bezier(.65,0,.25,1)", fill: "forwards" });
+      anim.onfinish = function(){ dst.style.transition = "opacity .5s"; dst.style.opacity = 1; setTimeout(function(){ clone.style.transition = "opacity .5s"; clone.style.opacity = 0; setTimeout(function(){ clone.remove(); $("#loader").remove(); fin(); }, 520); }, 60); };
+    });
+  }
+})();
+</script>
+<script>
+/* ===== Patrocinios =====
+   Para publicar un patrocinador, agrega una entrada a la lista de abajo.
+     nombre : obligatorio. Se usa como texto alternativo del logo.
+     logo   : opcional. Ruta a la imagen (SVG o PNG con fondo transparente).
+              Se dibuja a 24 px de alto; ancho libre hasta 104 px.
+     url    : opcional. Sin url la marca se muestra pero no es enlace.
+   Con la lista vacia la banda queda oculta: no se ve un hueco en la pagina.
+   Ejemplo:
+     { nombre:"Ratonera", logo:"assets/img/patro-ratonera.svg", url:"https://ratonera.co" }
+*/
+var TM_PATROCINIOS = [
+];
+
+(function(){
+  var banda = document.getElementById("bannerPatro");
+  var caja  = document.getElementById("bpMarcas");
+  if(!banda || !caja) return;
+  var lista = (typeof TM_PATROCINIOS !== "undefined" && TM_PATROCINIOS) ? TM_PATROCINIOS : [];
+  if(!lista.length) return;              // sin patrocinadores, la banda no aparece
+
+  lista.forEach(function(p){
+    if(!p || !p.nombre) return;
+    var nodo = document.createElement(p.url ? "a" : "span");
+    nodo.className = "bp-marca";
+    if(p.url){ nodo.href = p.url; nodo.target = "_blank"; nodo.rel = "sponsored noopener noreferrer"; }
+    if(p.logo){
+      var img = document.createElement("img");
+      img.src = p.logo; img.alt = p.nombre;
+      img.loading = "lazy"; img.decoding = "async";
+      nodo.appendChild(img);
+    } else {
+      var t = document.createElement("span");
+      t.textContent = p.nombre;
+      nodo.appendChild(t);
+    }
+    caja.appendChild(nodo);
+  });
+  banda.hidden = false;
+})();
+</script>
+<script>
+/* ===== Donde mas se escucha TripMind Radio =====
+   Agrega una plataforma SOLO cuando el alta ya este aprobada y la pagina exista.
+   Anunciar una plataforma antes de tiempo manda al oyente a un enlace muerto.
+     nombre : como se muestra. Obligatorio.
+     url    : la pagina de la emisora en esa plataforma. Opcional.
+   Con la lista vacia la banda queda oculta.
+   Ejemplo:
+     { nombre:"Streema", url:"https://streema.com/radios/TripMind_Radio" }
+*/
+var TM_PLATAFORMAS = [
+];
+
+(function(){
+  var banda = document.getElementById("bannerPlat");
+  var caja  = document.getElementById("bqSitios");
+  if(!banda || !caja) return;
+  var lista = (typeof TM_PLATAFORMAS !== "undefined" && TM_PLATAFORMAS) ? TM_PLATAFORMAS : [];
+  if(!lista.length) return;
+
+  lista.forEach(function(p){
+    if(!p || !p.nombre) return;
+    var nodo = document.createElement(p.url ? "a" : "span");
+    nodo.className = "bq-sitio";
+    nodo.textContent = p.nombre;
+    if(p.url){ nodo.href = p.url; nodo.target = "_blank"; nodo.rel = "noopener noreferrer"; }
+    caja.appendChild(nodo);
+  });
+  banda.hidden = false;
+})();
+</script>
+<script>
+/* ===== La parrilla =====
+   Cinco franjas fijas. Marca la que esta al aire AHORA en Bogota,
+   no en la hora del visitante: si alguien oye desde Madrid, el
+   programa al aire sigue siendo el de aca. */
+(function(){
+  var caja = document.getElementById("bp2Pistas");
+  if(!caja) return;
+
+  var PROGRAMAS = [
+    { nombre:"El Arranque",        desde:4,  hasta:8,  horas:"4a\u20138a"  },
+    { nombre:"TripMind Brunch",    desde:8,  hasta:12, horas:"8a\u201312m" },
+    { nombre:"El Tardeo",          desde:12, hasta:18, horas:"12m\u20136p" },
+    { nombre:"Back Home With Us",  desde:18, hasta:24, horas:"6p\u201312a" },
+    { nombre:"Melodic Nights",     desde:0,  hasta:4,  horas:"12a\u20134a"  }
+  ];
+
+  function horaBogota(){
+    try{
+      var f = new Intl.DateTimeFormat("en-GB", { timeZone:"America/Bogota", hour:"2-digit", hour12:false });
+      return parseInt(f.format(new Date()), 10);
+    }catch(e){
+      var d = new Date();
+      return (d.getUTCHours() + 19) % 24;   /* Bogota = UTC-5, sin horario de verano */
+    }
+  }
+
+  var nodos = PROGRAMAS.map(function(p){
+    var el = document.createElement("div");
+    el.className = "bp2-prog";
+    var b = document.createElement("b"); b.textContent = p.nombre;
+    var i = document.createElement("i"); i.textContent = p.horas;
+    el.appendChild(b); el.appendChild(i);
+    caja.appendChild(el);
+    return el;
+  });
+
+  function pintar(){
+    var h = horaBogota(), activo = -1;
+    PROGRAMAS.forEach(function(p, n){
+      if(h >= p.desde && h < p.hasta) activo = n;
+    });
+    nodos.forEach(function(el, n){
+      var vivo = (n === activo);
+      el.classList.toggle("vivo", vivo);
+      if(vivo){ el.setAttribute("aria-current","true"); } else { el.removeAttribute("aria-current"); }
+    });
+    if(activo >= 0 && nodos[activo].scrollIntoView){
+      try{ nodos[activo].scrollIntoView({ inline:"center", block:"nearest" }); }catch(e){}
+    }
+  }
+
+  pintar();
+  setInterval(pintar, 60000);
+})();
+</script>
+</body>
+</html>

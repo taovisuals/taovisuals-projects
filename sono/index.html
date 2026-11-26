@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Qué sonó · TripMind Radio</title>
+<meta name="description" content="Lo que acaba de sonar en TripMind Radio. Los sets y las voces, con la hora en que salieron al aire.">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="icon" href="../assets/icons/favicon-32.png" sizes="32x32">
+<link rel="canonical" href="https://tripmindradio.com/sono/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TripMind Radio">
+<meta property="og:locale" content="es_CO">
+<meta property="og:url" content="https://tripmindradio.com/sono/">
+<meta property="og:title" content="Qué sonó en TripMind Radio">
+<meta property="og:description" content="Lo que acaba de sonar, con la hora en que salió al aire.">
+<meta property="og:image" content="https://tripmindradio.com/assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Qué sonó en TripMind Radio">
+<meta name="twitter:image" content="https://tripmindradio.com/assets/img/og.jpg">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --negro:#0d0d0d; --superficie:#161616; --tinta:#fff; --tinta-suave:#a6a6a6;
+  --al-aire:#ff4d3d; --ease:cubic-bezier(.22,1,.36,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--negro);color:var(--tinta);font-family:"Montserrat",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.mono{font-weight:500;letter-spacing:.42em;text-transform:uppercase;font-size:11px}
+.envoltura{max-width:720px;margin:0 auto;padding:calc(30px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-left,0px)) calc(70px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--negro);z-index:9}
+
+.volver{display:inline-flex;align-items:center;gap:8px;margin-bottom:30px;font-size:13px;color:var(--tinta-suave);transition:color .25s}
+.volver:hover{color:var(--tinta)}
+h1{margin:0 0 6px;font-size:28px;font-weight:700;letter-spacing:-.02em}
+.intro{margin:0 0 34px;font-size:14.5px;line-height:1.6;color:var(--tinta-suave);max-width:46ch}
+
+.aire{position:relative;padding:22px;border:1px solid rgba(255,77,61,.22);border-radius:18px;background:rgba(255,77,61,.055);margin-bottom:34px}
+.aire .et{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--al-aire)}
+.aire .et i{width:7px;height:7px;border-radius:50%;background:currentColor;animation:late 1.8s ease-out infinite}
+@keyframes late{0%{box-shadow:0 0 0 0 rgba(255,77,61,.6)}70%{box-shadow:0 0 0 9px rgba(255,77,61,0)}100%{box-shadow:0 0 0 0 rgba(255,77,61,0)}}
+.aire b{display:block;font-size:21px;font-weight:700;line-height:1.3;letter-spacing:-.01em;overflow-wrap:anywhere}
+.aire span{display:block;margin-top:4px;font-size:14px;color:var(--tinta-suave)}
+.aire .oir{display:inline-flex;align-items:center;gap:9px;margin-top:18px;padding:11px 18px;border-radius:999px;background:#fff;color:#0d0d0d;font-size:14px;font-weight:700;transition:box-shadow .4s var(--ease),transform .4s var(--ease)}
+.aire .oir:hover{transform:translateY(-1px);box-shadow:0 12px 30px -10px rgba(255,255,255,.4)}
+
+h2{margin:0 0 15px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta-suave)}
+.lista{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.lista li{display:flex;gap:16px;align-items:baseline;padding:15px 17px;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:var(--superficie)}
+.lista .hora{flex:none;font-size:11px;font-weight:600;letter-spacing:.08em;color:#6a6a6a;font-variant-numeric:tabular-nums;min-width:62px}
+.lista .que{flex:1;min-width:0}
+.lista .que b{display:block;font-size:15px;font-weight:600;line-height:1.35;overflow-wrap:anywhere}
+.lista .que span{display:block;margin-top:2px;font-size:12.5px;color:var(--tinta-suave)}
+.nota{margin:28px 0 0;font-size:12.5px;line-height:1.6;color:#5e5e5e}
+.cargando{font-size:14px;color:#6a6a6a}
+@media (max-width:480px){
+  h1{font-size:24px}
+  .lista li{flex-direction:column;gap:5px}
+  .lista .hora{min-width:0}
+}
+</style>
+</head>
+<body>
+<div class="envoltura">
+  <a class="volver" href="../">&larr; TripMind Radio</a>
+  <h1>Qué sonó</h1>
+  <p class="intro">Los sets que acaban de pasar al aire, con la hora en que empezaron. Si oíste algo y no supiste qué era, está acá.</p>
+  <div id="cuerpo"><p class="cargando">Consultando la señal&hellip;</p></div>
+  <p class="nota">La hora es de Colombia. La lista guarda lo más reciente, así que si buscas algo de hace varias horas puede que ya no aparezca.</p>
+</div>
+
+<script>
+(function(){
+  var API = "https://panel.tripmindradio.com/api/nowplaying/tripmind_radio";
+  var cuerpo = document.getElementById("cuerpo");
+
+  var esc = function(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[c];
+    });
+  };
+  var hora = function(seg){
+    if(!seg) return "—";
+    try {
+      return new Intl.DateTimeFormat("es-CO", {
+        hour: "numeric", minute: "2-digit", hour12: true, timeZone: "America/Bogota"
+      }).format(new Date(seg * 1000));
+    } catch(e){ return "—"; }
+  };
+  var linea = function(s){
+    var t = (s.title || s.text || "").trim();
+    return t || "TripMind Radio";
+  };
+
+  function pinta(d){
+    var np = d.now_playing || {}, s = np.song || {};
+    var enVivo = d.live && d.live.is_live;
+    var titulo = enVivo ? (d.live.streamer_name ? "En vivo con " + d.live.streamer_name : "En vivo") : linea(s);
+    var sub = [s.artist, np.playlist].filter(Boolean).join(" · ");
+
+    var h = '<div class="aire">' +
+      '<div class="et"><i></i>' + (d.is_online === false ? "Fuera del aire" : "Sonando ahora") + '</div>' +
+      '<b>' + esc(titulo) + '</b>' +
+      (sub ? '<span>' + esc(sub) + '</span>' : '') +
+      '<a class="oir" href="../">' +
+        '<svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>' +
+        'Escuchar en vivo</a>' +
+    '</div>';
+
+    var hist = (d.song_history || []);
+    if(hist.length){
+      h += '<h2>Antes sonó</h2><ul class="lista">' + hist.map(function(x){
+        var xs = x.song || {};
+        var sub2 = [xs.artist, x.playlist].filter(Boolean).join(" · ");
+        return '<li><span class="hora">' + esc(hora(x.played_at)) + '</span>' +
+               '<span class="que"><b>' + esc(linea(xs)) + '</b>' +
+               (sub2 ? '<span>' + esc(sub2) + '</span>' : '') + '</span></li>';
+      }).join("") + '</ul>';
+    }
+    cuerpo.innerHTML = h;
+  }
+
+  function trae(){
+    fetch(API, { cache: "no-store" })
+      .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+      .then(pinta)
+      .catch(function(){
+        cuerpo.innerHTML = '<p class="cargando">No pude leer la señal ahora mismo. Vuelve a intentar en un momento.</p>';
+      });
+  }
+  trae();
+  setInterval(trae, 20000);
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden) trae(); });
+})();
+</script>
+</body>
+</html>
