@@ -1550,15 +1550,48 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
   setTimeout(function(){ listoFonts = true; }, 3500);
   setTimeout(function(){ minimo = true; }, reduce ? 300 : 2900);
   var tick = setInterval(function(){
-    var meta = (listoFonts && minimo) ? 100 : Math.min(92, prog + 6);
-    prog += Math.max(0.6, (meta - prog) * 0.12); if(prog > 100) prog = 100;
-    barra.style.width = prog + "%";
-    frec.firstChild.nodeValue = (87.5 + prog / 100 * 20.5).toFixed(1);
-    if(prog > 60) estado.textContent = "Señal encontrada";
-    if(prog >= 99.5){ clearInterval(tick); frec.firstChild.nodeValue = "108.0"; estado.textContent = "Al aire"; setTimeout(morph, 380); }
+    try {
+      var meta = (listoFonts && minimo) ? 100 : Math.min(92, prog + 6);
+      prog += Math.max(0.6, (meta - prog) * 0.12); if(prog > 100) prog = 100;
+      if(barra) barra.style.width = prog + "%";
+      if(frec && frec.firstChild) frec.firstChild.nodeValue = (87.5 + prog / 100 * 20.5).toFixed(1);
+      if(prog > 60 && estado) estado.textContent = "Señal encontrada";
+      if(prog >= 99.5){
+        clearInterval(tick);
+        if(frec && frec.firstChild) frec.firstChild.nodeValue = "108.0";
+        if(estado) estado.textContent = "Al aire";
+        setTimeout(morph, 380);
+      }
+    } catch(e){
+      // Antes esto reventaba cada 60 ms sin parar y nunca se llegaba a
+      // morph(), así que la pantalla de carga se quedaba puesta y no había
+      // forma de llegar al reproductor. Ahora corta y pasa de una.
+      clearInterval(tick); rescate();
+    }
   }, 60);
 
-  function fin(){ window.dispatchEvent(new Event("tm:listo")); }
+  var terminado = false;
+  function fin(){
+    if(terminado) return;
+    terminado = true;
+    window.dispatchEvent(new Event("tm:listo"));
+  }
+
+  // Red de seguridad. Pase lo que pase con las fuentes, con la animación del
+  // morph o con un elemento que no esté, a los 8 segundos la pantalla de
+  // carga se va. Nadie se queda mirando el loader sin poder darle play.
+  function rescate(){
+    if(terminado) return;
+    try { clearInterval(tick); } catch(e){}
+    document.body.classList.remove("cargando");
+    document.documentElement.classList.add("listo");
+    var l = $("#loader"); if(l) l.remove();
+    var v = $("#viajero"); if(v) v.remove();
+    var d = $("[data-tm-morph]") || $("#heroLogo");
+    if(d){ d.style.opacity = 1; d.style.visibility = "visible"; }
+    fin();
+  }
+  setTimeout(rescate, 8000);
   function morph(){
     var src = $("#ldLogo svg"), dst = $("[data-tm-morph]") || $("#heroLogo");
     ["#onda1", "#onda2"].forEach(function(s, i){ setTimeout(function(){ var o = $(s); if(o) o.classList.add("va"); }, i * 180); });
@@ -1584,7 +1617,9 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
         { transform: "translate(" + (dx * .55) + "px," + (dy * .4) + "px) scale(" + (1 + (s - 1) * .5) + ")", filter: "blur(1.5px)", offset: .45 },
         { transform: "translate(" + dx + "px," + dy + "px) scale(" + s + ")", filter: "blur(0px)" }
       ], { duration: reduce ? 10 : 1500, easing: "cubic-bezier(.65,0,.25,1)", fill: "forwards" });
-      anim.onfinish = function(){ dst.style.transition = "opacity .5s"; dst.style.opacity = 1; setTimeout(function(){ clone.style.transition = "opacity .5s"; clone.style.opacity = 0; setTimeout(function(){ clone.remove(); $("#loader").remove(); fin(); }, 520); }, 60); };
+      anim.onfinish = function(){ dst.style.transition = "opacity .5s"; dst.style.opacity = 1; setTimeout(function(){ clone.style.transition = "opacity .5s"; clone.style.opacity = 0; setTimeout(function(){ clone.remove(); var lo = $("#loader"); if(lo) lo.remove(); fin(); }, 520); }, 60); };
+      // Si onfinish no llega, el rescate limpia igual.
+      setTimeout(rescate, (reduce ? 10 : 1500) + 1400);
     });
   }
 })();
