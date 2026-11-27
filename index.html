@@ -302,6 +302,7 @@ footer.pie .marca .mini{width:34px;height:34px}
 .telemetria i{font-style:normal;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#6f6f6f}
 .telemetria b{font-size:12px;font-weight:600;color:var(--tinta);letter-spacing:.04em}
 .telemetria b.vivo{color:var(--al-aire)}
+@media (max-width:470px){.telemetria{flex-wrap:wrap}.telemetria span{flex:1 1 calc(50% - .5px);min-width:0}.telemetria span:nth-child(3){border-left:0}.telemetria span:nth-child(n+3){border-top:1px solid rgba(255,255,255,.07)}}
 
 /* ---------- Banner de locutores ---------- */
 .banner-loc{position:relative;z-index:2;display:flex;align-items:center;gap:13px;width:calc(100% - 32px);max-width:392px;margin:0 auto;padding:11px 14px 11px 11px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.02);text-decoration:none;color:inherit;transition:border-color .4s var(--ease),background .4s var(--ease),transform .4s var(--ease)}
@@ -585,6 +586,7 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
             <span><i>Señal</i><b id="tSenal">···</b></span>
             <span><i>Calidad</i><b id="tKbps">···</b></span>
             <span><i>Oyentes</i><b id="tOyentes">···</b></span>
+            <span><i>En línea</i><b id="tEnLinea">···</b></span>
           </div>
         </div>
       </div>
@@ -746,7 +748,13 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
     ponValor(s, vivo ? "Al aire" : "Fuera"); s.classList.toggle("vivo", vivo);
     var m = (d.station && d.station.mounts && d.station.mounts[0]) || null;
     ponValor(k, m && m.bitrate ? m.bitrate + " kbps" : "—");
-    var n = d.listeners && typeof d.listeners.current === "number" ? d.listeners.current : null;
+    // AzuraCast da tres numeros. "current" cuenta conexiones, y una conexion
+    // que ya se cerro sigue contada hasta que Icecast la recoge: por eso
+    // inflaba. "unique" agrupa por procedencia y es el que coincide con la
+    // lista real de conectados. Ese es el que mostramos.
+    var L = d.listeners || {};
+    var n = typeof L.unique === "number" ? L.unique
+          : (typeof L.current === "number" ? L.current : null);
     ponValor(o, n === null ? "—" : String(n));
   };
   var nowPlaying = function(){
@@ -1646,5 +1654,58 @@ var TM_PLATAFORMAS = [
   setInterval(pintar, 60000);
 })();
 </script>
+<script>
+/* ===== Gente en la pagina, de verdad =====
+   No es una estimacion ni un contador de visitas. Cada pestana abierta se
+   anuncia en un canal de Supabase Realtime y el servidor devuelve cuantas
+   hay. Cuando alguien cierra la pestana el websocket se cae y desaparece
+   del conteo sin que haya que limpiar nada.
+   Nada de esto toca la base de datos: la presencia vive solo en memoria.
+   El SDK se carga cuando el navegador ya esta libre, para no pesarle a la
+   pantalla de carga.                                                     */
+(function(){
+  var cel = document.getElementById("tEnLinea");
+  if(!cel || !window.WebSocket) return;
+
+  var SB_URL = "https://mbtroxbeyjqqqxqfdade.supabase.co";
+  var SB_KEY = "sb_publishable_e4i4OidvddMs1-eQ9GzvEA_nNFVTuQp";
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var pon = function(txt){
+    if(cel.textContent === txt) return;
+    cel.textContent = txt;
+    if(reduce) return;
+    cel.classList.remove("cambio"); void cel.offsetWidth; cel.classList.add("cambio");
+  };
+
+  // Un id por pestana. Dos pestanas del mismo computador cuentan como dos
+  // porque son dos pantallas abiertas, que es justo lo que dice el rotulo.
+  var yo = "p" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+
+  var arranca = function(){
+    import("https://esm.sh/@supabase/supabase-js@2").then(function(m){
+      var sb = m.createClient(SB_URL, SB_KEY, {
+        auth: { persistSession:false, autoRefreshToken:false, detectSessionInUrl:false }
+      });
+      var ch = sb.channel("tmr-presencia", { config: { presence: { key: yo } } });
+      var cuenta = function(){
+        try { pon(String(Object.keys(ch.presenceState()).length)); } catch(e){}
+      };
+      ch.on("presence", { event: "sync" },  cuenta)
+        .on("presence", { event: "join" },  cuenta)
+        .on("presence", { event: "leave" }, cuenta)
+        .subscribe(function(estado){
+          if(estado === "SUBSCRIBED") ch.track({ en: Date.now() });
+          else if(estado === "CHANNEL_ERROR" || estado === "TIMED_OUT") pon("—");
+        });
+      addEventListener("pagehide", function(){ try { ch.unsubscribe(); } catch(e){} });
+    }, function(){ pon("—"); });
+  };
+
+  if("requestIdleCallback" in window) requestIdleCallback(arranca, { timeout: 4000 });
+  else setTimeout(arranca, 1800);
+})();
+</script>
+
 </body>
 </html>
