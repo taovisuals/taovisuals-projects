@@ -148,6 +148,11 @@ header.top.scroll{border-bottom-color:#1d1d1d}
 .ico .i-pausa{opacity:0;transform:scale(.4) rotate(-90deg)}
 .sonando .ico .i-play{opacity:0;transform:scale(.4) rotate(90deg)}
 .sonando .ico .i-pausa{opacity:1;transform:none}
+.conectando .play-xl,.conectando .play-m{cursor:progress}
+.conectando .ico{opacity:.22}
+.conectando .play-xl::before{opacity:1;animation:girando .85s linear infinite;inset:6px;border-width:2px;border-color:rgba(13,13,13,.14);border-top-color:#0d0d0d}
+.conectando .play-xl::after{opacity:0;animation:none}
+@keyframes girando{to{transform:rotate(360deg)}}
 .ahora{display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:18px;background:var(--superficie);border:1px solid #1f1f1f;max-width:460px}
 .ahora .t{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
 .ahora .t b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -688,18 +693,77 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
   };
   var toast = function(msg){ var t = $("#toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toast._t); toast._t = setTimeout(function(){ t.classList.remove("on"); }, 2600); };
   var setPlaying = function(v){ playing = v; document.body.classList.toggle("sonando", v); $$("[data-play]").forEach(function(b){ b.setAttribute("aria-label", v ? "Pausar la radio" : "Reproducir la radio"); }); if(window.__tmWidgetSync) window.__tmWidgetSync(); };
+  // Antes "playing" era una variable aparte de lo que el <audio> estaba
+  // haciendo de verdad. Si la señal se caía o el sistema pausaba el audio,
+  // la variable quedaba en true, el botón mostraba pausa sin sonar nada y
+  // había que darle dos veces. Y mientras conectaba, cada toque nuevo
+  // reasignaba el src y abortaba la conexión que estaba por lograrse: de ahi
+  // que se quedara trabado. Ahora la verdad la manda el elemento.
+  var conectando = false, reintentos = 0, relojCon = null;
+
+  var setConectando = function(v){
+    conectando = v;
+    document.body.classList.toggle("conectando", v);
+    clearTimeout(relojCon);
+    if(!v) return;
+    // Si en 12 segundos no arrancó, lo suelto y aviso. Nunca queda trabado.
+    relojCon = setTimeout(function(){
+      if(!conectando) return;
+      setConectando(false);
+      try { audio.pause(); audio.removeAttribute("src"); audio.load(); } catch(e){}
+      setPlaying(false);
+      toast("La señal no responde. Intenta otra vez.");
+    }, 12000);
+  };
+
+  var conectar = function(){
+    // Un parámetro distinto cada vez, para que el navegador no reutilice una
+    // conexión muerta de un reinicio anterior de la emisora.
+    audio.src = STREAM_URL + (STREAM_URL.indexOf("?") < 0 ? "?" : "&") + "t=" + Date.now();
+    audio.volume = $("#vol").value / 100;
+    setConectando(true);
+    audio.play().then(function(){
+      // No marco "sonando" aquí: eso lo hace el evento playing, que es cuando
+      // de verdad está saliendo sonido por el parlante.
+    }, function(e){
+      // AbortError sale cuando el usuario tocó otra vez o cambiamos el src.
+      // No es una falla de la señal y no merece aviso.
+      if(e && e.name === "AbortError") return;
+      setConectando(false); setPlaying(false);
+      toast("No se pudo conectar con la señal");
+    });
+  };
+
   var toggle = function(){
-    if(!playing){
-      loopFade(0, 900);
-      var go = function(){
-        audio.src = STREAM_URL; audio.volume = $("#vol").value / 100;
-        audio.play().then(function(){ setPlaying(true); }, function(){ toast("No se pudo conectar con la señal"); });
-      };
-      if(STREAM_URL) go();
-      else nowPlaying().then(function(){ if(STREAM_URL) go(); else { loop.play().catch(function(){}); loopFade(loopTarget, 900); toast("La señal todavía no está al aire"); } }, function(){ loop.play().catch(function(){}); loopFade(loopTarget, 900); toast("Sin conexión con la señal"); });
-    } else { audio.pause(); audio.removeAttribute("src"); audio.load(); setPlaying(false); }
+    if(conectando) return;                       // los toques de más se ignoran
+    if(!audio.paused){
+      audio.pause(); audio.removeAttribute("src"); audio.load(); setPlaying(false);
+      return;
+    }
+    loopFade(0, 900);
+    reintentos = 0;
+    if(STREAM_URL) conectar();
+    else nowPlaying().then(function(){
+      if(STREAM_URL) conectar();
+      else { loop.play().catch(function(){}); loopFade(loopTarget, 900); toast("La señal todavía no está al aire"); }
+    }, function(){ loop.play().catch(function(){}); loopFade(loopTarget, 900); toast("Sin conexión con la señal"); });
   };
   $$("[data-play]").forEach(function(b){ b.addEventListener("click", toggle); });
+
+  // El estado del botón lo dicta el elemento de audio, no una variable nuestra.
+  audio.addEventListener("playing", function(){ reintentos = 0; setConectando(false); setPlaying(true); });
+  audio.addEventListener("pause",   function(){ setConectando(false); setPlaying(false); });
+  audio.addEventListener("waiting", function(){ if(!audio.paused) setConectando(true); });
+  audio.addEventListener("stalled", function(){ if(!audio.paused) setConectando(true); });
+  audio.addEventListener("error", function(){
+    if(!audio.getAttribute("src")) return;       // lo apagamos nosotros, no es falla
+    setConectando(false);
+    if(reintentos >= 1){ setPlaying(false); toast("Se cayó la señal"); return; }
+    reintentos++;
+    // Puede ser que la emisora se reinició y la dirección cambió: un reintento.
+    nowPlaying().then(function(){ if(STREAM_URL) conectar(); else setPlaying(false); },
+                      function(){ setPlaying(false); });
+  });
   var vol = $("#vol"); var setVol = function(){ vol.style.setProperty("--v", vol.value + "%"); audio.volume = vol.value / 100; }; vol.addEventListener("input", setVol); setVol();
   $$("[data-instalar]").forEach(function(b){ b.addEventListener("click", function(){ if(window.__tmInstall){ window.__tmInstall.prompt(); } else toast(isIOS ? "En iPhone: Compartir → Agregar a inicio" : "Usa el menú del navegador → Instalar app"); }); });
   window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); window.__tmInstall = e; });
