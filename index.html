@@ -862,6 +862,31 @@ body.en-carro{overflow:hidden}
     var recordado = false; try { recordado = localStorage.getItem("tmr-carro") === "1"; } catch(e){}
     if(recordado || /[?&]modo=carro/.test(location.search)) pon(true, false);
   })();
+
+  /* ---------- Teclado (PC y controles remotos de TV) ----------
+     Espacio o K: play/pausa. Flechas arriba/abajo: volumen. M: silencio. F: modo carro. */
+  (function(){
+    var antes = null;
+    document.addEventListener("keydown", function(e){
+      if(e.ctrlKey || e.metaKey || e.altKey || e.repeat && (e.key === " " || e.key === "k")) return;
+      var t = e.target, tag = t && t.tagName ? t.tagName : "";
+      if(/^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (t && t.isContentEditable)) return;
+      var hoja = document.querySelector(".hoja.vista"); if(hoja) return;
+      var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if(k === " " || k === "k"){
+        if(k === " " && /^(BUTTON|A)$/.test(tag)) return;   // el espacio ya activa el boton enfocado
+        e.preventDefault(); var b = document.querySelector("[data-play]"); if(b) b.click();
+      } else if(k === "ArrowUp" || k === "ArrowDown"){
+        e.preventDefault(); vol.value = Math.max(0, Math.min(100, parseInt(vol.value, 10) + (k === "ArrowUp" ? 5 : -5))); setVol();
+      } else if(k === "m"){
+        if(antes === null){ antes = vol.value; vol.value = 0; } else { vol.value = antes; antes = null; }
+        setVol();
+      } else if(k === "f"){
+        var c = document.getElementById("carro");
+        var x = document.getElementById(c && !c.hidden ? "carroSalir" : "btnCarro"); if(x) x.click();
+      }
+    });
+  })();
   $$("[data-instalar]").forEach(function(b){ b.addEventListener("click", function(){ if(window.__tmInstall){ window.__tmInstall.prompt(); } else toast(isIOS ? "En iPhone: Compartir → Agregar a inicio" : "Usa el menú del navegador → Instalar app"); }); });
   window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); window.__tmInstall = e; });
 
