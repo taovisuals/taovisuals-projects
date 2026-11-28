@@ -400,6 +400,8 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
 .btn-cmp:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.26)}
 .btn-cmp:active{transform:scale(.96)}
 .btn-cmp svg{flex:none}
+.atajos{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.en-widget .atajos{display:none}
 .pie-nav{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:11px}
 .pie-nav a{font-size:12.5px;color:#6a6a6a;transition:color .25s var(--ease)}
 .pie-nav a:hover{color:var(--tinta)}
@@ -584,6 +586,16 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
             <button class="btn-cmp" type="button" id="btnCompartir" aria-label="Compartir lo que suena">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8 15.7 6.5M8.3 13.2l7.4 4.3"/></svg>
               Compartir
+            </button>
+          </div>
+          <div class="atajos entra" style="transition-delay:.38s">
+            <button class="btn-cmp" type="button" data-atajo="pedido">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>
+              Pedir canci&oacute;n
+            </button>
+            <button class="btn-cmp" type="button" data-atajo="saludo">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 20.5l1.7-5.2A8.4 8.4 0 1 1 21 11.5z"/></svg>
+              Mandar saludo
             </button>
           </div>
 
@@ -821,18 +833,42 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
           : (typeof L.current === "number" ? L.current : null);
     ponValor(o, n === null ? "—" : String(n));
   };
+  /* Los sets llegan con nombre de archivo ("tripmind radio set antr brunch").
+     Aqui se vuelven algo que se pueda leer al aire: "Set de Another". */
+  var ALIAS = { antr:"Another", anotr:"Another" };
+  var RUIDO = /^(tripmind|radio|set|sets|mix|brunch|tardeo|arranque|melodic|nights?|back|home|with|us|bhw|el|la|de|del)$/;
+  var capital = function(x){ return x.toLowerCase().replace(/(^|[\s\-])([a-zà-ÿ])/g, function(m, a, b){ return a + b.toUpperCase(); }); };
+  var limpia = function(song, playlist){
+    song = song || {};
+    var t = (song.title || "").trim(), a = (song.artist || "").trim();
+    var prog = (playlist || "").replace(/^m[uú]sica\s+/i, "");
+    if(/^brunch$/i.test(prog)) prog = "TripMind Brunch";
+    if(!(/\bset\b/i.test(t) || /^tripmind/i.test(t))){
+      return { t: t || "TripMind Radio", a: [a, prog].filter(Boolean).join(" · ") || "TripMind Radio", n: t };
+    }
+    var quien = a;
+    if(!quien){
+      quien = t.toLowerCase().replace(/[_\-.]+/g, " ").split(/\s+/)
+        .filter(function(w){ return w && !RUIDO.test(w); })
+        .map(function(w){ return ALIAS[w] || w; }).join(" ");
+    }
+    quien = quien ? (ALIAS[quien.toLowerCase()] || capital(quien)) : "";
+    return { t: quien ? "Set de " + quien : "TripMind en set", a: prog || "TripMind Radio", n: quien };
+  };
   var nowPlaying = function(){
     return fetch(PANEL + "/api/nowplaying/" + STATION_ID, { cache: "no-store" })
       .then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
       .then(function(d){
         var np = d.now_playing || {}, song = np.song || {}, live = d.live && d.live.is_live;
         if(d.station && d.station.listen_url) STREAM_URL = d.station.listen_url;
-        var titulo = live ? (d.live.streamer_name ? "En vivo con " + d.live.streamer_name : "En vivo") : (song.title || "TripMind Radio");
-        var artista = live ? "TripMind Radio" : [song.artist, np.playlist].filter(Boolean).join(" · ") || "TripMind Radio";
+        var c = limpia(song, np.playlist);
+        var sig = (!live && d.playing_next) ? limpia(d.playing_next.song, d.playing_next.playlist) : null;
+        var titulo = live ? (d.live.streamer_name ? "En vivo con " + d.live.streamer_name : "En vivo") : c.t;
+        var artista = live ? "TripMind Radio" : c.a + (sig && sig.n ? " \u00b7 Luego: " + sig.n : "");
         setNow(titulo, artista);
         telemetria(d);
         if("mediaSession" in navigator && window.MediaMetadata){
-          navigator.mediaSession.metadata = new MediaMetadata({ title: titulo, artist: artista, album: "TripMind Radio", artwork: [{ src: "assets/icons/icon-512.png", sizes: "512x512", type: "image/png" }] });
+          navigator.mediaSession.metadata = new MediaMetadata({ title: titulo, artist: artista, album: "TripMind Radio", artwork: (song.art ? [{ src: song.art, sizes: "512x512" }] : []).concat([{ src: "assets/icons/icon-512.png", sizes: "512x512", type: "image/png" }]) });
         }
       });
   };
@@ -840,6 +876,7 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
   setInterval(function(){ nowPlaying().catch(function(){}); }, 15000);
   if("mediaSession" in navigator){
     try { navigator.mediaSession.setActionHandler("play", toggle); navigator.mediaSession.setActionHandler("pause", toggle); } catch(e){}
+    try { navigator.mediaSession.setActionHandler("stop", function(){ if(!audio.paused) toggle(); }); } catch(e){}
   }
 
   // ---------- Música de la pantalla de carga (loop suave) ----------
@@ -1427,6 +1464,17 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
     var b = $("[data-volver]", cuerpo);
     if(b) b.addEventListener("click", function(){ cuenta().then(function(c){ pintaCuenta(c); }); });
   }
+
+  /* ---------- Atajos a la vista: pedir y saludar ----------
+     Estaban escondidos dentro de "Mi cuenta" y nadie los encontraba. */
+  document.addEventListener("click", function(e){
+    var b = e.target.closest("[data-atajo]");
+    if(!b) return;
+    var d = b.getAttribute("data-atajo");
+    abre();
+    if(perfilCache){ if(d === "pedido") pintaPedido(); else pintaSaludo(); }
+    else pintaAuth("crear", d === "pedido" ? "Crea tu cuenta gratis y pide tu canci\u00f3n." : "Crea tu cuenta gratis y manda tu saludo.", true);
+  });
 
   /* ---------- Minutos oídos ---------- */
   var escucha = null, latidoT = null, abriendo = false, token = null;
