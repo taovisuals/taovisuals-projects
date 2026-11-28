@@ -421,6 +421,26 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
 .carro-pie img{width:clamp(64px,15vh,120px);height:auto;border-radius:10px;flex:none}
 body.en-carro{overflow:hidden}
 .pill-aire{white-space:nowrap;flex:none}
+/* ===== Celular: todo en una sola pantalla =====
+   Sin barra inferior (repetia el titulo y el play que ya estan arriba), la
+   caratula ocupa solo el alto que sobra y el panel sube pegado a la senal. */
+@media (max-width:699px){
+  .dock{display:none}
+  .escena{min-height:0;place-items:start center;padding:12px var(--gut-r) 10px var(--gut-l)}
+  .pila{gap:12px}
+  .centro{gap:10px}
+  .escena .caratula{max-width:clamp(96px, calc(100svh - 672px), 240px);border-radius:22px}
+  .panel-aire .revela{opacity:1;transform:none}
+  .escena .caratula .esquina{display:none}
+  .escena .play-xl{width:72px;height:72px}
+  .atajos{margin-top:0;gap:6px;flex-wrap:nowrap}
+  .atajos .btn-cmp{height:38px;padding:0 12px;font-size:12.5px;white-space:nowrap}
+  .banner-ahora{padding:11px 13px;margin-bottom:8px}
+  .ba-barra{margin:9px 0 6px}
+  .banner-parrilla,.banner-plat{margin-bottom:8px}
+  .pie-min{padding-bottom:calc(16px + env(safe-area-inset-bottom, 0px))}
+}
+@media (max-width:430px){.atajos .btn-cmp svg{display:none}}
 /* ===== Color por franja =====
    --fr lo pone el script segun la hora de Bogota. Tine el halo, la caratula,
    el programa al aire y el visualizador; el rojo de marca no se toca. */
@@ -452,7 +472,6 @@ body.en-carro{overflow:hidden}
 .ba-sigue em{font-style:normal;color:var(--tinta-suave)}
 @media (max-width:380px){.pill-aire{display:none}}
 /* Celular: la caratula cede alto para que play, botones y senal quepan sin bajar. */
-@media (max-width:699px){.escena .caratula{max-width:clamp(132px, calc(100svh - 640px), 300px)}}
 @media (max-width:699px) and (max-height:900px){.escena .caratula .esquina{display:none}}
 @media (max-width:470px){.telemetria{flex-wrap:nowrap;width:100%}.telemetria b{white-space:nowrap}.telemetria span{flex:1 1 0;min-width:0;padding-left:5px;padding-right:5px}.telemetria i{font-size:8px;letter-spacing:.08em}.telemetria b{font-size:11px}}
 @media (max-width:380px){.escena .acciones{gap:10px}.escena .btn-wid,.escena .btn-cmp{padding:0 12px}}
