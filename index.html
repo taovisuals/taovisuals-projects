@@ -1476,8 +1476,20 @@ body.en-carro{overflow:hidden}
   };
 
   /* ---------- Botón del encabezado ---------- */
+  // Une este navegador a la cuenta y le pasa lo que habia oido sin registrarse.
+  var reclamado = false;
+  var reclama = function(){
+    var d = null; try { d = localStorage.getItem("tmr-disp"); } catch(e){}
+    if(reclamado || !sb || !d || !perfilCache) return;
+    reclamado = true;
+    sb.rpc("tmr_disp_reclamar", { p_id: d }).then(function(r){
+      if(r && r.data && r.data.ok){ try { localStorage.setItem("tmr-disp-seg", "0"); } catch(e){} }
+      else reclamado = false;
+    }, function(){ reclamado = false; });
+  };
   var pintaBoton = function(ses){
     var ini = $(".ini", boton);
+    if(ses && ses.user) reclama();
     if(ses && ses.user){
       boton.classList.add("dentro");
       boton.setAttribute("aria-label", "Mi cuenta");
@@ -1494,6 +1506,15 @@ body.en-carro{overflow:hidden}
 
   function pintaAuth(modo, msg, bien){
     var crear = modo === "crear";
+    if(crear && (!msg || bien)){
+      // Lo que este navegador ya oyo sin cuenta: al registrarse queda a su nombre.
+      var sg = 0; try { sg = parseInt(localStorage.getItem("tmr-disp-seg") || "0", 10) || 0; } catch(e){}
+      if(sg >= 600){
+        var hh = Math.floor(sg / 3600), mm = Math.round((sg % 3600) / 60);
+        msg = "Ya llevas " + (hh ? hh + " h " + mm + " min" : mm + " min") + " oyendo TripMind. Crea tu cuenta y ese tiempo queda a tu nombre.";
+        bien = true;
+      }
+    }
     cuerpo.innerHTML =
       '<h2>' + (crear ? "Crea tu cuenta" : "Entra a tu cuenta") + '</h2>' +
       '<p class="sub">' + (crear
@@ -2176,5 +2197,74 @@ var TM_PLATAFORMAS = [
 })();
 </script>
 
+<script>
+/* ===== Visitantes sin cuenta =====
+   Cada navegador recibe un identificador al azar que se guarda en el mismo
+   navegador. Con eso se sabe si vuelve y cuanto oye, sin IP y sin rastreo
+   fuera de este sitio. Si despues crea su cuenta desde aqui, lo acumulado
+   pasa a su nombre (tmr_disp_reclamar, en el script de la cuenta). */
+(function(){
+  var SB_URL = "https://mbtroxbeyjqqqxqfdade.supabase.co";
+  var SB_KEY = "sb_publishable_e4i4OidvddMs1-eQ9GzvEA_nNFVTuQp";
+  var id = null, yaVenia = false, k, i;
+  try { id = localStorage.getItem("tmr-disp"); } catch(e){ return; }   // sin almacenamiento no hay como reconocerlo
+  var conCuenta = function(){
+    try { for(var j = 0; j < localStorage.length; j++){ if(/^sb-.*-auth-token$/.test(localStorage.key(j) || "")) return true; } } catch(e){}
+    return false;
+  };
+  if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id || "")){
+    // Huellas de visitas de antes de que existiera el identificador.
+    try {
+      for(i = 0; i < localStorage.length; i++){ k = localStorage.key(i) || ""; if(k.indexOf("tmr-") === 0) yaVenia = true; }
+      if(conCuenta()) yaVenia = true;
+      if(navigator.serviceWorker && navigator.serviceWorker.controller) yaVenia = true;
+    } catch(e){}
+    if(window.crypto && crypto.randomUUID) id = crypto.randomUUID();
+    else {
+      var b = new Uint8Array(16); (window.crypto || window.msCrypto).getRandomValues(b);
+      b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
+      var h = Array.prototype.map.call(b, function(x){ return ("0" + x.toString(16)).slice(-2); }).join("");
+      id = h.slice(0, 8) + "-" + h.slice(8, 12) + "-" + h.slice(12, 16) + "-" + h.slice(16, 20) + "-" + h.slice(20);
+    }
+    try { localStorage.setItem("tmr-disp", id); } catch(e){ return; }
+  }
+  var ua = navigator.userAgent || "";
+  var tipo = /TV|Tizen|Web0S|WebOS|Tesla|QtCarBrowser/i.test(ua) ? "tv-carro"
+           : (/iPad|Tablet/.test(ua) || (/Android/.test(ua) && !/Mobile/.test(ua))) ? "tablet"
+           : /Mobi|iPhone|Android/.test(ua) ? "movil" : "pc";
+  var nav = (/Edg\//.test(ua) ? "Edge" : /OPR\//.test(ua) ? "Opera" : /Firefox\//.test(ua) ? "Firefox" : /Chrome\//.test(ua) ? "Chrome" : /Safari\//.test(ua) ? "Safari" : "Otro") + " \u00b7 " +
+            (/Windows/.test(ua) ? "Windows" : /Android/.test(ua) ? "Android" : /iPhone|iPad|iPod/.test(ua) ? "iOS" : /Mac OS/.test(ua) ? "Mac" : /Linux/.test(ua) ? "Linux" : "Otro");
+  var zona = ""; try { zona = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch(e){}
+  var origen = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) ? "app" : "web";
+  var rpc = function(fn, cuerpo, keep){
+    return fetch(SB_URL + "/rest/v1/rpc/" + fn, {
+      method: "POST", keepalive: !!keep,
+      headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify(cuerpo)
+    }).then(function(r){ return r.ok ? r.json() : null; });
+  };
+  var guarda = function(seg){ try { localStorage.setItem("tmr-disp-seg", String(seg || 0)); } catch(e){} };
+  var visita = function(){
+    rpc("tmr_disp_visita", { p_id:id, p_tipo:tipo, p_nav:nav, p_zona:zona, p_origen:origen, p_ya_venia:yaVenia })
+      .then(function(d){ if(d && typeof d.segundos === "number") guarda(d.segundos); }, function(){});
+  };
+  if("requestIdleCallback" in window) requestIdleCallback(visita, { timeout: 5000 }); else setTimeout(visita, 2500);
+
+  // El tiempo lo cuenta el servidor; aqui solo se avisa "sigo oyendo".
+  // Con sesion abierta no se manda nada: esos minutos ya van a la cuenta.
+  var audio = document.getElementById("radio"), reloj = null, activo = false;
+  if(!audio) return;
+  var late = function(inicio, keep){
+    if(conCuenta()) return;
+    try { rpc("tmr_disp_latido", { p_id:id, p_inicio:!!inicio }, keep).then(function(sg){ if(typeof sg === "number") guarda(sg); }, function(){}); } catch(e){}
+  };
+  var empieza = function(){ if(activo) return; activo = true; late(true); reloj = setInterval(function(){ late(false); }, 60000); };
+  var para = function(){ if(!activo) return; activo = false; clearInterval(reloj); late(false, true); };
+  audio.addEventListener("playing", empieza);
+  audio.addEventListener("pause", para);
+  audio.addEventListener("ended", para);
+  window.addEventListener("pagehide", para);
+})();
+</script>
 </body>
 </html>

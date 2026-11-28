@@ -198,7 +198,8 @@ section{margin-bottom:34px}
   function trae(silencio){
     return cliente()
       .then(function(c){
-        return Promise.all([ c.rpc("tmr_panel", { p_dias: dias }), traeAire() ]);
+        return Promise.all([ c.rpc("tmr_panel", { p_dias: dias }), traeAire(),
+          c.rpc("tmr_panel_dispositivos").then(function(r){ disp = (r && !r.error) ? r.data : null; }, function(){ disp = null; }) ]);
       })
       .then(function(par){
         var r = par[0];
@@ -253,6 +254,7 @@ section{margin-bottom:34px}
     html += cola("Pedidos de canciones", datos.pedidos || [], "pedido");
     html += cola("Saludos", datos.saludos || [], "saludo");
     html += oyentes(datos.oyentes || []);
+    html += visitantes(disp);
     html += '<p class="pie">Se actualiza solo cada 30 segundos. Los datos salen de tu propio Supabase.</p>';
 
     raiz.innerHTML = html;
@@ -291,6 +293,41 @@ section{margin-bottom:34px}
       '</div>' +
       '<div class="cont"><b>' + num(cuantos) + '</b><span>Conectados</span></div>' +
     '</div>';
+  }
+
+  /* Navegadores que oyen sin cuenta. Cuando uno se registra desde el mismo
+     navegador, sus minutos pasan al oyente y aqui queda con su nombre. */
+  var disp = null;
+  var TIPO = { pc:"PC", movil:"Celular", tablet:"Tablet", "tv-carro":"TV o carro" };
+  function visitantes(d){
+    if(!d) return "";
+    var r = d.resumen || {}, arr = d.lista || [];
+    var h = '<section><h2 class="sec">Visitantes sin cuenta</h2>' +
+      '<div class="tarjetas">' +
+        tarjeta(r.sin_cuenta, "Sin registrarse") +
+        tarjeta(r.repiten, "Han vuelto", !!r.repiten) +
+        tarjeta(num(r.minutos), "Minutos oídos") +
+        tarjeta(r.reclamados, "Ya con cuenta") +
+      '</div>';
+    if(!arr.length) return h + '<p class="nada">Todavía no ha entrado ningún navegador desde que esto se activó.</p></section>';
+    h += '<div class="envuelve"><table class="tabla"><thead><tr>' +
+         '<th>Visitante</th><th class="num">Visitas</th><th class="num">Min</th><th class="num">Última vez</th>' +
+         '</tr></thead><tbody>' +
+      arr.map(function(o){
+        var quien = o.nombre ? esc(o.nombre) : "Visitante " + esc(o.clave);
+        var marcas = [TIPO[o.tipo] || o.tipo || "—", o.navegador || "", (o.zona || "").replace(/^.*\//, "").replace(/_/g, " "), o.origen === "app" ? "App instalada" : ""]
+          .filter(Boolean).map(esc).join(" · ");
+        return '<tr' + (o.sonando ? ' class="vivo"' : '') + '>' +
+          '<td><div class="nom">' + (o.sonando ? '<span class="punto-vivo"></span>' : '') + quien +
+            (o.nombre ? ' <span class="pt">· ya tiene cuenta</span>' : (o.ya_venia ? ' <span class="pt">· ya venía de antes</span>' : '')) + '</div>' +
+            '<div class="pt">' + marcas + '</div></td>' +
+          '<td class="num">' + num(o.visitas) + '</td>' +
+          '<td class="num">' + num(o.minutos) + '</td>' +
+          '<td class="num pt">' + esc(hace(o.ultimo_at)) + '</td>' +
+        '</tr>';
+      }).join("") + '</tbody></table></div>' +
+      '<p class="pie" style="margin-top:10px">Cada fila es un navegador, no una persona. Solo cuenta quien oye desde tripmindradio.com; TuneIn, Alexa y reproductores externos no pasan por aquí.</p></section>';
+    return h;
   }
 
   function tarjeta(v, et, viva){
