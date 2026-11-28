@@ -325,6 +325,10 @@ footer.pie .marca .mini{width:34px;height:34px}
 .en-widget .banner-loc{display:none}
 .banner-patro{position:relative;z-index:2;display:flex;align-items:center;gap:12px;width:calc(100% - 32px);max-width:392px;margin:0 auto 10px;padding:7px 12px;border:1px solid rgba(255,255,255,.065);border-radius:14px;background:rgba(255,255,255,.015)}
 .banner-patro[hidden]{display:none}
+.bp-libre{opacity:1;filter:none;gap:10px;flex:1;justify-content:space-between}
+.bp-libre span{color:var(--tinta)}
+.bp-libre em{font-style:normal;font-size:11px;color:var(--tinta-suave);white-space:nowrap}
+.bp-libre:hover em{color:var(--tinta)}
 .bp-rotulo{flex:none;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:#5c5c5c;white-space:nowrap}
 .bp-marcas{flex:1;min-width:0;display:flex;align-items:center;gap:18px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
 .bp-marcas::-webkit-scrollbar{display:none}
@@ -429,7 +433,7 @@ body.en-carro{overflow:hidden}
   .escena{min-height:0;place-items:start center;padding:12px var(--gut-r) 10px var(--gut-l)}
   .pila{gap:12px}
   .centro{gap:10px}
-  .escena .caratula{max-width:clamp(96px, calc(100svh - 672px), 240px);border-radius:22px}
+  .escena .caratula{max-width:clamp(96px, calc(100svh - 716px), 240px);border-radius:22px}
   .panel-aire .revela{opacity:1;transform:none}
   .escena .caratula .esquina{display:none}
   .escena .play-xl{width:72px;height:72px}
@@ -437,7 +441,7 @@ body.en-carro{overflow:hidden}
   .atajos .btn-cmp{height:38px;padding:0 12px;font-size:12.5px;white-space:nowrap}
   .banner-ahora{padding:11px 13px;margin-bottom:8px}
   .ba-barra{margin:9px 0 6px}
-  .banner-parrilla,.banner-plat{margin-bottom:8px}
+  .banner-parrilla,.banner-plat,.banner-patro{margin-bottom:8px}
   .pie-min{padding-bottom:calc(16px + env(safe-area-inset-bottom, 0px))}
 }
 @media (max-width:430px){.atajos .btn-cmp svg{display:none}}
@@ -497,8 +501,9 @@ body.en-carro{overflow:hidden}
   .bs-item{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:5px 0;font-size:13.5px}
   .bs-item b{font-weight:500;color:#cfcfcf;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .bs-item i{font-style:normal;flex:none;font-size:11px;color:#6a6a6a}
-  .banner-plat{padding:12px 14px}
+  .banner-plat,.banner-patro{padding:12px 14px}
   .bq-sitio{font-size:13px}
+  .bp-rotulo{font-size:10px}
 }
 @media (min-width:1000px) and (min-height:700px){
   #app{position:relative;--pr:max(32px, calc((100vw - 1180px) / 2))}
@@ -2047,6 +2052,7 @@ body.en-carro{overflow:hidden}
    Ejemplo:
      { nombre:"Ratonera", logo:"assets/img/patro-ratonera.svg", url:"https://ratonera.co" }
 */
+var TM_ANUNCIA = true;   // con la lista vacia, mostrar "Tu marca aqui"
 var TM_PATROCINIOS = [
 ];
 
@@ -2055,7 +2061,20 @@ var TM_PATROCINIOS = [
   var caja  = document.getElementById("bpMarcas");
   if(!banda || !caja) return;
   var lista = (typeof TM_PATROCINIOS !== "undefined" && TM_PATROCINIOS) ? TM_PATROCINIOS : [];
-  if(!lista.length) return;              // sin patrocinadores, la banda no aparece
+  if(!lista.length){
+    // Sin patrocinadores todavia: el espacio se ofrece. Lleva al WhatsApp de
+    // la emisora (el mismo del aviso de privacidad). TM_ANUNCIA = false lo oculta.
+    if(typeof TM_ANUNCIA !== "undefined" && !TM_ANUNCIA) return;
+    var rot = banda.querySelector(".bp-rotulo"); if(rot) rot.textContent = "Publicidad";
+    var a = document.createElement("a");
+    a.className = "bp-marca bp-libre";
+    a.href = "https://wa.me/573117034957?text=" + encodeURIComponent("Hola, quiero anunciar en TripMind Radio");
+    a.target = "_blank"; a.rel = "noopener noreferrer";
+    a.innerHTML = "<span>Tu marca aqu\u00ed</span><em>Anuncia en TripMind Radio \u2192</em>";
+    caja.appendChild(a);
+    banda.hidden = false;
+    return;
+  }
 
   lista.forEach(function(p){
     if(!p || !p.nombre) return;
