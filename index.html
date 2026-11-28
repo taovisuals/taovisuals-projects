@@ -421,6 +421,35 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
 .carro-pie img{width:clamp(64px,15vh,120px);height:auto;border-radius:10px;flex:none}
 body.en-carro{overflow:hidden}
 .pill-aire{white-space:nowrap;flex:none}
+/* ===== Color por franja =====
+   --fr lo pone el script segun la hora de Bogota. Tine el halo, la caratula,
+   el programa al aire y el visualizador; el rojo de marca no se toca. */
+:root{--fr:255,255,255}
+.escena{background:linear-gradient(180deg,rgba(var(--fr),.055),transparent 46%)}
+.halo{background:radial-gradient(circle,rgba(var(--fr),.09) 0%,rgba(var(--fr),.03) 32%,transparent 66%)}
+.sonando .halo{background:radial-gradient(circle,rgba(var(--fr),.17) 0%,rgba(var(--fr),.05) 34%,transparent 68%)}
+.caratula{background:radial-gradient(120% 90% at 50% 0%,rgba(var(--fr),.13) 0%,transparent 62%),radial-gradient(120% 90% at 50% 0%,#1d1d1d 0%,#111 55%,#0a0a0a 100%)}
+.bp2-prog.vivo{border-color:rgba(var(--fr),.42);background:rgba(var(--fr),.085)}
+.bp2-prog.vivo i{color:rgb(var(--fr))}
+/* ===== Quien esta al aire ===== */
+.banner-loc{display:none}
+.banner-ahora{position:relative;z-index:2;display:block;width:calc(100% - 32px);max-width:392px;margin:0 auto 10px;padding:13px 14px;border:1px solid rgba(var(--fr),.24);border-radius:16px;background:linear-gradient(135deg,rgba(var(--fr),.11),rgba(255,255,255,.015) 62%);text-decoration:none;color:inherit;transition:border-color .35s var(--ease)}
+.banner-ahora:hover{border-color:rgba(var(--fr),.5)}
+.en-widget .banner-ahora{display:none}
+.ba-arriba{display:flex;align-items:center;gap:12px}
+.ba-fotos{display:flex;flex:none}
+.ba-fotos:empty{display:none}
+.ba-fotos img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #141414}
+.ba-fotos img+img{margin-left:-13px}
+.ba-txt{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.ba-txt b{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.ba-txt i{font-style:normal;font-size:12px;color:var(--tinta-suave)}
+.ba-ir{flex:none;color:#5c5c5c;transition:transform .35s var(--ease),color .35s var(--ease)}
+.banner-ahora:hover .ba-ir{transform:translateX(3px);color:var(--tinta)}
+.ba-barra{display:block;height:3px;border-radius:3px;background:rgba(255,255,255,.08);margin:12px 0 8px;overflow:hidden}
+.ba-barra span{display:block;height:100%;width:0;border-radius:3px;background:rgb(var(--fr));transition:width 1.2s var(--ease)}
+.ba-sigue{display:block;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#6a6a6a}
+.ba-sigue em{font-style:normal;color:var(--tinta-suave)}
 @media (max-width:380px){.pill-aire{display:none}}
 /* Celular: la caratula cede alto para que play, botones y senal quepan sin bajar. */
 @media (max-width:699px){.escena .caratula{max-width:clamp(132px, calc(100svh - 640px), 300px)}}
@@ -468,8 +497,9 @@ body.en-carro{overflow:hidden}
   .escena{min-height:0;padding-top:34px;padding-bottom:26px}
   .pila{max-width:520px}
   .panel-aire{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;width:calc(100% - 64px);max-width:720px;margin:0 auto 26px}
-  .banner-parrilla{grid-column:1;grid-row:1 / span 3}
-  .banner-sono,.banner-plat,.banner-loc,.banner-patro{grid-column:2}
+  .banner-parrilla{grid-column:1}
+  .banner-parrilla{grid-row:1 / span 4}
+  .banner-ahora,.banner-sono,.banner-plat,.banner-patro{grid-column:2}
 }
 .pie-nav{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:11px}
 .pie-nav a{font-size:12.5px;color:#6a6a6a;transition:color .25s var(--ease)}
@@ -684,6 +714,15 @@ body.en-carro{overflow:hidden}
   </main>
 
   <aside class="panel-aire" id="panelAire" aria-label="Al aire">
+  <a class="banner-ahora revela" id="bannerAhora" href="locutores/">
+    <span class="ba-arriba">
+      <span class="ba-fotos" id="baFotos"></span>
+      <span class="ba-txt"><b id="baProg">TripMind Radio</b><i id="baCon">&middot;&middot;&middot;</i></span>
+      <span class="ba-ir" aria-hidden="true">&rarr;</span>
+    </span>
+    <span class="ba-barra" aria-hidden="true"><span id="baBarra"></span></span>
+    <span class="ba-sigue mono">Sigue <em id="baSigue"></em></span>
+  </a>
   <div class="banner-parrilla revela" id="bannerParrilla">
     <span class="bp2-rotulo"><span class="bp2-punto" aria-hidden="true"></span>Al aire</span>
     <div class="bp2-pistas" id="bp2Pistas"></div>
@@ -809,6 +848,37 @@ body.en-carro{overflow:hidden}
   // reasignaba el src y abortaba la conexión que estaba por lograrse: de ahi
   // que se quedara trabado. Ahora la verdad la manda el elemento.
   var conectando = false, reintentos = 0, relojCon = null, autoIntento = false;
+  /* El visualizador lee el audio de verdad solo en computador. En celular y
+     en el carro pasar el audio por Web Audio puede cortar la reproduccion en
+     segundo plano, asi que alli sigue la animacion de siempre. */
+  var ESCRITORIO = !!(window.matchMedia && matchMedia("(hover:hover) and (pointer:fine)").matches) && !/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  var corsProbado = false, corsOK = false, actx = null, analizador = null, espectro = null;
+  var pruebaCors = function(){
+    if(!ESCRITORIO || corsProbado || !STREAM_URL || !window.AbortController) return;
+    corsProbado = true;
+    var c = new AbortController();
+    fetch(STREAM_URL + (STREAM_URL.indexOf("?") < 0 ? "?" : "&") + "c=" + Date.now(), { mode:"cors", cache:"no-store", signal:c.signal })
+      .then(function(r){ corsOK = !!r.ok; c.abort(); }, function(){ corsOK = false; });
+  };
+  var montaAnalisis = function(){
+    // Solo tras un toque real del oyente: sin eso el navegador deja el
+    // contexto de audio suspendido y la radio quedaria muda.
+    if(analizador || audio.crossOrigin !== "anonymous") return;
+    if(!(navigator.userActivation && navigator.userActivation.hasBeenActive)) return;
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext; if(!AC) return;
+      actx = new AC();
+      var fuente = actx.createMediaElementSource(audio);
+      var an = actx.createAnalyser(); an.fftSize = 256; an.smoothingTimeConstant = 0.8;
+      fuente.connect(an); an.connect(actx.destination);
+      espectro = new Uint8Array(an.frequencyBinCount);
+      analizador = an;
+    } catch(e){ analizador = null; }
+  };
+  window.__tmViz = function(){ return { escritorio: ESCRITORIO, cors: corsOK, real: !!analizador, contexto: actx ? actx.state : null }; };
+  var despiertaAudio = function(){ if(actx && actx.state === "suspended"){ try { actx.resume(); } catch(e){} } };
+  document.addEventListener("pointerdown", despiertaAudio, true);
+  document.addEventListener("keydown", despiertaAudio, true);
   var recuerda = function(v){ try { localStorage.setItem("tmr-sonando", v ? String(Date.now()) : "0"); } catch(e){} };
 
   var setConectando = function(v){
@@ -829,6 +899,7 @@ body.en-carro{overflow:hidden}
   var conectar = function(){
     // Un parámetro distinto cada vez, para que el navegador no reutilice una
     // conexión muerta de un reinicio anterior de la emisora.
+    if(corsOK) audio.crossOrigin = "anonymous";
     audio.src = STREAM_URL + (STREAM_URL.indexOf("?") < 0 ? "?" : "&") + "t=" + Date.now();
     audio.volume = $("#vol").value / 100;
     setConectando(true);
@@ -864,7 +935,7 @@ body.en-carro{overflow:hidden}
   $$("[data-play]").forEach(function(b){ b.addEventListener("click", function(){ if(!audio.paused) recuerda(false); toggle(); }); });
 
   // El estado del botón lo dicta el elemento de audio, no una variable nuestra.
-  audio.addEventListener("playing", function(){ reintentos = 0; autoIntento = false; recuerda(true); setConectando(false); setPlaying(true); });
+  audio.addEventListener("playing", function(){ reintentos = 0; autoIntento = false; recuerda(true); setConectando(false); setPlaying(true); montaAnalisis(); despiertaAudio(); });
   setInterval(function(){ if(!audio.paused && !conectando) recuerda(true); }, 60000);
 
   /* Pantallas de carro y tablets montadas apagan el navegador al salir.
@@ -1030,6 +1101,7 @@ body.en-carro{overflow:hidden}
       .then(function(d){
         var np = d.now_playing || {}, song = np.song || {}, live = d.live && d.live.is_live;
         if(d.station && d.station.listen_url) STREAM_URL = d.station.listen_url;
+        pruebaCors();
         var c = limpia(song, np.playlist);
         var sig = (!live && d.playing_next) ? limpia(d.playing_next.song, d.playing_next.playlist) : null;
         var titulo = live ? (d.live.streamer_name ? "En vivo con " + d.live.streamer_name : "En vivo") : c.t;
@@ -1211,31 +1283,92 @@ body.en-carro{overflow:hidden}
   setInterval(pintaBanner, 60000);
   document.addEventListener("visibilitychange", function(){ if(!document.hidden) pintaBanner(); });
 
+  // ---------- Franja al aire: color de la pagina y tarjeta ----------
+  var FRANJAS = [
+    { id:"melodic",  desde:0,  hasta:4,  nombre:"Melodic Nights",    color:"132,120,255" },
+    { id:"arranque", desde:4,  hasta:8,  nombre:"El Arranque",       color:"255,158,98"  },
+    { id:"brunch",   desde:8,  hasta:12, nombre:"TripMind Brunch",   color:"255,198,112" },
+    { id:"tardeo",   desde:12, hasta:18, nombre:"El Tardeo",         color:"255,112,72"  },
+    { id:"backhome", desde:18, hasta:24, nombre:"Back Home With Us", color:"255,72,96"   }
+  ];
+  var colorFranja = "255,255,255";
+  var minutoBogota = function(){
+    try {
+      var p = new Intl.DateTimeFormat("en-GB", { timeZone:"America/Bogota", hour:"2-digit", minute:"2-digit", hour12:false }).format(new Date()).split(":");
+      var h = parseInt(p[0], 10) % 24, m = parseInt(p[1], 10);
+      if(isNaN(h) || isNaN(m)) throw 0;
+      return h * 60 + m;
+    } catch(e){ var d = new Date(); return d.getHours() * 60 + d.getMinutes(); }
+  };
+  var FOTO = { Roxie:"assets/img/roxie-mini.jpg", Matt:"assets/img/matt-mini.jpg" };
+  var pintaFranja = function(){
+    var min = minutoBogota();
+    var forz = (location.search.match(/[?&]franja=([a-z]+)/) || [])[1];   // solo para previsualizar
+    var i = 0;
+    FRANJAS.forEach(function(f, k){ if(forz ? f.id === forz : (min >= f.desde * 60 && min < f.hasta * 60)) i = k; });
+    var f = FRANJAS[i], sig = FRANJAS[(i + 1) % FRANJAS.length];
+    if(forz) min = f.desde * 60 + Math.round((f.hasta - f.desde) * 24);
+    colorFranja = f.color;
+    document.documentElement.setAttribute("data-franja", f.id);
+    document.documentElement.style.setProperty("--fr", f.color);
+    if(!$("#bannerAhora")) return;
+    var dur = (f.hasta - f.desde) * 60, pas = Math.max(0, Math.min(dur, min - f.desde * 60)), falta = dur - pas;
+    var q = window.quienAlAire(Math.floor(min / 60));
+    $("#baProg").textContent = f.nombre;
+    $("#baCon").textContent = q.length ? "Con " + (q.length === 2 ? "Roxie y Matt" : q[0]) : "Solo m\u00fasica a esta hora";
+    var fotos = $("#baFotos"), clave = q.join("+");
+    if(fotos.getAttribute("data-q") !== clave){
+      fotos.setAttribute("data-q", clave); fotos.textContent = "";
+      q.forEach(function(n){ if(!FOTO[n]) return; var im = document.createElement("img"); im.src = FOTO[n]; im.alt = n; im.width = 42; im.height = 42; im.loading = "lazy"; fotos.appendChild(im); });
+    }
+    $("#baBarra").style.width = (pas / dur * 100).toFixed(1) + "%";
+    var hh = Math.floor(falta / 60), mm = falta % 60;
+    $("#baSigue").textContent = sig.nombre + " en " + (hh ? hh + " h" + (mm ? " " + mm + " min" : "") : mm + " min");
+  };
+  pintaFranja();
+  setInterval(pintaFranja, 30000);
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden) pintaFranja(); });
+
   // ---------- Visualizador de anillos ----------
   var cv = $("#viz"), cx = cv.getContext("2d"), W = 0, H = 0, DPR = Math.min(2, window.devicePixelRatio || 1), t0 = performance.now(), nivel = 0;
   var size = function(){ var r = cv.getBoundingClientRect(); W = r.width; H = r.height; cv.width = W * DPR; cv.height = H * DPR; cx.setTransform(DPR, 0, 0, DPR, 0, 0); };
-  var ultimoCuadro = 0;
+  var ultimoCuadro = 0, golpe = 0;
   var draw = function(now){
     // En reposo basta con ~18 cuadros por segundo: se ve igual de vivo y gasta mucha menos bateria.
     if(!playing && now - ultimoCuadro < 55){ requestAnimationFrame(draw); return; }
     ultimoCuadro = now;
     var t = (now - t0) / 1000; nivel += ((playing ? 1 : 0.18) - nivel) * 0.04;
+    // Con audio real: bajos empujan el radio y el brillo, medios agitan el borde.
+    var real = !!(analizador && playing), bajos = 0, medios = 0;
+    if(real){
+      analizador.getByteFrequencyData(espectro);
+      var q1 = 0, q2 = 0, n1;
+      for(n1 = 1; n1 <= 6; n1++) q1 += espectro[n1];
+      for(n1 = 8; n1 <= 40; n1++) q2 += espectro[n1];
+      bajos = q1 / (6 * 255); medios = q2 / (33 * 255);
+      golpe += (bajos - golpe) * 0.35;
+    } else golpe += (0 - golpe) * 0.1;
     cx.clearRect(0, 0, W, H);
-    var mx = W / 2, my = H / 2, base = Math.min(W, H) * 0.36;
+    var mx = W / 2, my = H / 2, base = Math.min(W, H) * 0.36 * (1 + golpe * 0.07);
     for(var k = 0; k < 9; k++){
       var ph = (t * 0.22 + k / 9) % 1, r = base * (0.95 + ph * 1.1);
-      var a = (1 - ph) * 0.16 * nivel;
+      var a = (1 - ph) * 0.16 * nivel * (real ? 0.75 + golpe * 1.5 : 1);
       cx.beginPath();
       for(var j = 0; j <= 120; j++){
         var ang = j / 120 * Math.PI * 2;
         var wob = nivel * (Math.sin(ang * 6 + t * 2.1 + k) * 2.2 + Math.sin(ang * 11 - t * 3.3) * 1.3 + Math.sin(ang * 3 + t * 1.2 + k * .7) * 3) * (playing ? 1 : .35);
+        if(real){
+          // El espectro se reparte en espejo alrededor del anillo.
+          var pos = j <= 60 ? j : 120 - j, bin = 2 + Math.floor(pos * 0.9);
+          wob = wob * (0.5 + medios * 2.4) + (espectro[bin] / 255) * base * 0.16 * (1 - ph * 0.7);
+        }
         var x = mx + Math.cos(ang) * (r + wob), y = my + Math.sin(ang) * (r + wob);
         if(j) cx.lineTo(x, y); else cx.moveTo(x, y);
       }
-      cx.strokeStyle = "rgba(255,255,255," + a.toFixed(3) + ")"; cx.lineWidth = 1.2; cx.stroke();
+      cx.strokeStyle = "rgba(" + (k % 3 === 0 ? colorFranja : "255,255,255") + "," + Math.min(1, a).toFixed(3) + ")"; cx.lineWidth = 1.2; cx.stroke();
     }
     var g = cx.createRadialGradient(mx, my, 0, mx, my, base * 1.3);
-    g.addColorStop(0, "rgba(255,255,255," + (0.05 + nivel * 0.05).toFixed(3) + ")"); g.addColorStop(1, "rgba(255,255,255,0)");
+    g.addColorStop(0, "rgba(" + colorFranja + "," + (0.05 + nivel * 0.05 + golpe * 0.12).toFixed(3) + ")"); g.addColorStop(1, "rgba(" + colorFranja + ",0)");
     cx.fillStyle = g; cx.fillRect(0, 0, W, H);
     if(!reduce) requestAnimationFrame(draw);
   };
