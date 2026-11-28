@@ -2087,12 +2087,17 @@ body.en-carro{overflow:hidden}
               que ve quien tiene el ahorro de datos o las animaciones apagadas.
      url    : a donde lleva el toque.
      propio : true solo para anuncios de la casa.
-   Con varias piezas rotan cada 16 s. Con la lista vacia la caja no sale. */
+   Con varias piezas, cada video se ve dos veces completo y pasa al
+   siguiente (las imagenes duran 12 s). Con la lista vacia la caja no sale. */
 var TM_ANUNCIOS = [
   { marca: "TripMind Studio", propio: true,
-    video:  "assets/ads/tripmind-studio-3.mp4",
-    imagen: "assets/ads/tripmind-studio-3.jpg",
-    url: "https://wa.me/573117034957?text=" + encodeURIComponent("Hola, quiero saber m\u00e1s de TripMind Studio") }
+    video:  "assets/ads/tripmind-studio-4.mp4",
+    imagen: "assets/ads/tripmind-studio-4.jpg",
+    url: "https://wa.me/573117034957?text=" + encodeURIComponent("Hola, quiero saber m\u00e1s de TripMind Studio") },
+  { marca: "Dayder, sal\u00f3n de eventos en Barranquilla",
+    video:  "assets/ads/dayder.mp4",
+    imagen: "assets/ads/dayder.jpg",
+    url: "https://dayder-eventos.netlify.app/" }
 ];
 var TM_PATROCINIOS = [
 ];
@@ -2108,7 +2113,8 @@ var TM_PATROCINIOS = [
   if(ads.length){
     var quieto = (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) ||
                  !!(navigator.connection && navigator.connection.saveData);
-    var enVista = true, vid = null, cual = 0;
+    var enVista = true, vid = null, cual = 0, turno = null;
+    var sigue = function(){ clearTimeout(turno); cual = (cual + 1) % ads.length; monta(); };
     var monta = function(){
       var an = ads[cual], a = document.createElement("a");
       a.className = "ad-caja";
@@ -2117,15 +2123,22 @@ var TM_PATROCINIOS = [
       vid = null;
       if(an.video && !quieto){
         vid = document.createElement("video");
-        vid.muted = true; vid.loop = true; vid.playsInline = true; vid.autoplay = true; vid.preload = "metadata";
+        vid.muted = true; vid.loop = ads.length < 2; vid.playsInline = true; vid.autoplay = true; vid.preload = "metadata";
         vid.setAttribute("muted", ""); vid.setAttribute("playsinline", ""); vid.setAttribute("disablepictureinpicture", "");
         if(an.imagen) vid.poster = an.imagen;
         vid.src = an.video;
         a.appendChild(vid);
+        if(ads.length > 1){
+          // Dos pasadas completas y sigue la otra marca: nunca se corta a la mitad.
+          var pasadas = 0, este = vid;
+          este.addEventListener("ended", function(){ pasadas++; if(pasadas >= 2) sigue(); else { este.currentTime = 0; anda(); } });
+          este.addEventListener("error", function(){ clearTimeout(turno); turno = setTimeout(sigue, 4000); });
+        }
       } else {
         var im = document.createElement("img");
         im.src = an.imagen || ""; im.alt = an.marca || "Publicidad"; im.decoding = "async";
         a.appendChild(im);
+        if(ads.length > 1){ clearTimeout(turno); turno = setTimeout(sigue, 12000); }
       }
       var et = document.createElement("span"); et.className = "ad-etq"; et.textContent = "Publicidad";
       a.appendChild(et);
@@ -2153,7 +2166,6 @@ var TM_PATROCINIOS = [
     if(mq){ if(mq.addEventListener) mq.addEventListener("change", ubica); else if(mq.addListener) mq.addListener(ubica); }
     if("IntersectionObserver" in window) new IntersectionObserver(function(es){ enVista = es[0].isIntersecting; anda(); }, { threshold: .25 }).observe(banda);
     document.addEventListener("visibilitychange", anda);
-    if(ads.length > 1) setInterval(function(){ if(document.hidden || !enVista) return; cual = (cual + 1) % ads.length; monta(); }, 16000);
     return;
   }
   if(!lista.length) return;              // sin anuncios ni patrocinadores, la banda no aparece
