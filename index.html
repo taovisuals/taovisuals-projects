@@ -1125,7 +1125,7 @@ body.en-carro{overflow:hidden}
     ponValor(o, n === null ? "—" : String(n));
   };
   /* Los sets llegan con nombre de archivo ("tripmind radio set antr brunch").
-     Aqui se vuelven algo que se pueda leer al aire: "Set de Another". */
+     Aqui se vuelven algo que se pueda leer al aire: "Set Another". */
   var TM_SONO = false;   // panel "Acaba de sonar"
   var ALIAS = { antr:"Another", anotr:"Another" };
   var RUIDO = /^(tripmind|radio|set|sets|mix|brunch|tardeo|arranque|melodic|nights?|back|home|with|us|bhw|el|la|de|del)$/;
@@ -1145,7 +1145,7 @@ body.en-carro{overflow:hidden}
         .map(function(w){ return ALIAS[w] || w; }).join(" ");
     }
     quien = quien ? (ALIAS[quien.toLowerCase()] || capital(quien)) : "";
-    return { t: quien ? "Set de " + quien : "TripMind en set", a: prog || "TripMind Radio", n: quien };
+    return { t: quien ? "Set " + quien : "TripMind en set", a: prog || "TripMind Radio", n: quien };
   };
   var nowPlaying = function(){
     return fetch(PANEL + "/api/nowplaying/" + STATION_ID, { cache: "no-store" })
