@@ -325,10 +325,18 @@ footer.pie .marca .mini{width:34px;height:34px}
 .en-widget .banner-loc{display:none}
 .banner-patro{position:relative;z-index:2;display:flex;align-items:center;gap:12px;width:calc(100% - 32px);max-width:392px;margin:0 auto 10px;padding:7px 12px;border:1px solid rgba(255,255,255,.065);border-radius:14px;background:rgba(255,255,255,.015)}
 .banner-patro[hidden]{display:none}
-.bp-libre{opacity:1;filter:none;gap:10px;flex:1;justify-content:space-between}
-.bp-libre span{color:var(--tinta)}
-.bp-libre em{font-style:normal;font-size:11px;color:var(--tinta-suave);white-space:nowrap}
-.bp-libre:hover em{color:var(--tinta)}
+.banner-patro.con-anuncio{padding:0;border-color:rgba(var(--fr),.2);background:linear-gradient(120deg,rgba(var(--fr),.07),rgba(255,255,255,.015) 70%)}
+.bp-anuncio{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;padding:9px 13px;text-decoration:none;color:inherit}
+.bpa-cab{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.bpa-cab b{font-size:13.5px;font-weight:700;letter-spacing:-.005em}
+.bpa-cab i{font-style:normal;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:#5c5c5c}
+.bpa-pie{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.bpa-linea{min-width:0;font-size:12px;color:var(--tinta-suave);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .36s var(--ease),transform .36s var(--ease)}
+.bpa-linea strong{font-weight:600;color:rgb(var(--fr));margin-right:7px}
+.bpa-linea.cambia{opacity:0;transform:translateY(4px)}
+.bpa-pie em{font-style:normal;flex:none;color:#6a6a6a;transition:transform .35s var(--ease),color .35s var(--ease)}
+.bp-anuncio:hover .bpa-pie em{transform:translateX(3px);color:var(--tinta)}
+@media (prefers-reduced-motion:reduce){.bpa-linea{transition:none}}
 .bp-rotulo{flex:none;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:#5c5c5c;white-space:nowrap}
 .bp-marcas{flex:1;min-width:0;display:flex;align-items:center;gap:18px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
 .bp-marcas::-webkit-scrollbar{display:none}
@@ -433,7 +441,7 @@ body.en-carro{overflow:hidden}
   .escena{min-height:0;place-items:start center;padding:12px var(--gut-r) 10px var(--gut-l)}
   .pila{gap:12px}
   .centro{gap:10px}
-  .escena .caratula{max-width:clamp(96px, calc(100svh - 716px), 240px);border-radius:22px}
+  .escena .caratula{max-width:clamp(96px, calc(100svh - 734px), 240px);border-radius:22px}
   .panel-aire .revela{opacity:1;transform:none}
   .escena .caratula .esquina{display:none}
   .escena .play-xl{width:72px;height:72px}
@@ -502,6 +510,10 @@ body.en-carro{overflow:hidden}
   .bs-item b{font-weight:500;color:#cfcfcf;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .bs-item i{font-style:normal;flex:none;font-size:11px;color:#6a6a6a}
   .banner-plat,.banner-patro{padding:12px 14px}
+  .banner-patro.con-anuncio{padding:0}
+  .bp-anuncio{padding:12px 14px}
+  .bpa-cab b{font-size:15px}
+  .bpa-linea{font-size:13px}
   .bq-sitio{font-size:13px}
   .bp-rotulo{font-size:10px}
 }
@@ -2052,7 +2064,16 @@ body.en-carro{overflow:hidden}
    Ejemplo:
      { nombre:"Ratonera", logo:"assets/img/patro-ratonera.svg", url:"https://ratonera.co" }
 */
-var TM_ANUNCIA = true;   // con la lista vacia, mostrar "Tu marca aqui"
+/* Anuncio propio: sale mientras TM_PATROCINIOS este vacio.
+   lineas: [rotulo, texto]; se alternan cada pocos segundos. */
+var TM_ANUNCIO = {
+  marca: "TripMind Studio",
+  url: "https://wa.me/573117034957?text=" + encodeURIComponent("Hola, quiero saber m\u00e1s de TripMind Studio"),
+  lineas: [
+    ["Creativo", "Visuales, dise\u00f1o y video"],
+    ["Digital",  "Desarrollo web, IA y capacitaci\u00f3n"]
+  ]
+};
 var TM_PATROCINIOS = [
 ];
 
@@ -2062,16 +2083,25 @@ var TM_PATROCINIOS = [
   if(!banda || !caja) return;
   var lista = (typeof TM_PATROCINIOS !== "undefined" && TM_PATROCINIOS) ? TM_PATROCINIOS : [];
   if(!lista.length){
-    // Sin patrocinadores todavia: el espacio se ofrece. Lleva al WhatsApp de
-    // la emisora (el mismo del aviso de privacidad). TM_ANUNCIA = false lo oculta.
-    if(typeof TM_ANUNCIA !== "undefined" && !TM_ANUNCIA) return;
-    var rot = banda.querySelector(".bp-rotulo"); if(rot) rot.textContent = "Publicidad";
+    // Sin patrocinadores externos, el espacio lo usa el anuncio propio.
+    var an = (typeof TM_ANUNCIO !== "undefined") ? TM_ANUNCIO : null;
+    if(!an || !an.marca) return;
     var a = document.createElement("a");
-    a.className = "bp-marca bp-libre";
-    a.href = "https://wa.me/573117034957?text=" + encodeURIComponent("Hola, quiero anunciar en TripMind Radio");
-    a.target = "_blank"; a.rel = "noopener noreferrer";
-    a.innerHTML = "<span>Tu marca aqu\u00ed</span><em>Anuncia en TripMind Radio \u2192</em>";
-    caja.appendChild(a);
+    a.className = "bp-anuncio";
+    a.href = an.url; a.target = "_blank"; a.rel = "noopener noreferrer";
+    a.setAttribute("aria-label", an.marca + ": " + (an.lineas || []).map(function(l){ return l[0] + ", " + l[1]; }).join(". "));
+    a.innerHTML = '<span class="bpa-cab"><b></b><i>Publicidad</i></span>' +
+                  '<span class="bpa-pie"><span class="bpa-linea"><strong></strong><span></span></span><em aria-hidden="true">\u2192</em></span>';
+    a.querySelector("b").textContent = an.marca;
+    var linea = a.querySelector(".bpa-linea"), n = 0, L = an.lineas || [];
+    var pon = function(){ if(!L.length) return; linea.querySelector("strong").textContent = L[n][0]; linea.lastChild.textContent = L[n][1]; };
+    pon();
+    if(L.length > 1) setInterval(function(){
+      if(document.hidden) return;
+      linea.classList.add("cambia");
+      setTimeout(function(){ n = (n + 1) % L.length; pon(); linea.classList.remove("cambia"); }, 380);
+    }, 4600);
+    banda.textContent = ""; banda.classList.add("con-anuncio"); banda.appendChild(a);
     banda.hidden = false;
     return;
   }
