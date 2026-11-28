@@ -1,6 +1,6 @@
 // TripMind Radio — service worker. Cachea la cáscara de la app para que abra rápido
 // y se pueda instalar. El stream y la API de "ahora suena" nunca se cachean.
-const VERSION = "tmr-v29";
+const VERSION = "tmr-v30";
 const SHELL = [
   "./",
   "index.html",
@@ -9,7 +9,8 @@ const SHELL = [
   "assets/icons/icon-512.png",
   "assets/icons/maskable-512.png",
   "assets/icons/apple-touch-icon.png",
-  "assets/icons/favicon-32.png"
+  "assets/icons/favicon-32.png",
+"assets/qr-entrar.svg"
 ];
 
 self.addEventListener("install", (e) => {

@@ -402,6 +402,24 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
 .btn-cmp svg{flex:none}
 .atajos{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
 .en-widget .atajos{display:none}
+/* ===== Modo carro: pantallas montadas, TV, cualquier sitio donde no se escribe ===== */
+.carro{position:fixed;inset:0;z-index:90;background:#0a0a0a;display:flex;flex-direction:column;justify-content:space-between;gap:2vh;padding:max(18px,env(safe-area-inset-top,0px)) max(24px,env(safe-area-inset-right,0px)) max(18px,env(safe-area-inset-bottom,0px)) max(24px,env(safe-area-inset-left,0px))}
+.carro[hidden]{display:none}
+.carro-top{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:clamp(13px,2.6vh,20px);letter-spacing:.16em;text-transform:uppercase}
+.carro-aire{color:var(--al-aire)}
+.carro-x{height:clamp(48px,9vh,72px);padding:0 clamp(18px,3vw,32px);border-radius:999px;border:1px solid rgba(255,255,255,.22);background:transparent;color:#fff;font:inherit;font-weight:600;font-size:clamp(14px,2.6vh,22px);letter-spacing:0;text-transform:none;cursor:pointer}
+.carro-centro{text-align:center;display:flex;flex-direction:column;gap:1vh;min-width:0}
+.carro-centro b{font-size:clamp(28px,9vh,84px);line-height:1.08;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.carro-centro span{font-size:clamp(15px,3.6vh,30px);color:var(--tinta-suave);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.carro-ctl{display:flex;align-items:center;justify-content:center;gap:clamp(20px,6vw,80px)}
+.carro .play-xl{width:clamp(110px,30vh,230px);height:clamp(110px,30vh,230px)}
+.carro .play-xl .ico{width:40%;height:40%}
+.carro .play-xl svg{width:100%;height:100%}
+.carro-b{width:clamp(72px,19vh,140px);height:clamp(72px,19vh,140px);border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.05);color:#fff;font:inherit;font-size:clamp(34px,9vh,70px);line-height:1;cursor:pointer}
+.carro-b:active,.carro-x:active{background:rgba(255,255,255,.18)}
+.carro-pie{display:flex;align-items:center;justify-content:center;gap:16px;font-size:clamp(12px,2.5vh,19px);line-height:1.35;color:var(--tinta-suave)}
+.carro-pie img{width:clamp(64px,15vh,120px);height:auto;border-radius:10px;flex:none}
+body.en-carro{overflow:hidden}
 .pie-nav{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:11px}
 .pie-nav a{font-size:12.5px;color:#6a6a6a;transition:color .25s var(--ease)}
 .pie-nav a:hover{color:var(--tinta)}
@@ -597,6 +615,10 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 20.5l1.7-5.2A8.4 8.4 0 1 1 21 11.5z"/></svg>
               Mandar saludo
             </button>
+            <button class="btn-cmp" type="button" id="btnCarro">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v-3l2-5.2A2 2 0 0 1 7.9 6.5h8.2A2 2 0 0 1 18 7.8l2 5.2v3"/><path d="M3 16h18v2.5H3z"/></svg>
+              Modo carro
+            </button>
           </div>
 
           <div class="telemetria mono entra" style="transition-delay:.42s" aria-label="Estado de la señal">
@@ -663,6 +685,23 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
   <audio id="radio" preload="none"></audio>
 </div>
 
+<div class="carro" id="carro" hidden aria-label="Modo carro">
+  <div class="carro-top">
+    <span class="mono carro-aire">&#9679; TripMind Radio</span>
+    <span class="mono" id="carroHora"></span>
+    <button class="carro-x" type="button" id="carroSalir">Salir</button>
+  </div>
+  <div class="carro-centro"><b data-titulo>TripMind Radio</b><span data-artista></span></div>
+  <div class="carro-ctl">
+    <button class="carro-b" type="button" id="carroMenos" aria-label="Bajar volumen">&minus;</button>
+    <button class="play-xl" type="button" data-play aria-label="Reproducir la radio"><span class="ico"><svg class="i-play" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg><svg class="i-pausa" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.2" fill="currentColor"/><rect x="13.5" y="5" width="4" height="14" rx="1.2" fill="currentColor"/></svg></span></button>
+    <button class="carro-b" type="button" id="carroMas" aria-label="Subir volumen">+</button>
+  </div>
+  <div class="carro-pie">
+    <img src="assets/qr-entrar.svg" width="120" height="120" alt="C&oacute;digo QR para abrir TripMind Radio en el celular">
+    <span>Pide canciones y manda saludos<br>desde tu celular, sin escribir aqu&iacute;</span>
+  </div>
+</div>
 <script>
 (function(){
   // ===== Configuración =====
@@ -797,6 +836,32 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
                       function(){ setPlaying(false); });
   });
   var vol = $("#vol"); var setVol = function(){ vol.style.setProperty("--v", vol.value + "%"); audio.volume = vol.value / 100; }; vol.addEventListener("input", setVol); setVol();
+
+  /* ---------- Modo carro ---------- */
+  (function(){
+    var carro = $("#carro"), entra = $("#btnCarro"), wake = null;
+    if(!carro || !entra) return;
+    var despierta = function(){
+      try { if(navigator.wakeLock) navigator.wakeLock.request("screen").then(function(w){ wake = w; }, function(){}); } catch(e){}
+    };
+    var pon = function(v, guarda){
+      carro.hidden = !v; document.body.classList.toggle("en-carro", v);
+      if(guarda){ try { localStorage.setItem("tmr-carro", v ? "1" : "0"); } catch(e){} }
+      if(v) despierta(); else if(wake){ try { wake.release(); } catch(e){} wake = null; }
+    };
+    var paso = function(d){ vol.value = Math.max(0, Math.min(100, parseInt(vol.value, 10) + d)); setVol(); };
+    entra.addEventListener("click", function(){ pon(true, true); });
+    $("#carroSalir").addEventListener("click", function(){ pon(false, true); });
+    $("#carroMenos").addEventListener("click", function(){ paso(-10); });
+    $("#carroMas").addEventListener("click", function(){ paso(10); });
+    var hora = $("#carroHora");
+    var reloj = function(){ try { hora.textContent = new Date().toLocaleTimeString("es-CO", { hour:"numeric", minute:"2-digit" }); } catch(e){} };
+    reloj(); setInterval(reloj, 20000);
+    document.addEventListener("visibilitychange", function(){ if(!document.hidden && !carro.hidden) despierta(); });
+    // Una pantalla que ya entro en modo carro vuelve a abrir asi.
+    var recordado = false; try { recordado = localStorage.getItem("tmr-carro") === "1"; } catch(e){}
+    if(recordado || /[?&]modo=carro/.test(location.search)) pon(true, false);
+  })();
   $$("[data-instalar]").forEach(function(b){ b.addEventListener("click", function(){ if(window.__tmInstall){ window.__tmInstall.prompt(); } else toast(isIOS ? "En iPhone: Compartir → Agregar a inicio" : "Usa el menú del navegador → Instalar app"); }); });
   window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); window.__tmInstall = e; });
 
@@ -1559,6 +1624,9 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
   document.addEventListener("visibilitychange", function(){ if(document.hidden) latidoFinal(); });
 
   /* ---------- Arranque ---------- */
+  if(/[?&]entrar=1/.test(location.search)){
+    window.addEventListener("tm:listo", function(){ setTimeout(function(){ boton.click(); }, 500); });
+  }
   boton.addEventListener("click", function(){
     abre();
     cargandoHoja("Un momento");
