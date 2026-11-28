@@ -325,18 +325,11 @@ footer.pie .marca .mini{width:34px;height:34px}
 .en-widget .banner-loc{display:none}
 .banner-patro{position:relative;z-index:2;display:flex;align-items:center;gap:12px;width:calc(100% - 32px);max-width:392px;margin:0 auto 10px;padding:7px 12px;border:1px solid rgba(255,255,255,.065);border-radius:14px;background:rgba(255,255,255,.015)}
 .banner-patro[hidden]{display:none}
-.banner-patro.con-anuncio{padding:0;border-color:rgba(var(--fr),.2);background:linear-gradient(120deg,rgba(var(--fr),.07),rgba(255,255,255,.015) 70%)}
-.bp-anuncio{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;padding:9px 13px;text-decoration:none;color:inherit}
-.bpa-cab{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-.bpa-cab b{font-size:13.5px;font-weight:700;letter-spacing:-.005em}
-.bpa-cab i{font-style:normal;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:#5c5c5c}
-.bpa-pie{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.bpa-linea{min-width:0;font-size:12px;color:var(--tinta-suave);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .36s var(--ease),transform .36s var(--ease)}
-.bpa-linea strong{font-weight:600;color:rgb(var(--fr));margin-right:7px}
-.bpa-linea.cambia{opacity:0;transform:translateY(4px)}
-.bpa-pie em{font-style:normal;flex:none;color:#6a6a6a;transition:transform .35s var(--ease),color .35s var(--ease)}
-.bp-anuncio:hover .bpa-pie em{transform:translateX(3px);color:var(--tinta)}
-@media (prefers-reduced-motion:reduce){.bpa-linea{transition:none}}
+.banner-patro.con-anuncio{padding:0;border:0;background:none}
+.ad-caja{position:relative;display:block;flex:1;min-width:0;aspect-ratio:16 / 5;border-radius:14px;overflow:hidden;background:#0b0b0b;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.ad-caja video,.ad-caja img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ad-caja::after{content:"";position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09);pointer-events:none}
+.ad-etq{position:absolute;right:7px;top:7px;font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.62);background:rgba(0,0,0,.5);padding:3px 6px;border-radius:5px;pointer-events:none}
 .bp-rotulo{flex:none;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:#5c5c5c;white-space:nowrap}
 .bp-marcas{flex:1;min-width:0;display:flex;align-items:center;gap:18px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
 .bp-marcas::-webkit-scrollbar{display:none}
@@ -441,13 +434,15 @@ body.en-carro{overflow:hidden}
   .escena{min-height:0;place-items:start center;padding:12px var(--gut-r) 10px var(--gut-l)}
   .pila{gap:12px}
   .centro{gap:10px}
-  .escena .caratula{max-width:clamp(96px, calc(100svh - 734px), 240px);border-radius:22px}
+  .escena .caratula{max-width:clamp(96px, calc(100svh - 752px), 240px);border-radius:22px}
   .panel-aire .revela{opacity:1;transform:none}
   .escena .caratula .esquina{display:none}
   .escena .play-xl{width:72px;height:72px}
   .atajos{margin-top:0;gap:6px;flex-wrap:nowrap}
   .atajos .btn-cmp{height:38px;padding:0 12px;font-size:12.5px;white-space:nowrap}
-  .banner-ahora{padding:11px 13px;margin-bottom:8px}
+  .banner-ahora{padding:9px 13px;margin-bottom:8px}
+  .escena .ahora{padding:11px 16px}
+  .pie-min > .mono{display:none}
   .ba-barra{margin:9px 0 6px}
   .banner-parrilla,.banner-plat,.banner-patro{margin-bottom:8px}
   .pie-min{padding-bottom:calc(16px + env(safe-area-inset-bottom, 0px))}
@@ -511,9 +506,6 @@ body.en-carro{overflow:hidden}
   .bs-item i{font-style:normal;flex:none;font-size:11px;color:#6a6a6a}
   .banner-plat,.banner-patro{padding:12px 14px}
   .banner-patro.con-anuncio{padding:0}
-  .bp-anuncio{padding:12px 14px}
-  .bpa-cab b{font-size:15px}
-  .bpa-linea{font-size:13px}
   .bq-sitio{font-size:13px}
   .bp-rotulo{font-size:10px}
 }
@@ -522,10 +514,18 @@ body.en-carro{overflow:hidden}
   .escena{padding-left:var(--pr);padding-right:calc(var(--pr) + 430px)}
   .escena .caratula{max-width:clamp(140px, calc(100svh - 580px), 360px)}
   .pila{max-width:520px}
-  .panel-aire{position:absolute;z-index:3;top:72px;right:var(--pr);width:390px;height:calc(100svh - 72px - 120px);display:flex;flex-direction:column;justify-content:center;gap:12px}
+  .panel-aire{position:absolute;z-index:3;top:72px;right:var(--pr);width:390px;height:calc(100svh - 72px - 100px);display:flex;flex-direction:column;justify-content:center;gap:10px}
 }
 @media (min-width:1000px) and (min-height:700px) and (max-height:900px){
   .escena .caratula .esquina{display:none}
+}
+@media (min-width:1000px) and (min-height:700px) and (max-height:840px){
+  .banner-parrilla{padding:10px 12px;gap:5px}
+  .bp2-pistas{gap:2px}
+  .bp2-prog{padding:5px 11px}
+  .bp2-prog b{font-size:13.5px}
+  .banner-ahora{padding:10px 13px}
+  .ba-barra{margin:8px 0 6px}
 }
 /* Tablet vertical: la escena deja de ocupar toda la pantalla y el panel
    sube en dos columnas, para que no haya que bajar a buscarlo. */
@@ -2064,16 +2064,20 @@ body.en-carro{overflow:hidden}
    Ejemplo:
      { nombre:"Ratonera", logo:"assets/img/patro-ratonera.svg", url:"https://ratonera.co" }
 */
-/* Anuncio propio: sale mientras TM_PATROCINIOS este vacio.
-   lineas: [rotulo, texto]; se alternan cada pocos segundos. */
-var TM_ANUNCIO = {
-  marca: "TripMind Studio",
-  url: "https://wa.me/573117034957?text=" + encodeURIComponent("Hola, quiero saber m\u00e1s de TripMind Studio"),
-  lineas: [
-    ["Creativo", "Visuales, dise\u00f1o y video"],
-    ["Digital",  "Desarrollo web, IA y capacitaci\u00f3n"]
-  ]
-};
+/* ===== Caja de anuncios =====
+   Cada marca entrega UNA pieza de 1280 x 400 px (proporcion 16:5):
+     video  : MP4 H.264, sin audio, en bucle, 6 a 10 s, maximo 2 MB.
+     imagen : JPG o PNG. Obligatoria aunque haya video: es la portada y lo
+              que ve quien tiene el ahorro de datos o las animaciones apagadas.
+     url    : a donde lleva el toque.
+     propio : true solo para anuncios de la casa.
+   Con varias piezas rotan cada 16 s. Con la lista vacia la caja no sale. */
+var TM_ANUNCIOS = [
+  { marca: "TripMind Studio", propio: true,
+    video:  "assets/ads/tripmind-studio.mp4",
+    imagen: "assets/ads/tripmind-studio.jpg",
+    url: "https://wa.me/573117034957?text=" + encodeURIComponent("Hola, quiero saber m\u00e1s de TripMind Studio") }
+];
 var TM_PATROCINIOS = [
 ];
 
@@ -2082,29 +2086,49 @@ var TM_PATROCINIOS = [
   var caja  = document.getElementById("bpMarcas");
   if(!banda || !caja) return;
   var lista = (typeof TM_PATROCINIOS !== "undefined" && TM_PATROCINIOS) ? TM_PATROCINIOS : [];
-  if(!lista.length){
-    // Sin patrocinadores externos, el espacio lo usa el anuncio propio.
-    var an = (typeof TM_ANUNCIO !== "undefined") ? TM_ANUNCIO : null;
-    if(!an || !an.marca) return;
-    var a = document.createElement("a");
-    a.className = "bp-anuncio";
-    a.href = an.url; a.target = "_blank"; a.rel = "noopener noreferrer";
-    a.setAttribute("aria-label", an.marca + ": " + (an.lineas || []).map(function(l){ return l[0] + ", " + l[1]; }).join(". "));
-    a.innerHTML = '<span class="bpa-cab"><b></b><i>Publicidad</i></span>' +
-                  '<span class="bpa-pie"><span class="bpa-linea"><strong></strong><span></span></span><em aria-hidden="true">\u2192</em></span>';
-    a.querySelector("b").textContent = an.marca;
-    var linea = a.querySelector(".bpa-linea"), n = 0, L = an.lineas || [];
-    var pon = function(){ if(!L.length) return; linea.querySelector("strong").textContent = L[n][0]; linea.lastChild.textContent = L[n][1]; };
-    pon();
-    if(L.length > 1) setInterval(function(){
-      if(document.hidden) return;
-      linea.classList.add("cambia");
-      setTimeout(function(){ n = (n + 1) % L.length; pon(); linea.classList.remove("cambia"); }, 380);
-    }, 4600);
-    banda.textContent = ""; banda.classList.add("con-anuncio"); banda.appendChild(a);
-    banda.hidden = false;
+  /* Caja de anuncios: una pieza 16:5 (1280 x 400) por marca, en video o
+     imagen. Si hay varias, rotan. Tiene prioridad sobre la tira de logos. */
+  var ads = (typeof TM_ANUNCIOS !== "undefined" && TM_ANUNCIOS) ? TM_ANUNCIOS.filter(function(a){ return a && (a.video || a.imagen); }) : [];
+  if(ads.length){
+    var quieto = (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) ||
+                 !!(navigator.connection && navigator.connection.saveData);
+    var enVista = true, vid = null, cual = 0;
+    var monta = function(){
+      var an = ads[cual], a = document.createElement("a");
+      a.className = "ad-caja";
+      if(an.url){ a.href = an.url; a.target = "_blank"; a.rel = (an.propio ? "" : "sponsored ") + "noopener noreferrer"; }
+      a.setAttribute("aria-label", "Publicidad: " + (an.marca || ""));
+      vid = null;
+      if(an.video && !quieto){
+        vid = document.createElement("video");
+        vid.muted = true; vid.loop = true; vid.playsInline = true; vid.autoplay = true; vid.preload = "metadata";
+        vid.setAttribute("muted", ""); vid.setAttribute("playsinline", ""); vid.setAttribute("disablepictureinpicture", "");
+        if(an.imagen) vid.poster = an.imagen;
+        vid.src = an.video;
+        a.appendChild(vid);
+      } else {
+        var im = document.createElement("img");
+        im.src = an.imagen || ""; im.alt = an.marca || "Publicidad"; im.decoding = "async";
+        a.appendChild(im);
+      }
+      var et = document.createElement("span"); et.className = "ad-etq"; et.textContent = "Publicidad";
+      a.appendChild(et);
+      banda.textContent = ""; banda.appendChild(a);
+      anda();
+    };
+    var anda = function(){
+      if(!vid) return;
+      if(enVista && !document.hidden){ var pr = vid.play(); if(pr && pr.catch) pr.catch(function(){}); }
+      else vid.pause();
+    };
+    banda.classList.add("con-anuncio"); banda.hidden = false;
+    monta();
+    if("IntersectionObserver" in window) new IntersectionObserver(function(es){ enVista = es[0].isIntersecting; anda(); }, { threshold: .25 }).observe(banda);
+    document.addEventListener("visibilitychange", anda);
+    if(ads.length > 1) setInterval(function(){ if(document.hidden || !enVista) return; cual = (cual + 1) % ads.length; monta(); }, 16000);
     return;
   }
+  if(!lista.length) return;              // sin anuncios ni patrocinadores, la banda no aparece
 
   lista.forEach(function(p){
     if(!p || !p.nombre) return;
