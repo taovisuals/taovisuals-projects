@@ -1003,6 +1003,7 @@ body.en-carro{overflow:hidden}
   };
   /* Los sets llegan con nombre de archivo ("tripmind radio set antr brunch").
      Aqui se vuelven algo que se pueda leer al aire: "Set de Another". */
+  var TM_SONO = false;   // panel "Acaba de sonar"
   var ALIAS = { antr:"Another", anotr:"Another" };
   var RUIDO = /^(tripmind|radio|set|sets|mix|brunch|tardeo|arranque|melodic|nights?|back|home|with|us|bhw|el|la|de|del)$/;
   var capital = function(x){ return x.toLowerCase().replace(/(^|[\s\-])([a-zà-ÿ])/g, function(m, a, b){ return a + b.toUpperCase(); }); };
@@ -1046,7 +1047,9 @@ body.en-carro{overflow:hidden}
             try { i.textContent = new Intl.DateTimeFormat("es-CO", { hour:"numeric", minute:"2-digit", hour12:true, timeZone:"America/Bogota" }).format(new Date(h.played_at * 1000)); } catch(e){}
             f.appendChild(b); f.appendChild(i); bsCaja.appendChild(f);
           });
-          bs.hidden = !hist.length;
+          // Apagado mientras la programacion sea solo sets: tres sets seguidos
+          // no dicen mucho. Para volver a mostrarlo, TM_SONO = true.
+          bs.hidden = !TM_SONO || !hist.length;
         }
         if("mediaSession" in navigator && window.MediaMetadata){
           navigator.mediaSession.metadata = new MediaMetadata({ title: titulo, artist: artista, album: "TripMind Radio", artwork: (song.art ? [{ src: song.art, sizes: "512x512" }] : []).concat([{ src: "assets/icons/icon-512.png", sizes: "512x512", type: "image/png" }]) });
