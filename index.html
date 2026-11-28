@@ -711,7 +711,8 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
   // había que darle dos veces. Y mientras conectaba, cada toque nuevo
   // reasignaba el src y abortaba la conexión que estaba por lograrse: de ahi
   // que se quedara trabado. Ahora la verdad la manda el elemento.
-  var conectando = false, reintentos = 0, relojCon = null;
+  var conectando = false, reintentos = 0, relojCon = null, autoIntento = false;
+  var recuerda = function(v){ try { localStorage.setItem("tmr-sonando", v ? String(Date.now()) : "0"); } catch(e){} };
 
   var setConectando = function(v){
     conectando = v;
@@ -742,7 +743,8 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
       // No es una falla de la señal y no merece aviso.
       if(e && e.name === "AbortError") return;
       setConectando(false); setPlaying(false);
-      toast("No se pudo conectar con la señal");
+      toast(autoIntento ? "Toca play para seguir escuchando" : "No se pudo conectar con la señal");
+      autoIntento = false;
     });
   };
 
@@ -760,10 +762,28 @@ a.bq-sitio:hover,a.bq-sitio:focus-visible{opacity:1;color:var(--tinta)}
       else { loop.play().catch(function(){}); loopFade(loopTarget, 900); toast("La señal todavía no está al aire"); }
     }, function(){ loop.play().catch(function(){}); loopFade(loopTarget, 900); toast("Sin conexión con la señal"); });
   };
-  $$("[data-play]").forEach(function(b){ b.addEventListener("click", toggle); });
+  // Solo el boton de la pagina apaga el "estaba sonando": si el sistema del
+  // carro corta el audio al salir, eso no cuenta como que el oyente paro.
+  $$("[data-play]").forEach(function(b){ b.addEventListener("click", function(){ if(!audio.paused) recuerda(false); toggle(); }); });
 
   // El estado del botón lo dicta el elemento de audio, no una variable nuestra.
-  audio.addEventListener("playing", function(){ reintentos = 0; setConectando(false); setPlaying(true); });
+  audio.addEventListener("playing", function(){ reintentos = 0; autoIntento = false; recuerda(true); setConectando(false); setPlaying(true); });
+  setInterval(function(){ if(!audio.paused && !conectando) recuerda(true); }, 60000);
+
+  /* Pantallas de carro y tablets montadas apagan el navegador al salir.
+     No se puede impedir desde la web, pero si alguien estaba oyendo en las
+     ultimas 12 horas, al volver la radio sigue sola. */
+  var sonaba = function(){
+    try { var t = parseInt(localStorage.getItem("tmr-sonando") || "0", 10); return t > 0 && (Date.now() - t) < 12 * 3600 * 1000; }
+    catch(e){ return false; }
+  };
+  var retoma = function(){
+    if(!sonaba() || conectando || !audio.paused) return;
+    autoIntento = true; toggle();
+  };
+  window.addEventListener("tm:listo", function(){ setTimeout(retoma, 400); });
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden) setTimeout(retoma, 300); });
+  window.addEventListener("pageshow", function(e){ if(e.persisted) retoma(); });
   audio.addEventListener("pause",   function(){ setConectando(false); setPlaying(false); });
   audio.addEventListener("waiting", function(){ if(!audio.paused) setConectando(true); });
   audio.addEventListener("stalled", function(){ if(!audio.paused) setConectando(true); });
