@@ -2207,6 +2207,8 @@ var TM_PLATAFORMAS = [
   var SB_URL = "https://mbtroxbeyjqqqxqfdade.supabase.co";
   var SB_KEY = "sb_publishable_e4i4OidvddMs1-eQ9GzvEA_nNFVTuQp";
   var id = null, yaVenia = false, k, i;
+  // Robots y navegadores automatizados no son oyentes.
+  if(navigator.webdriver || /Headless|bot|crawl|spider|Lighthouse|PageSpeed|Prerender/i.test(navigator.userAgent || "")) return;
   try { id = localStorage.getItem("tmr-disp"); } catch(e){ return; }   // sin almacenamiento no hay como reconocerlo
   var conCuenta = function(){
     try { for(var j = 0; j < localStorage.length; j++){ if(/^sb-.*-auth-token$/.test(localStorage.key(j) || "")) return true; } } catch(e){}
